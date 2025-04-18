@@ -1,0 +1,44 @@
+<app-default-login-layout
+  title="Cadastrar"
+  primaryBtnText="Cadastrar"
+  secondaryBtnText="Entrar"
+  (submit)="submit()"
+  (navigate)="navigate()"
+  [disablePrimaryButton]="!singupForm.valid">
+  <form [formGroup]="singupForm">
+    <app-primary-input
+      formName="name"
+      type="text"
+      label="Seu nome"
+      placeholder="Maria Manenti"
+    >
+    </app-primary-input>
+
+    <app-primary-input
+      formName="email"
+      type="email"
+      label="Email"
+      placeholder="example@gmail.com"
+    >
+      <img src="/assets/svg/email-icon.svg" />
+    </app-primary-input>
+
+    <app-primary-input
+      formName="password"
+      type="password"
+      label="Sua senha"
+      placeholder="Digite sua senha"
+    >
+      <img src="/assets/svg/password-icon.svg" />
+    </app-primary-input>
+
+    <app-primary-input
+      formName="passwordConfirm"
+      type="password"
+      label="Confirmação de senha"
+      placeholder="Confirme sua senha"
+    >
+      <img src="/assets/svg/password-icon.svg" />
+    </app-primary-input>
+  </form>
+</app-default-login-layout>
