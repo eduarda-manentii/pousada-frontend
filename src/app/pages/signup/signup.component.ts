@@ -38,8 +38,13 @@ export class SignupComponent {
 
   submit() {
     this.loginService.signup(this.singupForm.value.name, this.singupForm.value.email, this.singupForm.value.password).subscribe({
-      next: () => this.toastService.success("Login feito com sucesso!"),
-      error: () => this.toastService.error("Não foi possível efetuar o login.")
+      next: () => {
+        this.toastService.success("Login feito com sucesso!");
+        this.router.navigate(['/home']);
+      },
+      error: () => {
+        this.toastService.error("Não foi possível efetuar o login.");
+      } 
     });
   }
 

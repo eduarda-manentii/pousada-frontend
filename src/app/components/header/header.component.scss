@@ -1,0 +1,48 @@
+@use "../../../styles/variables" as *;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    background-color: $gray-bg;
+    padding: 10px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    justify-content: space-between;
+    font-size: 18px;
+
+    .left-content {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .logo img {
+        max-height: 50px;
+    }
+
+    .options {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .options a,
+    .exit a {
+        color: $primary-color;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .options a:hover,
+    .exit a:hover {
+        color: $secondary-color;
+    }
+
+  }
+
+  
