@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LoginResponse } from '../types/login-response.type';
+import { LoginResponse } from '../../../models/types/types/login-response.type';
 import { tap } from 'rxjs';
 
 @Injectable({

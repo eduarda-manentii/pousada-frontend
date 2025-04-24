@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/pages/login/login.component';
 import { SignupComponent } from './features/auth/pages/signup/signup.component';
-import { AuthGuard } from './services/auth-guard.service';
+import { AuthGuard } from './core/services/auth-guard.service';
 import { HomeComponent } from './features/home/pages/home/home.component';
 import { ReportsComponent } from './shared/pages/reports/reports.component';
 import { NewCustomerComponent } from './features/customers/pages/new-customer/new-customer.component';
