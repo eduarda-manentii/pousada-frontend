@@ -1,12 +1,43 @@
 <header>
     <div class="logo">
-        <img src="/assets/svg/logo.avif" [routerLink]="['/home']"/>
+      <img src="/assets/svg/logo.avif" [routerLink]="['/home']" />
     </div>
+
     <div class="options">
-        <a [routerLink]="['/records']">Cadastros</a>
-        <a [routerLink]="['/reports']">Relatórios</a>
+      <a [routerLink]="['/records/reservations']">
+        <i class="fas fa-calendar-check"></i>
+        Reservas
+      </a>
+      <a [routerLink]="['/records/rooms']">
+        <i class="fas fa-door-open"></i>
+        Quartos
+      </a>
+      <a [routerLink]="['/records/customers']">
+        <i class="fas fa-user-friends"></i>
+        Clientes
+      </a>
+      <a [routerLink]="['/records/users']">
+        <i class="fas fa-user-cog"></i>
+        Usuários
+      </a>
+      <a [routerLink]="['/records/vouchers']">
+        <i class="fas fa-ticket-alt"></i>
+        Cupons
+      </a>
+      <a [routerLink]="['/records/payments']">
+        <i class="fas fa-credit-card"></i>
+        Pagamentos
+      </a>
+      <a [routerLink]="['/reports']">
+        <i class="fas fa-chart-bar"></i>
+        Relatórios
+      </a>
     </div>
+
     <div class="exit">
-        <a [routerLink]="['/login']">Sair</a>
+      <a [routerLink]="['/login']">
+        <i class="fas fa-sign-out-alt"></i>
+        Sair
+      </a>
     </div>
-</header>
+  </header>
