@@ -22,7 +22,7 @@ import { CommonModule } from '@angular/common';
 export class NewCustomerComponent {
   customerForm: FormGroup;
 
-  constructor( private router: Router, private fb: FormBuilder) {
+  constructor(private router: Router, private fb: FormBuilder) {
     this.customerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       phone: ['', Validators.required],
@@ -30,7 +30,7 @@ export class NewCustomerComponent {
       birthDate: ['', Validators.required],
       gender: ['', Validators.required],
       street: ['', Validators.required],
-      number: ['', Validators.required],
+      number: [''],
       city: ['', Validators.required],
       state: ['', Validators.required],
       zip: ['', Validators.required]
