@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DefaultLoginLayoutComponent } from '../../components/default-login-layout/default-login-layout.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PrimaryInputComponent } from '../../components/primary-input/primary-input.component';
-import { RouterModule, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -42,7 +42,7 @@ export class LoginComponent {
       },
       error: () => {
         this.toastService.error("Não foi possível efetuar o login.");
-      } 
+      }
     });
   }
 

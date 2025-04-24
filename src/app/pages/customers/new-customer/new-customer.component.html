@@ -1,4 +1,68 @@
-<app-header>
-</app-header>
+<app-header></app-header>
 
-<p>new-customer works!</p>
+<div class="form-container">
+  <h2>Cadastro de Cliente</h2>
+  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nome Completo</label>
+        <input formControlName="name" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Telefone</label>
+        <input formControlName="phone" type="text" mask="(00) 00000-0000" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Email</label>
+        <input formControlName="email" type="email" />
+      </div>
+      <div class="form-group">
+        <label>Data de Nascimento</label>
+        <input formControlName="birthDate" type="date" />
+      </div>
+      <div class="form-group">
+        <label>Sexo</label>
+        <select formControlName="gender">
+          <option value="">Selecione</option>
+          <option value="masculino">Masculino</option>
+          <option value="feminino">Feminino</option>
+        </select>
+      </div>
+    </div>
+
+    <h3>Endereço</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Rua</label>
+        <input formControlName="street" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Número</label>
+        <input formControlName="number" type="text" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Cidade</label>
+        <input formControlName="city" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Estado</label>
+        <input formControlName="state" type="text" />
+      </div>
+      <div class="form-group">
+        <label>CEP</label>
+        <input formControlName="zip" type="text" mask="00000-000" />
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" [disabled]="customerForm.invalid">Cadastrar</button>
+      <button type="button" (click)="goBack()">Cancelar</button>
+    </div>
+  </form>
+</div>

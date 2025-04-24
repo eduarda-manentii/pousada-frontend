@@ -1,4 +1,11 @@
-<app-header>
-</app-header>
+<app-header></app-header>
 
-<p>index-customer works!</p>
+<div class="index-container">
+  <div class="main-content">
+    <h2>Clientes</h2>
+    <div class="button-wrapper">
+      <a class="new-button" [routerLink]="['/customers/new']">Novo</a>
+      <a class="filter-button">Filtrar</a>
+    </div>
+  </div>
+</div>
