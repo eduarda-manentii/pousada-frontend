@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { HeaderComponent } from '../../../components/header/header.component';
 
 @Component({
   selector: 'app-new-user',
   standalone: true,
-  imports: [],
+  imports: [HeaderComponent],
   templateUrl: './new-user.component.html',
   styleUrl: './new-user.component.scss'
 })

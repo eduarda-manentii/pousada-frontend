@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
-import { UserComponent } from './pages/user/user.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { HomeComponent } from './pages/home/home.component';
 import { ReportsComponent } from './pages/reports/reports.component';
@@ -27,7 +26,7 @@ import { IndexVoucherComponent } from './pages/vourchers/index-voucher/index-vou
 export const routes: Routes = [
   { path : "login",              component: LoginComponent },
   { path : "signup",             component: SignupComponent },
-  { path : "user",               component: UserComponent, canActivate: [AuthGuard] },
+  // { path : "home",               component: HomeComponent, canActivate: [AuthGuard] },
   { path : "home",               component: HomeComponent },
   { path : "reports",            component: ReportsComponent },
   { path : "customers/new",      component: NewCustomerComponent },
@@ -39,9 +38,9 @@ export const routes: Routes = [
   { path : "reservations/new",   component: NewReservationComponent },
   { path : "reservations/show",  component: ShowReservationComponent },
   { path : "reservations/index", component: IndexReservationComponent },
-  { path : "romms/new",          component: NewRoomComponent },
-  { path : "romms/show",         component: ShowRoomComponent },
-  { path : "romms/index",        component: IndexRoomComponent },
+  { path : "rooms/new",          component: NewRoomComponent },
+  { path : "rooms/show",         component: ShowRoomComponent },
+  { path : "rooms/index",        component: IndexRoomComponent },
   { path : "users/new",          component: NewUserComponent },
   { path : "users/show",         component: ShowUserComponent },
   { path : "users/index",        component: IndexUserComponent },

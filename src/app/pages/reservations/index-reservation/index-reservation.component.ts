@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { HeaderComponent } from '../../../components/header/header.component';
 
 @Component({
   selector: 'app-index-reservation',
   standalone: true,
-  imports: [],
+  imports: [HeaderComponent],
   templateUrl: './index-reservation.component.html',
   styleUrl: './index-reservation.component.scss'
 })
