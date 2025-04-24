@@ -41,7 +41,7 @@ export class NewCustomerComponent {
       birthDate: ['', Validators.required],
       gender: ['', Validators.required],
       street: ['', Validators.required],
-      complement: [''],
+      suit: [''],
       number: [''],
       city: ['', Validators.required],
       state: ['', Validators.required],
