@@ -41,10 +41,12 @@ export class NewCustomerComponent {
       birthDate: ['', Validators.required],
       gender: ['', Validators.required],
       street: ['', Validators.required],
+      suit: [''],
       number: [''],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      zip: ['', Validators.required]
+      zip: ['', Validators.required],
+      neighborhood: ['', Validators.required]
     });
   }
 
@@ -81,10 +83,13 @@ export class NewCustomerComponent {
           this.customerForm.patchValue({
             street: data.logradouro,
             city: data.localidade,
-            state: data.uf
+            state: data.uf,
+            neighborhood: data.bairro
           });
+          this.disableAddressFields();
         } else {
           this.toastService.warning('CEP não encontrado.', 'Atenção');
+          this.enableAddressFields();
         }
       },
       error: () => {
@@ -93,10 +98,18 @@ export class NewCustomerComponent {
     });
   }
 
+  disableAddressFields() {
+    this.customerForm.get('street')?.disable();
+    this.customerForm.get('city')?.disable();
+    this.customerForm.get('state')?.disable();
+    this.customerForm.get('neighborhood')?.disable();
+  }
+
   enableAddressFields() {
     this.customerForm.get('street')?.enable();
     this.customerForm.get('city')?.enable();
     this.customerForm.get('state')?.enable();
+    this.customerForm.get('neighborhood')?.enable();
   }
 
   goBack() {
