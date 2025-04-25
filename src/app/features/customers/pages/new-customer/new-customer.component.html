@@ -1,31 +1,32 @@
 <app-header></app-header>
 
-<div class="form-container">
-  <h2>Cadastro de Cliente</h2>
+<div class="container py-5">
+  <h2 class="mb-4 text-secondary-custom">Cadastro de Cliente</h2>
+
   <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
-    <div class="form-row">
-      <div class="form-group">
-        <label>Nome Completo</label>
-        <input formControlName="name" type="text" />
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Nome Completo</label>
+        <input class="form-control" formControlName="name" type="text" />
       </div>
-      <div class="form-group">
-        <label>Telefone</label>
-        <input formControlName="phone" type="text" mask="(00) 00000-0000" />
+      <div class="col-md-6">
+        <label class="form-label">Telefone</label>
+        <input class="form-control" formControlName="phone" type="text" mask="(00) 00000-0000" />
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>Email</label>
-        <input formControlName="email" type="email" />
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <label class="form-label">Email</label>
+        <input class="form-control" formControlName="email" type="email" />
       </div>
-      <div class="form-group">
-        <label>Data de Nascimento</label>
-        <input formControlName="birthDate" type="date" />
+      <div class="col-md-4">
+        <label class="form-label">Data de Nascimento</label>
+        <input class="form-control" formControlName="birthDate" type="date" />
       </div>
-      <div class="form-group">
-        <label>Sexo</label>
-        <select formControlName="gender">
+      <div class="col-md-4">
+        <label class="form-label">Sexo</label>
+        <select class="form-select" formControlName="gender">
           <option value="">Selecione</option>
           <option value="masculino">Masculino</option>
           <option value="feminino">Feminino</option>
@@ -33,30 +34,31 @@
       </div>
     </div>
 
-    <h3>Endereço</h3>
-    <div class="form-row">
-      <div class="form-group">
-        <label>CEP</label>
-        <input formControlName="zip" type="text" mask="00000-000" (blur)="searchCep()"/>
+    <h3 class="mb-3 text-secondary-custom">Endereço</h3>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label">CEP</label>
+        <input class="form-control" formControlName="zip" type="text" mask="00000-000" (blur)="searchCep()" />
       </div>
-      <div class="form-group">
-        <label>Número</label>
-        <input formControlName="number" type="text" />
+      <div class="col-md-6">
+        <label class="form-label">Número</label>
+        <input class="form-control" formControlName="number" type="text" />
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>Rua</label>
-        <input formControlName="street" type="text" />
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <label class="form-label">Rua</label>
+        <input class="form-control" formControlName="street" type="text" />
       </div>
-      <div class="form-group">
-        <label>Cidade</label>
-        <input formControlName="city" type="text" />
+      <div class="col-md-4">
+        <label class="form-label">Cidade</label>
+        <input class="form-control" formControlName="city" type="text" />
       </div>
-      <div class="form-group">
-        <label>Estado</label>
-        <select formControlName="state">
+      <div class="col-md-4">
+        <label class="form-label">Estado</label>
+        <select class="form-select" formControlName="state">
           <option value="">Selecione</option>
           <option *ngFor="let state of states" [value]="state.abbreviation">
             {{ state.name }}
@@ -65,9 +67,9 @@
       </div>
     </div>
 
-    <div class="button-group">
-      <button type="submit" [disabled]="customerForm.invalid">Cadastrar</button>
-      <button type="button" (click)="goBack()">Cancelar</button>
+    <div class="d-flex gap-3">
+      <button type="submit" class="btn btn-primary-custom" [disabled]="customerForm.invalid">Cadastrar</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
     </div>
   </form>
 </div>

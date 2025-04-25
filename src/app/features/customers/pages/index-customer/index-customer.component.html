@@ -1,11 +1,33 @@
 <app-header></app-header>
 
-<div class="index-container">
-  <div class="main-content">
-    <h2>Clientes</h2>
-    <div class="button-wrapper">
-      <a class="new-button" [routerLink]="['/customers/new']">Novo</a>
-      <a class="filter-button">Filtrar</a>
-    </div>
+<div class="container my-5">
+  <h2 class="text-primary-custom mb-3">Clientes</h2>
+
+  <div class="d-flex gap-3 mb-4">
+    <a class="btn btn-primary px-4 py-2" [routerLink]="['/customers/new']">Novo</a>
+    <a class="btn btn-primary px-4 py-2" href="#">Filtrar</a>
   </div>
+
+  <div *ngIf="customers.length > 0; else emptyState">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="bg-primary-custom">
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers">
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.phone }}</td>
+          <td>{{ customer.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="text-muted">Nenhum cliente cadastrado.</p>
+  </ng-template>
 </div>

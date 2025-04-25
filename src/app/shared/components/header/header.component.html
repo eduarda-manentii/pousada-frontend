@@ -1,43 +1,37 @@
-<header>
-    <div class="logo">
-      <img src="/assets/svg/logo.avif" [routerLink]="['/home']" />
-    </div>
+<header class="navbar navbar-expand-lg bg-light shadow px-4">
+  <div class="d-flex align-items-center gap-4">
+    <a class="navbar-brand" [routerLink]="['/home']">
+      <img src="/assets/svg/logo.avif" alt="Logo" height="50" />
+    </a>
+  </div>
 
-    <div class="options">
-      <a [routerLink]="['/reservations/index']">
-        <i class="fas fa-calendar-check"></i>
-        Reservas
-      </a>
-      <a [routerLink]="['/rooms/index']">
-        <i class="fas fa-door-open"></i>
-        Quartos
-      </a>
-      <a [routerLink]="['/customers/index']">
-        <i class="fas fa-user-friends"></i>
-        Clientes
-      </a>
-      <a [routerLink]="['/users/index']">
-        <i class="fas fa-user-cog"></i>
-        Usuários
-      </a>
-      <a [routerLink]="['/vouchers/index']">
-        <i class="fas fa-ticket-alt"></i>
-        Cupons
-      </a>
-      <a [routerLink]="['/payments/index']">
-        <i class="fas fa-credit-card"></i>
-        Pagamentos
-      </a>
-      <a [routerLink]="['/reports']">
-        <i class="fas fa-chart-bar"></i>
-        Relatórios
-      </a>
-    </div>
+  <div class="d-flex align-items-center flex-grow-1 justify-content-center gap-4">
+    <a class="nav-link text-primary fw-medium" [routerLink]="['/reservations/index']">
+      <i class="fas fa-calendar-check me-1"></i> Reservas
+    </a>
+    <a class="nav-link text-primary fw-medium" [routerLink]="['/rooms/index']">
+      <i class="fas fa-door-open me-1"></i> Quartos
+    </a>
+    <a class="nav-link text-primary fw-medium" [routerLink]="['/customers/index']">
+      <i class="fas fa-user-friends me-1"></i> Clientes
+    </a>
+    <a class="nav-link text-primary fw-medium" [routerLink]="['/users/index']">
+      <i class="fas fa-user-cog me-1"></i> Usuários
+    </a>
+    <a class="nav-link text-primary fw-medium" [routerLink]="['/vouchers/index']">
+      <i class="fas fa-ticket-alt me-1"></i> Cupons
+    </a>
+    <a class="nav-link text-primary fw-medium" [routerLink]="['/payments/index']">
+      <i class="fas fa-credit-card me-1"></i> Pagamentos
+    </a>
+    <a class="nav-link text-primary fw-medium" [routerLink]="['/reports']">
+      <i class="fas fa-chart-bar me-1"></i> Relatórios
+    </a>
+  </div>
 
-    <div class="exit">
-      <a [routerLink]="['/login']">
-        <i class="fas fa-sign-out-alt"></i>
-        Sair
-      </a>
-    </div>
-  </header>
+  <div>
+    <a class="nav-link text-danger fw-medium" [routerLink]="['/login']">
+      <i class="fas fa-sign-out-alt me-1"></i> Sair
+    </a>
+  </div>
+</header>
