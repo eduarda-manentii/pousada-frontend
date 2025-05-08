@@ -3,15 +3,19 @@
 <div class="container py-5">
   <h2 class="mb-4 text-secondary-custom">Cadastro de Cliente</h2>
 
-  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="customerForm">
     <div class="row g-3 mb-3">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Nome Completo</label>
-        <input class="form-control" formControlName="name" type="text" />
+        <input class="form-control" formControlName="nome" type="text" />
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Telefone</label>
-        <input class="form-control" formControlName="phone" type="text" mask="(00) 00000-0000" />
+        <input class="form-control" formControlName="celular" type="text" mask="(00) 00000-0000" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">CPF</label>
+        <input class="form-control" formControlName="cpf" type="cpf" />
       </div>
     </div>
 
@@ -22,43 +26,49 @@
       </div>
       <div class="col-md-4">
         <label class="form-label">Data de Nascimento</label>
-        <input class="form-control" formControlName="birthDate" type="date" />
+        <input class="form-control"  formControlName="dataDeNascimento" type="date" />
       </div>
       <div class="col-md-4">
         <label class="form-label">Sexo</label>
-        <select class="form-select" formControlName="gender">
+        <select class="form-select" formControlName="sexo">
           <option value="">Selecione</option>
-          <option value="masculino">Masculino</option>
-          <option value="feminino">Feminino</option>
+          <option value="MASCULINO">MASCULINO</option>
+          <option value="FEMININO">FEMININO</option>
         </select>
       </div>
     </div>
+  </form>
 
+  <form [formGroup]="locationForm">
     <h3 class="mb-3 text-secondary-custom">Endereço</h3>
 
     <div class="row g-3 mb-3">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">CEP</label>
-        <input class="form-control" formControlName="zip" type="text" mask="00000-000" (blur)="searchCep()" />
+        <input class="form-control" formControlName="cep" type="text" mask="00000-000" (blur)="searchCep()" />
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Número</label>
-        <input class="form-control" formControlName="number" type="text" />
+        <input class="form-control" formControlName="numero" type="text" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Bairro</label>
+        <input class="form-control" formControlName="bairro" type="text" />
       </div>
     </div>
 
     <div class="row g-3 mb-4">
       <div class="col-md-4">
         <label class="form-label">Rua</label>
-        <input class="form-control" formControlName="street" type="text" />
+        <input class="form-control" formControlName="rua" type="text" />
       </div>
       <div class="col-md-4">
         <label class="form-label">Cidade</label>
-        <input class="form-control" formControlName="city" type="text" />
+        <input class="form-control" formControlName="cidade" type="text" />
       </div>
       <div class="col-md-4">
         <label class="form-label">Estado</label>
-        <select class="form-select" formControlName="state">
+        <select class="form-select" formControlName="estado">
           <option value="">Selecione</option>
           <option *ngFor="let state of states" [value]="state.abbreviation">
             {{ state.name }}
@@ -66,10 +76,10 @@
         </select>
       </div>
     </div>
-
-    <div class="d-flex gap-3">
-      <button type="submit" class="btn btn-primary-custom" [disabled]="customerForm.invalid">Cadastrar</button>
-      <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
-    </div>
   </form>
+
+  <div class="d-flex gap-3">
+    <button type="submit" class="btn btn-primary-custom" (click)="onSubmit()">Cadastrar</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
+  </div>
 </div>

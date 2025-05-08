@@ -6,9 +6,9 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class CustomerService {
-  private apiUrl = 'http://localhost:8080/cliente';
+  private apiUrl = 'http://localhost:8081/clientes';
   private STORAGE_KEY = 'customers';
-  private useLocal = true;
+  private useLocal = false;
 
   constructor(private http: HttpClient) {}
 
@@ -36,4 +36,5 @@ export class CustomerService {
     const data = localStorage.getItem(this.STORAGE_KEY);
     return data ? JSON.parse(data) : [];
   }
+  
 }

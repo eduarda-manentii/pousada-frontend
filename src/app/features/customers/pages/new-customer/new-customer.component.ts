@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CustomerService } from '../../services/customer.service';
 import { STATES } from '../../../../shared/constants/states';
 import { ToastrService } from 'ngx-toastr';
 import { CepService } from '../../../../shared/services/cep.service';
+import { LocationService } from '../../services/location.service';
 
 @Component({
   selector: 'app-new-customer',
@@ -25,6 +26,7 @@ import { CepService } from '../../../../shared/services/cep.service';
 })
 export class NewCustomerComponent {
   customerForm: FormGroup;
+  locationForm: FormGroup;
   states = STATES;
 
   constructor(
@@ -33,41 +35,49 @@ export class NewCustomerComponent {
     private customerService: CustomerService,
     private toastService: ToastrService,
     private cepService: CepService,
+    private locationService: LocationService,
   ) {
     this.customerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
-      phone: ['', Validators.required],
+      nome: ['', [Validators.required, Validators.minLength(5)]],
+      celular: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      birthDate: ['', Validators.required],
-      gender: ['', Validators.required],
-      street: ['', Validators.required],
-      suit: [''],
-      number: [''],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      zip: ['', Validators.required],
-      neighborhood: ['', Validators.required]
+      dataDeNascimento: ['', Validators.required],
+      sexo: ['', Validators.required],
+      cpf: ['', [Validators.required]]
     });
-  }
+
+    this.locationForm = this.fb.group({
+      rua: ['', Validators.required],
+      numero: [''],
+      cidade: ['', Validators.required],
+      estado: ['', Validators.required],
+      cep: ['', Validators.required],
+      bairro: ['', Validators.required]
+    })
+  } 
 
   onSubmit() {
-    if (this.customerForm.valid) {
-      console.log(this.customerForm.value);
-      this.toastService.success("Cliente cadastro com sucesso!");
-    }
-  }
+    if (this.customerForm.valid && this.locationForm.valid) {
+      const locationData = this.locationForm.getRawValue();
+      this.locationService.createLocation(locationData).subscribe({
+        next: (locationResponse) => {
+          const locationId = locationResponse.id;
 
-  onSubmit2() {
-    if (this.customerForm.valid) {
-      const customerData = this.customerForm.getRawValue();
-      this.customerService.createCustomer(customerData).subscribe({
-        next: (res) => {
-          this.toastService.success("Cliente cadastro com sucesso!");
-          this.router.navigate(['/customers/index']);
-        },
-        error: (err) => {
-          const message = err?.error?.message || 'Erro ao cadastrar cliente.';
-          this.toastService.error(message);
+          const customerData = {
+            ...this.customerForm.getRawValue(),
+            endereco: { id: locationId }
+          }
+          console.log('Enviando cliente:', customerData);
+          this.customerService.createCustomer(customerData).subscribe({
+            next: (res) => {
+              this.toastService.success("Cliente cadastro com sucesso!");
+              this.router.navigate(['/customers/index']);
+            },
+            error: (err) => {
+              const message = err?.error?.message || 'Erro ao cadastrar cliente.';
+              this.toastService.error(message);
+            }
+          });
         }
       });
     } else {
@@ -76,15 +86,15 @@ export class NewCustomerComponent {
   }
 
   searchCep() {
-    const cep = this.customerForm.get('zip')?.value || '';
+    const cep = this.locationForm.get('cep')?.value || '';
     this.cepService.searchCep(cep).subscribe({
       next: (data) => {
         if (!data.erro) {
           this.customerForm.patchValue({
-            street: data.logradouro,
-            city: data.localidade,
-            state: data.uf,
-            neighborhood: data.bairro
+            rua: data.logradouro,
+            cidade: data.localidade,
+            estado: data.uf,
+            bairro: data.bairro
           });
           this.disableAddressFields();
         } else {
@@ -99,17 +109,17 @@ export class NewCustomerComponent {
   }
 
   disableAddressFields() {
-    this.customerForm.get('street')?.disable();
-    this.customerForm.get('city')?.disable();
-    this.customerForm.get('state')?.disable();
-    this.customerForm.get('neighborhood')?.disable();
+    this.customerForm.get('rua')?.disable();
+    this.customerForm.get('cidade')?.disable();
+    this.customerForm.get('estado')?.disable();
+    this.customerForm.get('bairro')?.disable();
   }
 
   enableAddressFields() {
-    this.customerForm.get('street')?.enable();
-    this.customerForm.get('city')?.enable();
-    this.customerForm.get('state')?.enable();
-    this.customerForm.get('neighborhood')?.enable();
+    this.customerForm.get('rua')?.enable();
+    this.customerForm.get('cidade')?.enable();
+    this.customerForm.get('estado')?.enable();
+    this.customerForm.get('bairro')?.enable();
   }
 
   goBack() {
