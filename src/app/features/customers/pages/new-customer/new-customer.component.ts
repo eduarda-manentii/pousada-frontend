@@ -54,7 +54,7 @@ export class NewCustomerComponent {
       cep: ['', Validators.required],
       bairro: ['', Validators.required]
     })
-  } 
+  }
 
   onSubmit() {
     if (this.customerForm.valid && this.locationForm.valid) {
@@ -90,7 +90,7 @@ export class NewCustomerComponent {
     this.cepService.searchCep(cep).subscribe({
       next: (data) => {
         if (!data.erro) {
-          this.customerForm.patchValue({
+          this.locationForm.patchValue({
             rua: data.logradouro,
             cidade: data.localidade,
             estado: data.uf,
