@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
-import { RouterLink } from '@angular/router';
-import { CustomerService } from '../../services/customer.service';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../../../shared/services/backend-api.service';
 
 @Component({
   selector: 'app-index-customer',
@@ -13,12 +13,43 @@ import { CommonModule } from '@angular/common';
 })
 export class IndexCustomerComponent implements OnInit {
   customers: any[] = [];
+  currentPage = 0;
+  totalPages = 0;
+  pageSize = 15;
 
-  constructor(private customerService: CustomerService) {}
+  constructor(
+    private api: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.customerService.getCustomers().subscribe((data) => {
-      this.customers = data;
+    this.loadPage(0);
+  }
+
+  loadPage(page: number) {
+    const endpoint = 'http://localhost:8081/clientes';
+    const params = {
+      page: page.toString(),
+      size: this.pageSize.toString()
+    };
+
+    this.api.get(endpoint, params).subscribe((data) => {
+      this.customers = data.content;
+      this.currentPage = data.number;
+      this.totalPages = data.totalPages;
     });
   }
+
+  nextPage() {
+    if (this.currentPage + 1 < this.totalPages) {
+      this.loadPage(this.currentPage + 1);
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.loadPage(this.currentPage - 1);
+    }
+  }
+
 }

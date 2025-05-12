@@ -20,3 +20,15 @@
     border-color: #6e4329;
   }
 }
+
+.btn-outline-brown {
+  background-color: $primary-color;
+  border-color: $primary-color;
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+.btn-outline-brown:hover {
+  background-color: $primary-color;
+  color: white;
+}

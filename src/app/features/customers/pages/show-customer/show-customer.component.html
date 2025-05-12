@@ -1,4 +1,34 @@
-<app-header>
-</app-header>
+<app-header></app-header>
 
-<p>show-customer works!</p>
+<div class="container my-5">
+  <h2 class="mb-4 text-secondary-custom">Detalhes do Cliente {{ customer?.id }}</h2>
+
+  <div *ngIf="customer">
+    <p><strong>Nome:</strong> {{ customer.nome }}</p>
+    <p><strong>Telefone:</strong> {{ customer.celular }}</p>
+    <p><strong>Email:</strong> {{ customer.email }}</p>
+    <p><strong>CPF:</strong> {{ customer.cpf }}</p>
+    <p><strong>Sexo:</strong> {{ customer.sexo }}</p>
+    <p><strong>Data de nascimento:</strong> {{ customer.dataDeNascimento }}</p>
+    <p><strong>Endereço:</strong> {{ customer.endereco?.rua }}, {{ customer.endereco?.bairro }}, {{ customer.endereco?.cidade }} - {{ customer.endereco?.estado }}</p>
+
+    <div class="mt-4 d-flex gap-3">
+      <button class="btn btn-brown w-15" [routerLink]="['/customers/new', customer.id]">
+        Editar
+      </button>
+      <button class="btn btn-brown w-15" (click)="excluir()">
+        Deletar
+      </button>
+
+      <div class="ms-auto">
+        <button class="btn btn-outline-secondary" [routerLink]="['/customers/index']">
+          Voltar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="text-muted">Cliente não encontrado.</p>
+  </ng-template>
+</div>

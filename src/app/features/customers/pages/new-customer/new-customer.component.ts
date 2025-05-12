@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CustomerService } from '../../services/customer.service';
 import { STATES } from '../../../../shared/constants/states';
 import { ToastrService } from 'ngx-toastr';
 import { CepService } from '../../../../shared/services/cep.service';
-import { LocationService } from '../../services/location.service';
+import { ApiService } from '../../../../shared/services/backend-api.service';
+import { Cliente } from '../../interfaces/cliente';
 
 @Component({
   selector: 'app-new-customer',
@@ -24,19 +24,36 @@ import { LocationService } from '../../services/location.service';
   styleUrl: './new-customer.component.scss',
   providers: [provideNgxMask()]
 })
-export class NewCustomerComponent {
-  customerForm: FormGroup;
-  locationForm: FormGroup;
+export class NewCustomerComponent implements OnInit {
+  customerForm!: FormGroup;
+  locationForm!: FormGroup;
   states = STATES;
+  customerId?: number;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private customerService: CustomerService,
+    private api: ApiService,
     private toastService: ToastrService,
-    private cepService: CepService,
-    private locationService: LocationService,
-  ) {
+    private cepService: CepService
+  ) {}
+
+  ngOnInit() {
+    this.customerId = Number(this.route.snapshot.paramMap.get('id'));
+    this.buildForms();
+
+    if (this.customerId) {
+      this.api.getById<Cliente>('http://localhost:8081/clientes/' + this.customerId).subscribe({
+        next: (customer) => {
+          this.customerForm.patchValue(customer);
+          this.locationForm.patchValue(customer.endereco);
+        }
+      });
+    }
+  }
+
+  buildForms() {
     this.customerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(5)]],
       celular: ['', Validators.required],
@@ -47,39 +64,58 @@ export class NewCustomerComponent {
     });
 
     this.locationForm = this.fb.group({
+      id: [null],
       rua: ['', Validators.required],
       numero: [''],
       cidade: ['', Validators.required],
       estado: ['', Validators.required],
       cep: ['', Validators.required],
-      bairro: ['', Validators.required]
-    })
+      bairro: ['', Validators.required],
+      complemento: ['']
+    });
   }
 
   onSubmit() {
     if (this.customerForm.valid && this.locationForm.valid) {
       const locationData = this.locationForm.getRawValue();
-      this.locationService.createLocation(locationData).subscribe({
-        next: (locationResponse) => {
-          const locationId = locationResponse.id;
-
-          const customerData = {
-            ...this.customerForm.getRawValue(),
-            endereco: { id: locationId }
+      const customerData = {
+        id: this.customerId,
+        ...this.customerForm.getRawValue(),
+        endereco: { id: locationData.id }
+      };
+      if (this.customerId) {
+        this.api.put(`http://localhost:8081/clientes/${this.customerId}`, customerData).subscribe({
+          next: () => {
+            this.toastService.success('Cliente atualizado com sucesso!');
+            this.router.navigate(['/customers/index']);
+          },
+          error: () => {
+            this.toastService.error('Erro ao atualizar cliente.');
           }
-          console.log('Enviando cliente:', customerData);
-          this.customerService.createCustomer(customerData).subscribe({
-            next: (res) => {
-              this.toastService.success("Cliente cadastro com sucesso!");
-              this.router.navigate(['/customers/index']);
-            },
-            error: (err) => {
-              const message = err?.error?.message || 'Erro ao cadastrar cliente.';
-              this.toastService.error(message);
-            }
-          });
-        }
-      });
+        });
+      } else {
+        this.api.create("http://localhost:8081/enderecos", locationData).subscribe({
+          next: (locationResponse) => {
+            const locationId = locationResponse.id;
+
+            const newCustomerData = {
+              ...this.customerForm.getRawValue(),
+              endereco: { id: locationId }
+            };
+
+            this.api.create("http://localhost:8081/clientes", newCustomerData).subscribe({
+              next: () => {
+                this.toastService.success("Cliente cadastrado com sucesso!");
+                this.router.navigate(['/customers/index']);
+              },
+              error: () => this.toastService.error('Erro ao cadastrar cliente.')
+            });
+          },
+          error: () => {
+            this.toastService.error('Erro ao cadastrar o endereço.');
+          }
+        });
+      }
     } else {
       this.toastService.error('Formulário inválido. Verifique os campos obrigatórios.');
     }
@@ -98,28 +134,26 @@ export class NewCustomerComponent {
           });
           this.disableAddressFields();
         } else {
-          this.toastService.warning('CEP não encontrado.', 'Atenção');
+          this.toastService.warning('CEP não encontrado.');
           this.enableAddressFields();
         }
       },
       error: () => {
-        this.toastService.error('Erro ao buscar o CEP.', 'Erro');
+        this.toastService.error('Erro ao buscar o CEP.');
       }
     });
   }
 
   disableAddressFields() {
-    this.customerForm.get('rua')?.disable();
-    this.customerForm.get('cidade')?.disable();
-    this.customerForm.get('estado')?.disable();
-    this.customerForm.get('bairro')?.disable();
+    ['rua', 'cidade', 'estado', 'bairro'].forEach(field => {
+      this.locationForm.get(field)?.disable();
+    });
   }
 
   enableAddressFields() {
-    this.customerForm.get('rua')?.enable();
-    this.customerForm.get('cidade')?.enable();
-    this.customerForm.get('estado')?.enable();
-    this.customerForm.get('bairro')?.enable();
+    ['rua', 'cidade', 'estado', 'bairro'].forEach(field => {
+      this.locationForm.get(field)?.enable();
+    });
   }
 
   goBack() {
