@@ -3,11 +3,17 @@ import { HeaderComponent } from '../../../../shared/components/header/header.com
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../shared/services/backend-api.service';
+import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
 
 @Component({
   selector: 'app-index-customer',
   standalone: true,
-  imports: [HeaderComponent, RouterLink, CommonModule],
+  imports: [
+    HeaderComponent, 
+    RouterLink, 
+    CommonModule,
+    PhoneFormatPipe
+  ],
   templateUrl: './index-customer.component.html',
   styleUrl: './index-customer.component.scss'
 })

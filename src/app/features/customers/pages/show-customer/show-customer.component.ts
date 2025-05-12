@@ -4,11 +4,18 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
 
 @Component({
   selector: 'app-show-customer',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, RouterLink],
+  imports: 
+  [
+    HeaderComponent, 
+    CommonModule, 
+    RouterLink,
+    PhoneFormatPipe
+  ],
   templateUrl: './show-customer.component.html',
   styleUrl: './show-customer.component.scss'
 })

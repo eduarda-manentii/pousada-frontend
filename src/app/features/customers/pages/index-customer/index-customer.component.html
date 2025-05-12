@@ -20,7 +20,7 @@
       <tbody>
         <tr *ngFor="let customer of customers">
           <a [routerLink]="['/customers/show', customer.id]">{{ customer.nome }}</a>
-          <td>{{ customer.celular }}</td>
+          <td>{{ customer.celular | phoneFormat }}</td>
           <td>{{ customer.email }}</td>
         </tr>
       </tbody>
