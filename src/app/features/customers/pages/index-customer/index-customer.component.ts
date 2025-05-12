@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-index-customer',
@@ -12,7 +13,8 @@ import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
     HeaderComponent, 
     RouterLink, 
     CommonModule,
-    PhoneFormatPipe
+    PhoneFormatPipe,
+    CapitalizePipe
   ],
   templateUrl: './index-customer.component.html',
   styleUrl: './index-customer.component.scss'

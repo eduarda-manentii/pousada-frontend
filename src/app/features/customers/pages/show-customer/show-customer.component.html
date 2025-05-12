@@ -4,7 +4,7 @@
   <h2 class="mb-4 text-secondary-custom">Detalhes do Cliente {{ customer?.id }}</h2>
 
   <div *ngIf="customer">
-    <p><strong>Nome:</strong> {{ customer.nome }}</p>
+    <p><strong>Nome:</strong> {{ customer.nome | capitalize }}</p>
     <p><strong>Telefone:</strong> {{ customer.celular | phoneFormat  }}</p>
     <p><strong>Email:</strong> {{ customer.email }}</p>
     <p><strong>Sexo:</strong> {{ customer.sexo }}</p>

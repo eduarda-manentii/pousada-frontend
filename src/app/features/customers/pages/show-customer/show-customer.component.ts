@@ -5,6 +5,7 @@ import { ApiService } from '../../../../shared/services/backend-api.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-show-customer',
@@ -14,7 +15,8 @@ import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
     HeaderComponent, 
     CommonModule, 
     RouterLink,
-    PhoneFormatPipe
+    PhoneFormatPipe,
+    CapitalizePipe 
   ],
   templateUrl: './show-customer.component.html',
   styleUrl: './show-customer.component.scss'
