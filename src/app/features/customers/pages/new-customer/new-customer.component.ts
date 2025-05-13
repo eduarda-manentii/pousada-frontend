@@ -11,6 +11,7 @@ import { CepService } from '../../../../shared/services/cep.service';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../interfaces/cliente';
 import { CpfValidatorService } from '../../../../shared/services/cpf-validator.service';
+import { RequiredMarkerDirective } from '../../../../shared/directives/required-marker.directive';
 
 @Component({
   selector: 'app-new-customer',
@@ -20,6 +21,7 @@ import { CpfValidatorService } from '../../../../shared/services/cpf-validator.s
     HeaderComponent,
     NgxMaskDirective,
     CommonModule,
+    RequiredMarkerDirective 
   ],
   templateUrl: './new-customer.component.html',
   styleUrl: './new-customer.component.scss',

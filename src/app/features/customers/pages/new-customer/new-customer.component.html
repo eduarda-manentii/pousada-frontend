@@ -6,11 +6,11 @@
   <form [formGroup]="customerForm">
     <div class="row g-3 mb-3">
       <div class="col-md-4">
-        <label class="form-label">Nome Completo</label>
+        <label class="form-label" [appRequiredMarker]="true">Nome Completo</label>
         <input class="form-control" formControlName="nome" type="text" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">Telefone</label>
+        <label class="form-label" [appRequiredMarker]="true">Celular</label>
         <input 
           class="form-control" 
           formControlName="celular" 
@@ -19,7 +19,7 @@
           mask="(00) 00000-0000" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">CPF</label>
+        <label class="form-label" [appRequiredMarker]="true">CPF</label>
         <input 
           class="form-control" 
           formControlName="cpf" 
@@ -30,15 +30,15 @@
 
     <div class="row g-3 mb-3">
       <div class="col-md-4">
-        <label class="form-label">Email</label>
+        <label class="form-label" [appRequiredMarker]="true">Email</label>
         <input class="form-control" formControlName="email" type="email" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">Data de Nascimento</label>
+        <label class="form-label" [appRequiredMarker]="true">Data de Nascimento</label>
         <input class="form-control"  formControlName="dataDeNascimento" type="date" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">Sexo</label>
+        <label class="form-label" [appRequiredMarker]="true">Sexo</label>
         <select class="form-select" formControlName="sexo">
           <option value="">Selecione</option>
           <option value="MASCULINO">MASCULINO</option>
@@ -53,30 +53,30 @@
 
     <div class="row g-3 mb-3">
       <div class="col-md-4">
-        <label class="form-label">CEP</label>
+        <label class="form-label" [appRequiredMarker]="true">CEP</label>
         <input class="form-control" formControlName="cep" type="text" mask="00000-000" (blur)="searchCep()" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">Número</label>
+        <label class="form-label" [appRequiredMarker]="true">Número</label>
         <input class="form-control" formControlName="numero" type="text" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">Bairro</label>
+        <label class="form-label" [appRequiredMarker]="true">Bairro</label>
         <input class="form-control" formControlName="bairro" type="text" />
       </div>
     </div>
 
     <div class="row g-3 mb-4">
       <div class="col-md-4">
-        <label class="form-label">Rua</label>
+        <label class="form-label" [appRequiredMarker]="true">Rua</label>
         <input class="form-control" formControlName="rua" type="text" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">Cidade</label>
+        <label class="form-label" [appRequiredMarker]="true">Cidade</label>
         <input class="form-control" formControlName="cidade" type="text" />
       </div>
       <div class="col-md-4">
-        <label class="form-label">Estado</label>
+        <label class="form-label" [appRequiredMarker]="true">Estado</label>
         <select class="form-select" formControlName="estado">
           <option value="">Selecione</option>
           <option *ngFor="let state of states" [value]="state.abbreviation">
