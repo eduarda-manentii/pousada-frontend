@@ -19,7 +19,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let customer of customers">
-          <a [routerLink]="['/customers/show', customer.id]">{{ customer.nome | capitalize }}</a>
+          <td>
+            <a [routerLink]="['/customers/show', customer.id]">
+              {{ customer.nome | capitalize }}
+            </a>
+          </td>
           <td>{{ customer.celular | phoneFormat }}</td>
           <td>{{ customer.email }}</td>
         </tr>
