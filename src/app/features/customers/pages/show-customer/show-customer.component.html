@@ -5,16 +5,17 @@
 
   <div *ngIf="customer">
     <p><strong>Nome:</strong> {{ customer.nome | capitalize }}</p>
-    <p><strong>Telefone:</strong> {{ customer.celular | phoneFormat  }}</p>
+    <p><strong>Telefone:</strong> {{ customer.celular | phoneFormat }}</p>
     <p><strong>Email:</strong> {{ customer.email }}</p>
     <p><strong>Sexo:</strong> {{ customer.sexo }}</p>
-    <p ><strong>Data de nascimento:</strong> {{ customer.dataDeNascimento | date:'dd/MM/yyyy'  }}</p>
-    <p><strong>Endereço:</strong> 
-      {{ customer.endereco?.rua }}, 
+    <p><strong>Data de nascimento:</strong> {{ customer.dataDeNascimento | date: 'dd/MM/yyyy' }}</p>
+    <p><strong>Endereço:</strong>
+      {{ customer.endereco?.rua }},
       {{ customer.endereco?.bairro }} -
-      {{ customer.endereco?.numero }}, 
-      {{ customer.endereco?.cidade }} - 
-      {{ customer.endereco?.estado }}</p>
+      {{ customer.endereco?.numero }},
+      {{ customer.endereco?.cidade }} -
+      {{ customer.endereco?.estado }}
+    </p>
 
     <div class="mt-4 d-flex gap-3">
       <button class="btn btn-brown w-15" [routerLink]="['/customers/new', customer.id]">
@@ -36,3 +37,5 @@
     <p class="text-muted">Cliente não encontrado.</p>
   </ng-template>
 </div>
+
+<app-confirm-modal (confirmed)="onConfirmedDelete($event)"></app-confirm-modal>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../../shared/services/backend-api.service';
@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
+import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';
+import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-show-customer',
@@ -16,12 +18,14 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
     CommonModule, 
     RouterLink,
     PhoneFormatPipe,
-    CapitalizePipe 
+    CapitalizePipe,
+    ConfirmModalComponent
   ],
   templateUrl: './show-customer.component.html',
   styleUrl: './show-customer.component.scss'
 })
 export class ShowCustomerComponent {
+  @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
   customer: any;
   customerId?: string;
 
@@ -30,6 +34,7 @@ export class ShowCustomerComponent {
     private api: ApiService,
     private router: Router,
     private toastService: ToastrService,
+    public confirmService: ConfirmModalService
   ) {}
 
   ngOnInit(): void {
@@ -42,10 +47,12 @@ export class ShowCustomerComponent {
     }
   }
 
-  excluir() {
-    const confirmado = window.confirm('Tem certeza que deseja excluir este cliente?');
+ excluir() {
+    this.confirmModal.open('Tem certeza que deseja excluir este cliente?');
+  }
 
-    if (confirmado) {
+  onConfirmedDelete(result: boolean) {
+    if (result) {
       this.api.delete(`http://localhost:8081/clientes/${this.customerId}`).subscribe({
         next: () => {
           this.toastService.success('Cliente excluído com sucesso.');
