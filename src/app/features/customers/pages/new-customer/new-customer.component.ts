@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CepService } from '../../../../shared/services/cep.service';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../interfaces/cliente';
+import { CpfValidatorService } from '../../../../shared/services/cpf-validator.service';
 
 @Component({
   selector: 'app-new-customer',
@@ -60,7 +61,7 @@ export class NewCustomerComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       dataDeNascimento: ['', Validators.required],
       sexo: ['', Validators.required],
-      cpf: ['', [Validators.required]]
+      cpf: ['', [Validators.required, CpfValidatorService.validar]]
     });
 
     this.locationForm = this.fb.group({
@@ -117,7 +118,12 @@ export class NewCustomerComponent implements OnInit {
         });
       }
     } else {
-      this.toastService.error('Formulário inválido. Verifique os campos obrigatórios.');
+      const cpfControl = this.customerForm.get('cpf');
+      if (cpfControl?.hasError('cpfInvalido')) {
+        this.toastService.error('CPF inválido. Verifique o número digitado.');
+      } else {
+        this.toastService.error('Formulário inválido. Verifique os campos obrigatórios.');
+      }
     }
   }
 

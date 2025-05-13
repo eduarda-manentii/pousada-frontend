@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<div class="container py-5">
+<div class="container py-5" *ngIf="customerForm && locationForm">
   <h2 class="mb-4 text-secondary-custom">Cadastro de Cliente</h2>
 
   <form [formGroup]="customerForm">
@@ -14,7 +14,7 @@
         <input 
           class="form-control" 
           formControlName="celular" 
-          type="text"
+          type="text" 
           prefix="+55"
           mask="(00) 00000-0000" />
       </div>
