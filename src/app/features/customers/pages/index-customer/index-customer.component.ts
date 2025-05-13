@@ -42,7 +42,9 @@ export class IndexCustomerComponent implements OnInit {
     };
 
     this.api.get(endpoint, params).subscribe((data) => {
-      this.customers = data.content;
+      this.customers = data.content.sort((a: any, b: any) => 
+        a.nome.localeCompare(b.nome)
+      );
       this.currentPage = data.number;
       this.totalPages = data.totalPages;
     });
