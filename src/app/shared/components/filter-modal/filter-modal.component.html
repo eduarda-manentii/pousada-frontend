@@ -1,0 +1,61 @@
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Filtros</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let campo of config" class="mb-3">
+          <label class="form-label">
+            {{ campo.label }}
+            <span *ngIf="campo.required" class="text-danger" title="Campo obrigatório">*</span>
+          </label>
+
+          <input *ngIf="campo.type === 'text'" class="form-control"
+                 type="text" [(ngModel)]="filters[campo.key]">
+
+          <input *ngIf="campo.type === 'number'" class="form-control"
+                 type="number" [(ngModel)]="filters[campo.key]">
+
+          <input *ngIf="campo.type === 'date'" class="form-control"
+                 type="date" [(ngModel)]="filters[campo.key]">
+
+          <select *ngIf="campo.type === 'boolean'" class="form-select"
+                  [(ngModel)]="filters[campo.key]">
+            <option [ngValue]="null">Todos</option>
+            <option [ngValue]="true">Sim</option>
+            <option [ngValue]="false">Não</option>
+          </select>
+
+          <select *ngIf="campo.type === 'select'" class="form-select"
+                  [(ngModel)]="filters[campo.key]">
+            <option [ngValue]="null">Selecione</option>
+            <option *ngFor="let opt of campo.options" [ngValue]="opt.value">{{ opt.label }}</option>
+          </select>
+
+          <div *ngIf="campo.type === 'range'" class="mb-3">
+            <label class="form-label d-block">{{ campo.label }}</label>
+            <div class="d-flex gap-2">
+                <input
+                class="form-control"
+                [type]="campo.subtype && campo.subtype || 'text'"
+                placeholder="De"
+                [(ngModel)]="filters[campo.keys && campo.keys.length > 0 ? campo.keys[0] : '']">
+
+                <input
+                class="form-control"
+                [type]="campo.subtype && campo.subtype || 'text'"
+                placeholder="Até"
+                [(ngModel)]="filters[campo.keys && campo.keys.length > 1 ? campo.keys[1] : '']">
+            </div>
+         </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" (click)="applyFilters()">Aplicar</button>
+      </div>
+    </div>
+  </div>
+</div>

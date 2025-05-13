@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
+import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
+import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 
 @Component({
   selector: 'app-index-customer',
@@ -14,7 +16,8 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
     RouterLink, 
     CommonModule,
     PhoneFormatPipe,
-    CapitalizePipe
+    CapitalizePipe,
+    FilterModalComponent
   ],
   templateUrl: './index-customer.component.html',
   styleUrl: './index-customer.component.scss'
@@ -24,6 +27,10 @@ export class IndexCustomerComponent implements OnInit {
   currentPage = 0;
   totalPages = 0;
   pageSize = 15;
+
+  filtroClientes: FiltroConfig[] = [
+    { key: 'nome', label: 'Nome do Cliente', type: 'text' }
+  ];
 
   constructor(
     private api: ApiService,
@@ -60,6 +67,10 @@ export class IndexCustomerComponent implements OnInit {
     if (this.currentPage > 0) {
       this.loadPage(this.currentPage - 1);
     }
+  }
+
+  aplicarFiltros(filtros: any) {
+    console.log('Filtros aplicados:', filtros);
   }
 
 }
