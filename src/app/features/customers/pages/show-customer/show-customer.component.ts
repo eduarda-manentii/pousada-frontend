@@ -37,13 +37,13 @@ export class ShowCustomerComponent {
     public confirmService: ConfirmModalService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+
     if (id) {
       this.customerId = id;
-      this.api.get(`http://localhost:8081/clientes/${id}`).subscribe((data) => {
-        this.customer = data;
-      });
+      const data = await this.api.getById(`/clientes/${id}`);
+      this.customer = data;
     }
   }
 
@@ -51,17 +51,16 @@ export class ShowCustomerComponent {
     this.confirmModal.open('Tem certeza que deseja excluir este cliente?');
   }
 
-  onConfirmedDelete(result: boolean) {
+  async onConfirmedDelete(result: boolean) {
     if (result) {
-      this.api.delete(`http://localhost:8081/clientes/${this.customerId}`).subscribe({
-        next: () => {
-          this.toastService.success('Cliente excluído com sucesso.');
-          this.router.navigate(['/customers/index']);
-        },
-        error: () => {
-          this.toastService.error('Erro ao excluir cliente.');
-        }
-      });
+
+      try {
+        await this.api.delete(`/clientes/${this.customerId}`)
+        this.toastService.success('Cliente excluído com sucesso.');
+        this.router.navigate(['/customers/index']);
+      } catch (error: any) {
+        this.toastService.error(error);
+      }
     }
   }
 

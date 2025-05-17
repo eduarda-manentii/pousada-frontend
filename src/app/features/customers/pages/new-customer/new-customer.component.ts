@@ -42,17 +42,14 @@ export class NewCustomerComponent implements OnInit {
     private cepService: CepService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.customerId = Number(this.route.snapshot.paramMap.get('id'));
     this.buildForms();
 
     if (this.customerId) {
-      this.api.getById<Cliente>('http://localhost:8081/clientes/' + this.customerId).subscribe({
-        next: (customer) => {
-          this.customerForm.patchValue(customer);
+      const customer = await this.api.getById<Cliente>('/clientes/' + this.customerId);
+      this.customerForm.patchValue(customer);
           this.locationForm.patchValue(customer.endereco);
-        }
-      });
     }
   }
 
@@ -78,7 +75,7 @@ export class NewCustomerComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.customerForm.valid && this.locationForm.valid) {
       const locationData = this.locationForm.getRawValue();
       const customerData = {
@@ -87,37 +84,32 @@ export class NewCustomerComponent implements OnInit {
         endereco: { id: locationData.id }
       };
       if (this.customerId) {
-        this.api.put(`http://localhost:8081/clientes/${this.customerId}`, customerData).subscribe({
-          next: () => {
-            this.toastService.success('Cliente atualizado com sucesso!');
-            this.router.navigate(['/customers/index']);
-          },
-          error: () => {
-            this.toastService.error('Erro ao atualizar cliente.');
-          }
-        });
+
+        try {
+          await this.api.put(`/clientes/${this.customerId}`, customerData);
+          this.toastService.success("Cliente atualizado com sucesso!");
+          this.router.navigate(['/customers/index'])
+        } catch (error: any) {
+          this.toastService.error(error);
+        }
       } else {
-        this.api.create("http://localhost:8081/enderecos", locationData).subscribe({
-          next: (locationResponse) => {
-            const locationId = locationResponse.id;
 
-            const newCustomerData = {
-              ...this.customerForm.getRawValue(),
-              endereco: { id: locationId }
-            };
+        try {
+          const location = await this.api.create('/enderecos', locationData);
+          const locationId = location.id;
 
-            this.api.create("http://localhost:8081/clientes", newCustomerData).subscribe({
-              next: () => {
-                this.toastService.success("Cliente cadastrado com sucesso!");
-                this.router.navigate(['/customers/index']);
-              },
-              error: () => this.toastService.error('Erro ao cadastrar cliente.')
-            });
-          },
-          error: () => {
-            this.toastService.error('Erro ao cadastrar o endereço.');
-          }
-        });
+          const newCustomerData = {
+            ...this.customerForm.getRawValue(),
+            endereco: { id: locationId }
+          };
+
+          await this.api.create('/enderecos', newCustomerData);
+
+          this.toastService.success("Cupom salvo com sucesso!");
+          this.router.navigate(['/customers/index']);
+        } catch (error: any) {
+          this.toastService.error(error);
+        }
       }
     } else {
       const cpfControl = this.customerForm.get('cpf');

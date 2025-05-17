@@ -41,20 +41,19 @@ export class IndexCustomerComponent implements OnInit {
     this.loadPage(0);
   }
 
-  loadPage(page: number) {
-    const endpoint = 'http://localhost:8081/clientes';
+  async loadPage(page: number) {
+    const endpoint = '/clientes';
     const params = {
       page: page.toString(),
       size: this.pageSize.toString()
     };
 
-    this.api.get(endpoint, params).subscribe((data) => {
+    const data = await this.api.get(endpoint, params);
       this.customers = data.content.sort((a: any, b: any) => 
         a.nome.localeCompare(b.nome)
       );
       this.currentPage = data.number;
       this.totalPages = data.totalPages;
-    });
   }
 
   nextPage() {
@@ -69,20 +68,19 @@ export class IndexCustomerComponent implements OnInit {
     }
   }
 
-  aplicarFiltros(filtros: any) {
-    this.api.getWithFilters<any>(
-      'http://localhost:8081/clientes',
+  async aplicarFiltros(filtros: any) {
+    const data = await this.api.getWithFilters<any>(
+      '/clientes',
       0,
       this.pageSize,
       'id,asc',
       filtros
-    ).subscribe((data) => {
+    );
       this.customers = data.content.sort((a: any, b: any) =>
         a.nome.localeCompare(b.nome)
       );
       this.currentPage = data.number;
       this.totalPages = data.totalPages;
-    });
   }
 
 }

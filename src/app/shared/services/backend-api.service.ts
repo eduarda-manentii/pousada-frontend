@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import axiosInstance from '../config/axios-config';
+import { ApiError } from '../../core/errors/api-error';
 
 interface Page<T> {
   content: T[];
@@ -19,52 +19,94 @@ interface Page<T> {
 })
 export class ApiService {
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
-  create(endpoint: string, object: any): Observable<any> {
-    return this.http.post<any>(endpoint, object);
+  async create(endpoint: string, object: any): Promise<any> {
+    try {
+      const response = await axiosInstance.post(endpoint, object);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
   }
 
-  get<T>(endpoint: string, params: any = {}): Observable<Page<T>> {
-    return this.http.get<Page<T>>(endpoint, { params });
+  async get<T>(endpoint: string, params: any = {}): Promise<Page<T>> {
+    try {
+      const response = await axiosInstance.get<Page<T>>(endpoint, { params });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
   }
 
-  put(endpoint: string, object: any): Observable<any> {
-    return this.http.put<any>(endpoint, object);
+  async put(endpoint: string, object: any): Promise<any> {
+    try {
+      const response = await axiosInstance.put(endpoint, object);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
   }
 
-  delete(endpoint: string): Observable<any> {
-    return this.http.delete<any>(endpoint);
+  async delete(endpoint: string): Promise<any> {
+    try {
+      const response = await axiosInstance.delete(endpoint);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
   }
 
-  getById<T>(endpoint: string): Observable<T> {
-    return this.http.get<T>(endpoint);
+  async getById<T>(endpoint: string): Promise<T> {
+    try {
+      const response = await axiosInstance.get<T>(endpoint);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
   }
 
-  getWithFilters<T>(
+  async getWithFilters<T>(
     endpoint: string,
     page: number,
     size: number,
     sort: string,
     filtros: { [key: string]: any }
-  ): Observable<Page<T>> {
-    const searchParts: string[] = [];
+  ): Promise<Page<T>> {
 
-    for (const key in filtros) {
-      const value = filtros[key];
-      if (value != null && value !== '') {
-        searchParts.push(`${key}=='${value}*'`);
+    try {
+      const searchParts: string[] = [];
+
+      for (const key in filtros) {
+        const value = filtros[key];
+        if (value != null && value !== '') {
+          searchParts.push(`${key}=='${value}*'`);
+        }
       }
+
+      const params: any = {
+        page: page.toString(),
+        size: size.toString(),
+        sort
+      };
+
+      if (searchParts.length > 0) {
+        params.search = `(${searchParts.join(';')})`;
+      }
+
+      const response = await axiosInstance.get<Page<T>>(endpoint, { params });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
     }
-    const params: any = {
-      page: page.toString(),
-      size: size.toString(),
-      sort
-    };
-    if (searchParts.length > 0) {
-      params.search = `(${searchParts.join(';')})`;
+  }
+
+  handleError(error: any): string {
+    if (error instanceof ApiError) {
+      return error.mensagem;
     }
-    return this.http.get<Page<T>>(endpoint, { params });
+
+    return 'Erro inesperado ao processar a requisição';
   }
 
 }

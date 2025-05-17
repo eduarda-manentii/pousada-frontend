@@ -33,16 +33,13 @@ export class NewVoucherComponent implements OnInit {
     private toastService: ToastrService,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.voucherId = Number(this.route.snapshot.paramMap.get('id'));
-    this.buildForms()
+    this.buildForms();
 
     if (this.voucherId) {
-      this.api.getById<Voucher>(`http://localhost:8081/cupons/${this.voucherId}`).subscribe({
-        next: (voucher) => {
-          this.voucherForm.patchValue(voucher);
-        }
-      });
+      const voucher = await this.api.getById<Voucher>(`/cupons/${this.voucherId}`);
+      this.voucherForm.patchValue(voucher);
     } else {
       this.voucherForm.get('status')?.disable();
     }
@@ -60,36 +57,29 @@ export class NewVoucherComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     
     if (this.voucherForm.valid) {
       const voucherdata = this.voucherForm.getRawValue();
 
       if (this.voucherId) {
-        console.log(this.voucherId);
 
-        this.api.put(`http://localhost:8081/cupons/${this.voucherId}`, voucherdata).subscribe({
-          next: (response) => {
-            this.toastService.success("Cupom atualizado com sucesso!");
-            this.router.navigate(['/vouchers/index'])
-          },
-          error: (error) => {
-            const message = error.error.message ?? 'Erro ao alterar o cupom.';
-            this.toastService.error(message);
-          }
-        })
+        try {
+          await this.api.put(`/cupons/${this.voucherId}`, voucherdata);
+          this.toastService.success("Cupom atualizado com sucesso!");
+          this.router.navigate(['/vouchers/index'])
+        } catch (error: any) {
+          this.toastService.error(error);
+        }
       } else {
-        console.log(voucherdata);
-        this.api.create(`http://localhost:8081/cupons`, voucherdata).subscribe({
-          next: (response) => {
-            this.toastService.success("Cupom salvo com sucesso!");
-            this.voucherForm.reset();
-          },
-          error: (error) => {
-            const message = error.error.message ?? 'Erro ao salvar o cupom.';
-            this.toastService.error(message);
-          }
-        })
+
+        try {
+          await this.api.create('/cupons', voucherdata);
+          this.toastService.success("Cupom salvo com sucesso!");
+          this.router.navigate(['/vouchers/index'])
+        } catch (error: any) {
+          this.toastService.error(error);
+        }
       }
     } else {
       this.toastService.error('Formulário inválido. Verifique os campos obrigatórios.')
@@ -102,6 +92,6 @@ export class NewVoucherComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(["/cupons/index"]);
+    this.router.navigate(["/vouchers/index"]);
   }
 }

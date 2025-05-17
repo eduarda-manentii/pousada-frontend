@@ -24,31 +24,26 @@ export class ShowVoucherComponent implements OnInit {
     private toastService: ToastrService,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
-      this.api.getById<Voucher>(`http://localhost:8081/clientes/${id}`).subscribe((data) => {
-        this.voucher = data;
-      })
+      const data = await this.api.getById<Voucher>(`/cupons/${id}`);
+      this.voucher = data;
     }
   }
 
-  inativar() {
+  async inativar() {
     const confirmado = window.confirm('Tem certeza que deseja inativar este cupom ?');
 
     if (confirmado) {
-      this.api.delete(`http://localhost:8081/clientes/${this.voucherId}`).subscribe({
-        next: () => {
-          this.toastService.success('Cupom inativado com sucesso');
-          this.router.navigate(['/cupons/index']);
-        },
-
-        error: (error) => {
-          const message = error.error.message || 'Erro ao inativar o cupom.';
-          this.toastService.error(message);
-        }
-      })
+      try {
+        await this.api.delete(`/cupons/${this.voucherId}`);
+        this.toastService.success('Cupom inativado com sucesso');
+        this.router.navigate(['/cupons/index']);
+      } catch (error: any) {
+        this.toastService.error(error);
+      }
     }
   }
 }

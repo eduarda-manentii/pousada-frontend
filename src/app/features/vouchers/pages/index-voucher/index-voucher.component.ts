@@ -27,18 +27,17 @@ export class IndexVoucherComponent implements OnInit {
     this.loadPage(0);
   }
 
-  loadPage(page: number) {
-    const endpoint = 'http://localhost:8081/cupons';
+  async loadPage(page: number) {
+    const endpoint = '/cupons';
     const params = {
       page: page.toString(),
       size: this.pageSize.toString(),
     };
 
-    this.api.get(endpoint, params).subscribe((data) => {
-      this.vouchers = data.content;
-      this.currentPage = data.number;
-      this.totalPages = data.totalPages
-    })
+    const data = await this.api.get<Voucher>(endpoint, params);
+    this.vouchers = data.content;
+    this.currentPage = data.number;
+    this.totalPages = data.totalPages;
   }
 
   nextPage() {
