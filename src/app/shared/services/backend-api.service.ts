@@ -41,4 +41,30 @@ export class ApiService {
     return this.http.get<T>(endpoint);
   }
 
+  getWithFilters<T>(
+    endpoint: string,
+    page: number,
+    size: number,
+    sort: string,
+    filtros: { [key: string]: any }
+  ): Observable<Page<T>> {
+    const searchParts: string[] = [];
+
+    for (const key in filtros) {
+      const value = filtros[key];
+      if (value != null && value !== '') {
+        searchParts.push(`${key}=='${value}*'`);
+      }
+    }
+    const params: any = {
+      page: page.toString(),
+      size: size.toString(),
+      sort
+    };
+    if (searchParts.length > 0) {
+      params.search = `(${searchParts.join(';')})`;
+    }
+    return this.http.get<Page<T>>(endpoint, { params });
+  }
+
 }

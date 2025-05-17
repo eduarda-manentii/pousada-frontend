@@ -70,7 +70,19 @@ export class IndexCustomerComponent implements OnInit {
   }
 
   aplicarFiltros(filtros: any) {
-    console.log('Filtros aplicados:', filtros);
+    this.api.getWithFilters<any>(
+      'http://localhost:8081/clientes',
+      0,
+      this.pageSize,
+      'id,asc',
+      filtros
+    ).subscribe((data) => {
+      this.customers = data.content.sort((a: any, b: any) =>
+        a.nome.localeCompare(b.nome)
+      );
+      this.currentPage = data.number;
+      this.totalPages = data.totalPages;
+    });
   }
 
 }
