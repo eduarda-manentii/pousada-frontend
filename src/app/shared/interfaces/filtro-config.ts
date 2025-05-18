@@ -1,5 +1,5 @@
 export interface FiltroConfig {
-  key: string;
+  key?: string;
   label: string;
   type: 'text' | 'number' | 'date' | 'boolean' | 'select' | 'range';
   required?: boolean;

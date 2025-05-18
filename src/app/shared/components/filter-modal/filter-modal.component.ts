@@ -29,5 +29,20 @@ export class FilterModalComponent {
       modal?.hide();
     }
   }
+
+  validateDatePickerFilter(index: number, campo: any): number {
+    const keys = campo.keys;
+
+    if (!Array.isArray(keys) || keys.length !== 2) {
+      console.error(`Campo range '${campo.label}' deve ter exatamente dois keys.`);
+      throw new Error(`Campo range '${campo.label}' inválido.`);
+    }
+
+    if (!campo.subtype) {
+      throw new Error(`Campo range '${campo.label}' deve ter um 'subtype' definido (ex: 'date', 'number').`);
+    }
+
+    return campo.keys[index];
+  }
   
 }

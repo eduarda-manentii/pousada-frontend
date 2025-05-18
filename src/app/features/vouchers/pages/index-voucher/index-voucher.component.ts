@@ -27,8 +27,8 @@ export class IndexVoucherComponent implements OnInit {
 
   voucherFilter: FiltroConfig[] = [
     {key: 'codigo', label: 'Código', type: 'text'},
-    {key: 'dataDeInicio', label: 'Período', type: 'range', subtype: 'date'},
-  ]
+    {keys: ['dataDeInicio', 'dataDeVencimento'], label: 'Período', type: 'range', subtype: 'date'},
+  ];
 
   constructor(
     private api: ApiService,

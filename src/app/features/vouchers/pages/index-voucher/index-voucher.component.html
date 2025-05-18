@@ -5,7 +5,7 @@
 
   <div class="d-flex gap-3 mb-4">
     <a class="btn btn-primary px-4 py-2" [routerLink]="['/vouchers/new']">Novo</a>
-    <a class="btn btn-primary px-4 py-2">Filtrar</a>
+    <a class="btn btn-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#filterModal">Filtrar</a>
   </div>
 
   <div *ngIf="vouchers.length > 0; else emptyState">
@@ -23,8 +23,9 @@
           <td>
             <a [routerLink]="['/vouchers/show', voucher.id]">{{ voucher.nome }}</a>
           </td>
-          <td>{{ voucher.dataDeInicio }}</td>
-          <td>{{ voucher.dataDeVencimento }}</td>
+          <td>{{ voucher.dataDeInicio | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ voucher.dataDeVencimento | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ voucher.status }}</td>
         </tr>
       </tbody>
     </table>
