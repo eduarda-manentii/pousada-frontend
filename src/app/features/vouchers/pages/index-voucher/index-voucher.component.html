@@ -20,7 +20,9 @@
       </thead>
       <tbody>
         <tr *ngFor="let voucher of vouchers">
-          <a [routerLink]="['/vouchers/show', voucher.id]">{{ voucher.nome }}</a>
+          <td>
+            <a [routerLink]="['/vouchers/show', voucher.id]">{{ voucher.nome }}</a>
+          </td>
           <td>{{ voucher.dataDeInicio }}</td>
           <td>{{ voucher.dataDeVencimento }}</td>
         </tr>
@@ -35,7 +37,7 @@
 
     <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
 
-    <button class="btn btn-outline-brow" (click)="previousPage()" [disabled]="currentPage + 1 >= totalPages">
+    <button class="btn btn-outline-brow" (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages">
       Próxima →
     </button>
   </div>
@@ -43,6 +45,11 @@
   <ng-template #emptyState>
     <p class="text-muted">Nenhum cupom cadastrado.</p>
   </ng-template>
+
+  <app-filter-modal
+    [config]="voucherFilter"
+    (filtersApplied)="applyFilters($event)">
+  </app-filter-modal>
 </div>
 
 

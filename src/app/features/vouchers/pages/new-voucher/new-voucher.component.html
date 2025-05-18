@@ -55,23 +55,4 @@
       <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
     </div>
   </form>
-
-  <div class="ticket-preview mt-5" *ngIf="voucherForm.valid">
-    <div class="ticket-bar">
-      <div class="barcode"></div>
-      <div class="validade">
-        VÁLIDO ATÉ<br />
-        {{ voucherForm.get('dataDeVencimento')?.value | date:'dd/MM/yyyy HH:mm' }}
-      </div>
-    </div>
-    <div class="ticket-body">
-      <p class="ticket-title">CUPOM DE DESCONTO</p>
-      <p class="ticket-discount">
-        {{ voucherForm.get('porcentagemDeDesconto')?.value || 0 }}%OFF
-      </p>
-      <p class="ticket-code">
-        Código: <strong>{{ voucherForm.get('codigo')?.value || '---' }}</strong>
-      </p>
-    </div>
-  </div>
 </div>

@@ -4,22 +4,33 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Voucher } from '../../interfaces/Voucher';
 import { ApiService } from '../../../../shared/services/backend-api.service';
+import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
+import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 
 @Component({
   selector: 'app-index-voucher',
   standalone: true,
-  imports: [HeaderComponent, RouterLink, CommonModule],
+  imports: [
+    HeaderComponent, 
+    RouterLink, 
+    CommonModule,
+    FilterModalComponent
+  ],
   templateUrl: './index-voucher.component.html',
   styleUrl: './index-voucher.component.scss'
 })
 export class IndexVoucherComponent implements OnInit {
-  vouchers: any[] = [];
+  vouchers: Voucher[] = [];
   currentPage = 0;
   totalPages = 0;
   pageSize = 15;
 
+  voucherFilter: FiltroConfig[] = [
+    {key: 'codigo', label: 'Código', type: 'text'},
+    {key: 'dataDeInicio', label: 'Período', type: 'range', subtype: 'date'},
+  ]
+
   constructor(
-    private router: Router,
     private api: ApiService,
   ) {}
 
@@ -50,5 +61,20 @@ export class IndexVoucherComponent implements OnInit {
     if (this.currentPage > 0) {
       this.loadPage(this.currentPage - 1)
     }
+  }
+
+  async applyFilters(filters: any) {
+    const data = await this.api.getWithFilters<any>(
+      '/cupons',
+      0,
+      this.pageSize,
+      'id,asc',
+      filters
+    );
+    this.vouchers = data.content.sort((a: any, b: any) =>
+      a.nome.localeCompare(b.nome)
+    );
+    this.currentPage = data.number;
+    this.totalPages = data.totalPages;
   }
 }
