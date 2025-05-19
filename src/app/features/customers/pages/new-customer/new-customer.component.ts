@@ -95,6 +95,7 @@ export class NewCustomerComponent implements OnInit {
       } else {
 
         try {
+          console.log(locationData);
           const location = await this.api.create('/enderecos', locationData);
           const locationId = location.id;
 
@@ -103,9 +104,10 @@ export class NewCustomerComponent implements OnInit {
             endereco: { id: locationId }
           };
 
-          await this.api.create('/enderecos', newCustomerData);
+          console.log(newCustomerData);
+          await this.api.create('/clientes', newCustomerData);
 
-          this.toastService.success("Cupom salvo com sucesso!");
+          this.toastService.success("Cliente salvo com sucesso!");
           this.router.navigate(['/customers/index']);
         } catch (error: any) {
           this.toastService.error(error);

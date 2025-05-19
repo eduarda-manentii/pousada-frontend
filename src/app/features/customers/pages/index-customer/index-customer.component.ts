@@ -12,8 +12,8 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
   selector: 'app-index-customer',
   standalone: true,
   imports: [
-    HeaderComponent, 
-    RouterLink, 
+    HeaderComponent,
+    RouterLink,
     CommonModule,
     PhoneFormatPipe,
     CapitalizePipe,
