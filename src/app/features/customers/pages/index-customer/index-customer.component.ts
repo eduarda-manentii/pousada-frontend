@@ -34,7 +34,6 @@ export class IndexCustomerComponent implements OnInit {
 
   constructor(
     private api: ApiService,
-    private router: Router
   ) {}
 
   ngOnInit() {
