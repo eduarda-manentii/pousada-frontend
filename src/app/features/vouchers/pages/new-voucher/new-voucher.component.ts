@@ -39,6 +39,13 @@ export class NewVoucherComponent implements OnInit {
 
     if (this.voucherId) {
       const voucher = await this.api.getById<Voucher>(`/cupons/${this.voucherId}`);
+
+      const dataPatch = {
+        ...voucher,
+        dataDeInicio: this.formatDateToDateInput(new Date(voucher.dataDeInicio)),
+        dataDeVencimento: this.formatDateToDateInput(new Date(voucher.dataDeVencimento)),
+      };
+
       this.voucherForm.patchValue(voucher);
     } else {
       this.voucherForm.get('status')?.disable();
@@ -84,6 +91,14 @@ export class NewVoucherComponent implements OnInit {
     } else {
       this.toastService.error('Formulário inválido. Verifique os campos obrigatórios.')
     }
+  };
+
+  formatDateToDateInput = (date: Date): string => {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    return `${year}-${month}-${day}`;
   };
 
   onStatusChange(event: Event): void {
