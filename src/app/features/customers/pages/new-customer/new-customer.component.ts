@@ -134,27 +134,13 @@ export class NewCustomerComponent implements OnInit {
             estado: data.uf,
             bairro: data.bairro
           });
-          this.disableAddressFields();
         } else {
           this.toastService.warning('CEP não encontrado.');
-          this.enableAddressFields();
         }
       },
       error: () => {
         this.toastService.error('Erro ao buscar o CEP.');
       }
-    });
-  }
-
-  disableAddressFields() {
-    ['rua', 'cidade', 'estado', 'bairro'].forEach(field => {
-      this.locationForm.get(field)?.disable();
-    });
-  }
-
-  enableAddressFields() {
-    ['rua', 'cidade', 'estado', 'bairro'].forEach(field => {
-      this.locationForm.get(field)?.enable();
     });
   }
 
