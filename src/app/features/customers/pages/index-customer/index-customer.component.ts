@@ -7,6 +7,7 @@ import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
+import { useList } from '../../../../shared/composables/use-list';
 
 @Component({
   selector: 'app-index-customer',
@@ -23,64 +24,30 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
   styleUrl: './index-customer.component.scss'
 })
 export class IndexCustomerComponent implements OnInit {
-  customers: any[] = [];
-  currentPage = 0;
-  totalPages = 0;
-  pageSize = 15;
-
   filtroClientes: FiltroConfig[] = [
     { key: 'nome', label: 'Nome do Cliente', type: 'text' }
   ];
 
-  constructor(
-    private api: ApiService,
-    private router: Router
-  ) {}
+  private list = useList<any>('/clientes', (a, b) => a.nome.localeCompare(b.nome));
+
+  items = this.list.items;
+  currentPage = this.list.currentPage;
+  totalPages = this.list.totalPages;
 
   ngOnInit() {
-    this.loadPage(0);
+    this.list.loadPage(0);
   }
 
-  async loadPage(page: number) {
-    const endpoint = '/clientes';
-    const params = {
-      page: page.toString(),
-      size: this.pageSize.toString()
-    };
-
-    const data = await this.api.get(endpoint, params);
-      this.customers = data.content.sort((a: any, b: any) => 
-        a.nome.localeCompare(b.nome)
-      );
-      this.currentPage = data.number;
-      this.totalPages = data.totalPages;
+  aplicarFiltros(filtros: any) {
+    this.list.applyFilters(filtros);
   }
 
   nextPage() {
-    if (this.currentPage + 1 < this.totalPages) {
-      this.loadPage(this.currentPage + 1);
-    }
+    this.list.nextPage();
   }
 
   previousPage() {
-    if (this.currentPage > 0) {
-      this.loadPage(this.currentPage - 1);
-    }
-  }
-
-  async aplicarFiltros(filtros: any) {
-    const data = await this.api.getWithFilters<any>(
-      '/clientes',
-      0,
-      this.pageSize,
-      'id,asc',
-      filtros
-    );
-      this.customers = data.content.sort((a: any, b: any) =>
-        a.nome.localeCompare(b.nome)
-      );
-      this.currentPage = data.number;
-      this.totalPages = data.totalPages;
+    this.list.previousPage();
   }
 
 }
