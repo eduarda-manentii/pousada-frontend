@@ -1,2 +1,34 @@
 <app-header></app-header>
-<p>new-amenity works!</p>
+
+<div class="container py-5" *ngIf="amenityForm">
+  <h2 class="mb-4 text-secondary-custom">Cadastro de Amenidade</h2>
+
+  <form [formGroup]="amenityForm">
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <label class="form-label" [appRequiredMarker]="true">Nome</label>
+        <input class="form-control" formControlName="nome" type="text" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label" [appRequiredMarker]="true">Ícone</label>
+        <select class="form-select" formControlName="icon">
+          <option value="">Selecione um ícone</option>
+          <option *ngFor="let icon of iconOptions" [value]="icon.value">
+            {{ icon.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-4" *ngIf="amenityForm.get('icon')?.value">
+      <label class="form-label">Pré-visualização do ícone: </label>
+      <i class="fa-solid" [ngClass]="amenityForm.get('icon')?.value" style="font-size: 2rem;"></i>
+    </div>
+
+    <div class="d-flex gap-3">
+      <button class="btn btn-primary-custom" (click)="onSubmit()" type="button">Salvar</button>
+      <button class="btn btn-outline-secondary" (click)="goBack()" type="button">Cancelar</button>
+    </div>
+  </form>
+</div>
