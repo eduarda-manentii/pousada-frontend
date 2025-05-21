@@ -22,6 +22,9 @@ import { IndexUserComponent } from './features/users/pages/index-user/index-user
 import { NewVoucherComponent } from './features/vouchers/pages/new-voucher/new-voucher.component';
 import { ShowVoucherComponent } from './features/vouchers/pages/show-voucher/show-voucher.component';
 import { IndexVoucherComponent } from './features/vouchers/pages/index-voucher/index-voucher.component';
+import { NewComplementComponent } from './features/complements/pages/new-complement/new-complement.component';
+import { ShowComplementComponent } from './features/complements/pages/show-complement/show-complement.component';
+import { IndexComplementComponent } from './features/complements/pages/index-complement/index-complement.component';
 
 export const routes: Routes = [
   { path : "login",               component: LoginComponent },
@@ -52,4 +55,8 @@ export const routes: Routes = [
   { path : "vouchers/new/:id",        component: NewVoucherComponent },
   { path : "vouchers/show/:id",       component: ShowVoucherComponent },
   { path : "vouchers/index",      component: IndexVoucherComponent },
+  { path : "complements/new",        component: NewComplementComponent },
+  { path : "complements/new/:id",        component: NewComplementComponent },
+  { path : "complements/show/:id",       component: ShowComplementComponent },
+  { path : "complements/index",      component: IndexComplementComponent },
 ];

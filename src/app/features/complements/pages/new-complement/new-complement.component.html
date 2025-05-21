@@ -1,0 +1,47 @@
+<app-header/>
+
+<div class="container py-5">
+  <h2 class="mb-4 text-secondary-custom">Cadatro de Complemento</h2>
+
+  <form [formGroup]="complementForm" (ngSubmit)="onSubmit()">
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label for="nome" class="form-label">Nome</label>
+        <input id="nome"v class="form-control" formControlName="nome" type="text">
+      </div>
+      <div class="col-md-6">
+        <label for="valor" class="form-label">Valor</label>
+        <input 
+          id="valor" 
+          class="form-control" 
+          formControlName="valor" 
+          type="text" 
+          mask="separator.2" 
+          thousandSeparator="." 
+          decimalMarker="," 
+          prefix="R$ "
+        >
+      </div>
+    </div>
+    <div class="form-check mb-5">
+      <input 
+        for="status" 
+        class="form-check-input" 
+        formControlName="status" 
+        type="checkbox" 
+        id="checkStatus" 
+        [disabled]="complementId !== undefined"
+        [checked]="complementForm.get('status')?.value === 'ATIVO'"
+        (change)="onStatusChange($event)"
+      >
+      <label id="status" class="form-check-label" for="checkStatus">
+        Ativo
+      </label>
+    </div>
+
+    <div class="d-flex gap-3">
+      <button type="submit" class="btn btn-primary-custom">Salvar</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
+    </div>
+  </form>
+</div>
