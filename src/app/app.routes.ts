@@ -22,6 +22,9 @@ import { IndexUserComponent } from './features/users/pages/index-user/index-user
 import { NewVoucherComponent } from './features/vouchers/pages/new-voucher/new-voucher.component';
 import { ShowVoucherComponent } from './features/vouchers/pages/show-voucher/show-voucher.component';
 import { IndexVoucherComponent } from './features/vouchers/pages/index-voucher/index-voucher.component';
+import { IndexAmenityComponent } from './features/amenities/pages/index-amenity/index-amenity.component';
+import { ShowAmenityComponent } from './features/amenities/pages/show-amenity/show-amenity.component';
+import { NewAmenityComponent } from './features/amenities/pages/new-amenity/new-amenity.component';
 
 export const routes: Routes = [
   { path : "login",               component: LoginComponent },
@@ -52,4 +55,7 @@ export const routes: Routes = [
   { path : "vouchers/new/:id",        component: NewVoucherComponent },
   { path : "vouchers/show/:id",       component: ShowVoucherComponent },
   { path : "vouchers/index",      component: IndexVoucherComponent },
+  { path : "amenities/new/:id",        component: NewAmenityComponent },
+  { path : "amenities/show/:id",       component: ShowAmenityComponent },
+  { path : "amenities/index",      component: IndexAmenityComponent },
 ];
