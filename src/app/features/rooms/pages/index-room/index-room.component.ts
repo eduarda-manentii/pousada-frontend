@@ -6,6 +6,7 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
+import { useList } from '../../../../shared/composables/use-list';
 
 @Component({
   selector: 'app-index-room',
@@ -14,70 +15,36 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
     HeaderComponent,
     RouterLink,
     CommonModule,
-    CapitalizePipe,
     FilterModalComponent
   ],
   templateUrl: './index-room.component.html',
   styleUrl: './index-room.component.scss'
 })
 export class IndexRoomComponent implements OnInit {
-  rooms: any[] = [];
-  currentPage = 0;
-  totalPages = 0;
-  pageSize = 15;
-
-  ngOnInit() {
-    this.loadPage(0);
-  }
-
   filtroQuartos: FiltroConfig[] = [
     { key: 'nome', label: 'Nome do Quarto', type: 'text' }
   ];
 
-  constructor(
-    private api: ApiService,
-  ) {}
+  private list = useList<any>('/quartos', (a, b) => a.nome.localeCompare(b.nome));
+    
+  rooms = this.list.items;
+  currentPage = this.list.currentPage;
+  totalPages = this.list.totalPages;
 
-  async loadPage(page: number) {
-  const endpoint = '/quartos';
-  const params = {
-    page: page.toString(),
-    size: this.pageSize.toString()
-  };
+  ngOnInit() {
+    this.list.loadPage(0);
+  }
 
-  const data = await this.api.get(endpoint, params);
-    this.rooms = data.content.sort((a: any, b: any) => 
-      a.nome.localeCompare(b.nome)
-    );
-    this.currentPage = data.number;
-    this.totalPages = data.totalPages;
+  aplicarFiltros(filtros: any) {
+    this.list.applyFilters(filtros);
   }
 
   nextPage() {
-    if (this.currentPage + 1 < this.totalPages) {
-      this.loadPage(this.currentPage + 1);
-    }
+    this.list.nextPage();
   }
 
   previousPage() {
-    if (this.currentPage > 0) {
-      this.loadPage(this.currentPage - 1);
-    }
-  }
-
-  async aplicarFiltros(filtros: any) {
-    const data = await this.api.getWithFilters<any>(
-      '/clientes',
-      0,
-      this.pageSize,
-      'id,asc',
-      filtros
-    );
-    this.rooms = data.content.sort((a: any, b: any) =>
-      a.nome.localeCompare(b.nome)
-    );
-    this.currentPage = data.number;
-    this.totalPages = data.totalPages;
+    this.list.previousPage();
   }
 
 }
