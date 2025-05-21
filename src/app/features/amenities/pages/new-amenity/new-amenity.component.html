@@ -12,7 +12,7 @@
 
       <div class="col-md-6">
         <label class="form-label" [appRequiredMarker]="true">Ícone</label>
-        <select class="form-select" formControlName="icon">
+        <select class="form-select" formControlName="icone">
           <option value="">Selecione um ícone</option>
           <option *ngFor="let icon of iconOptions" [value]="icon.value">
             {{ icon.label }}
@@ -21,9 +21,9 @@
       </div>
     </div>
 
-    <div class="mb-4" *ngIf="amenityForm.get('icon')?.value">
+    <div class="mb-4" *ngIf="amenityForm.get('icone')?.value">
       <label class="form-label">Pré-visualização do ícone: </label>
-      <i class="fa-solid" [ngClass]="amenityForm.get('icon')?.value" style="font-size: 2rem;"></i>
+      <i class="fa-solid  ms-2" [ngClass]="amenityForm.get('icone')?.value" style="font-size: 2rem;"></i>
     </div>
 
     <div class="d-flex gap-3">

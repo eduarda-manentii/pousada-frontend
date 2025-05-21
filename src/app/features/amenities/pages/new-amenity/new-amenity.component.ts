@@ -38,17 +38,22 @@ export class NewAmenityComponent implements OnInit {
     this.amenityId = Number(this.route.snapshot.paramMap.get('id'));
     this.buildForm();
 
-    if (this.amenityId) {
-      this.api.getById('/amenidades/' + this.amenityId).then((amenity: any) => {
-        this.amenityForm.patchValue(amenity);
-      });
-    }
+   if (this.amenityId) {
+    this.api.getById('/amenidades/' + this.amenityId).then((amenity: any) => {
+      if (amenity.icone && amenity.icone.startsWith('fas ')) {
+        amenity.icone = amenity.icone.substring(4);
+      }
+      this.amenityForm.patchValue(amenity);
+    });
+}
+
   }
 
+  
   buildForm() {
     this.amenityForm = this.fb.group({
       nome: ['', Validators.required],
-      icon: ['', Validators.required]
+      icone: ['', Validators.required]
     });
   }
 
@@ -56,9 +61,16 @@ export class NewAmenityComponent implements OnInit {
     if (this.amenityForm.valid) {
       try {
         const data = this.amenityForm.value;
-
+        if (data.icone && !data.icone.startsWith('fas')) {
+          data.icone = 'fas ' + data.icone;
+        }
         if (this.amenityId) {
-          await this.api.put(`/amenidades/${this.amenityId}`, data);
+          const amenityData = {
+            id: this.amenityId,
+            ...this.amenityForm.value
+          };
+
+          await this.api.put('/amenidades', amenityData);
           this.toastService.success('Amenidade atualizada com sucesso!');
         } else {
           await this.api.create('/amenidades', data);
