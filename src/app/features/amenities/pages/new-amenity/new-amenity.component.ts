@@ -39,7 +39,7 @@ export class NewAmenityComponent implements OnInit {
     this.buildForm();
 
     if (this.amenityId) {
-      this.api.getById('/amenities/' + this.amenityId).then((amenity: any) => {
+      this.api.getById('/amenidades/' + this.amenityId).then((amenity: any) => {
         this.amenityForm.patchValue(amenity);
       });
     }
@@ -58,10 +58,10 @@ export class NewAmenityComponent implements OnInit {
         const data = this.amenityForm.value;
 
         if (this.amenityId) {
-          await this.api.put(`/amenities/${this.amenityId}`, data);
+          await this.api.put(`/amenidades/${this.amenityId}`, data);
           this.toastService.success('Amenidade atualizada com sucesso!');
         } else {
-          await this.api.create('/amenities', data);
+          await this.api.create('/amenidades', data);
           this.toastService.success('Amenidade criada com sucesso!');
         }
 
