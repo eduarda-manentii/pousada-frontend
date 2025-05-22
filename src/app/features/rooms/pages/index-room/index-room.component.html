@@ -9,8 +9,55 @@
     <button class="btn btn-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#filterModal">Filtrar</button>
   </div>
 
-  <div *ngIf="rooms().length > 0; else emptyState">
-    
+  <div class="container py-4">
+    <div class="row mb-4 border-bottom pb-4" *ngFor="let quarto of quartos()">
+      <img 
+        *ngIf="quarto.fotos && quarto.fotos.length > 0; else placeholderImage" 
+        [src]="quarto.fotos[0]" 
+        class="img-fluid rounded" 
+        alt="Foto do Quarto" 
+      />
+
+      <ng-template #placeholderImage>
+        <div 
+          [style.width.px]="300" 
+          [style.height.px]="190"
+        >
+          <img 
+            src="assets/images/sem-foto.png" 
+            alt="Imagem não disponível" 
+            class="img-fluid h-auto w-auto"
+            style="object-fit: contain;"
+          />
+        </div>
+      </ng-template>
+
+      <div class="col-md-6">
+        <h5  class="fw-bold">
+          <a [routerLink]="['/rooms/show', quarto.id]">
+                {{ quarto.nome  | capitalize }}
+          </a>
+        </h5>
+        <p class="text-muted mb-1">
+          {{ quarto.observacao }}
+        </p>
+        <p class="mb-1">
+          ● Camas: {{ quarto.qtdCamaCasal || 0 }} Casal, {{ quarto.qtdCamaSolteiro || 0 }} Solteiro
+        </p>
+
+        <hr />
+        <div class="d-flex gap-3 flex-wrap">
+          <i *ngFor="let amenidade of quarto.amenidades" [class]="amenidade.icone + ' fs-4'"></i>
+        </div>
+      </div>
+
+      <div class="col-md-3 text-end d-flex flex-column justify-content-between">
+        <div>
+          <p class="text-muted mb-1">A partir de</p>
+          <h4 class="fw-semibold">R$ {{ quarto.valorDiaria | number:'1.0-2' }}</h4>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="mt-4 mb-5 d-flex justify-content-between align-items-center" *ngIf="totalPages() > 1">

@@ -15,7 +15,8 @@ import { useList } from '../../../../shared/composables/use-list';
     HeaderComponent,
     RouterLink,
     CommonModule,
-    FilterModalComponent
+    FilterModalComponent,
+    CapitalizePipe
   ],
   templateUrl: './index-room.component.html',
   styleUrl: './index-room.component.scss'
@@ -27,12 +28,15 @@ export class IndexRoomComponent implements OnInit {
 
   private list = useList<any>('/quartos', (a, b) => a.nome.localeCompare(b.nome));
     
-  rooms = this.list.items;
+  quartos = this.list.items;
   currentPage = this.list.currentPage;
   totalPages = this.list.totalPages;
 
   ngOnInit() {
     this.list.loadPage(0);
+  }
+
+  verDetalhes(id: number) {
   }
 
   aplicarFiltros(filtros: any) {
