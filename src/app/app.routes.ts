@@ -25,6 +25,9 @@ import { IndexVoucherComponent } from './features/vouchers/pages/index-voucher/i
 import { IndexAmenityComponent } from './features/amenities/pages/index-amenity/index-amenity.component';
 import { ShowAmenityComponent } from './features/amenities/pages/show-amenity/show-amenity.component';
 import { NewAmenityComponent } from './features/amenities/pages/new-amenity/new-amenity.component';
+import { NewComplementComponent } from './features/complements/pages/new-complement/new-complement.component';
+import { ShowComplementComponent } from './features/complements/pages/show-complement/show-complement.component';
+import { IndexComplementComponent } from './features/complements/pages/index-complement/index-complement.component';
 
 export const routes: Routes = [
   { path : "login",                  component: LoginComponent },
@@ -59,4 +62,8 @@ export const routes: Routes = [
   { path : "amenities/new",          component: NewAmenityComponent },
   { path : "amenities/show/:id",     component: ShowAmenityComponent },
   { path : "amenities/index",        component: IndexAmenityComponent },
+  { path : "complements/new",        component: NewComplementComponent },
+  { path : "complements/new/:id",        component: NewComplementComponent },
+  { path : "complements/show/:id",       component: ShowComplementComponent },
+  { path : "complements/index",      component: IndexComplementComponent },
 ];

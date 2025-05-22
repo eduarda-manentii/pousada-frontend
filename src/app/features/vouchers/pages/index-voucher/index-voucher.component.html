@@ -15,7 +15,6 @@
           <th>Nome</th>
           <th>Data de Início</th>
           <th>Data de Vencimento</th>
-          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +26,6 @@
           </td>
           <td>{{ voucher.dataDeInicio | date: 'dd/MM/yyyy' }}</td>
           <td>{{ voucher.dataDeVencimento | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ voucher.status }}</td>
         </tr>
       </tbody>
     </table>

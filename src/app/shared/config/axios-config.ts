@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
     }
 
     const code = data?.errors?.codigo ?? response?.status ?? 0;
-    const message = data?.errors?.mensagem ?? 'Erro desconhecido do servidor';
+    const message = data?.errors?.mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
 
     return Promise.reject(new ApiError(code, message));
   }
