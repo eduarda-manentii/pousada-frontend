@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
-import { Voucher } from '../../interfaces/Complement';
+import { Complement } from '../../interfaces/Complement';
 import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
@@ -22,7 +22,7 @@ import { ConfirmModalComponent } from '../../../../shared/components/confirm-mod
 })
 export class ShowComplementComponent implements OnInit {
   @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
-  voucher!: Voucher;
+  complement!: Complement;
   voucherId!: string;
 
   constructor(
@@ -37,22 +37,22 @@ export class ShowComplementComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
-      const data = await this.api.getById<Voucher>(`/cupons/${id}`);
-      this.voucher = data;
+      const data = await this.api.getById<Complement>(`/complementos/${id}`);
+      this.complement = data;
     }
   }
 
   openModal() {
-    this.confirmModal.open('Tem certeza que deseja excluir este cliente?');
+    this.confirmModal.open('Tem certeza que deseja excluir este complemento?');
   }
 
   async onConfirmedInativation(result: boolean) {
 
     if (result) {
       try {
-        await this.api.delete(`/cupons/${this.voucherId}`);
-        this.toastService.success('Cupom inativado com sucesso');
-        this.router.navigate(['/vouchers/index']);
+        await this.api.delete(`/complementos/${this.voucherId}`);
+        this.toastService.success('Complemento inativado com sucesso');
+        this.router.navigate(['/complements/index']);
       } catch (error: any) {
         this.toastService.error(error);
       }

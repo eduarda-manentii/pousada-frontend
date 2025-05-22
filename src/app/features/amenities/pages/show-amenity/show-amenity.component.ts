@@ -1,63 +1,60 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../../shared/services/backend-api.service';
+import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { Voucher } from '../../interfaces/Voucher';
 import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
-  selector: 'app-show-voucher',
+  selector: 'app-show-amenity',
   standalone: true,
   imports: [
-    HeaderComponent, 
-    CommonModule, 
+    HeaderComponent,
+    CommonModule,
     RouterLink,
     ConfirmModalComponent
   ],
-  templateUrl: './show-voucher.component.html',
-  styleUrl: './show-voucher.component.scss'
+  templateUrl: './show-amenity.component.html',
+  styleUrl: './show-amenity.component.scss'
 })
-export class ShowVoucherComponent implements OnInit {
+export class ShowAmenityComponent {
   @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
-  voucher!: Voucher;
-  voucherId!: string;
+  amenity: any;
+  amenityId?: string;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private api: ApiService,
+    private router: Router,
     private toastService: ToastrService,
-    public confirmService: ConfirmModalService,
+    public confirmService: ConfirmModalService
   ) {}
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-
     if (id) {
-      const data = await this.api.getById<Voucher>(`/cupons/${id}`);
-      this.voucher = data;
-      this.voucherId = id;
+      this.amenityId = id;
+      const data = await this.api.getById(`/amenidades/${id}`);
+      this.amenity = data;
     }
   }
 
-  openModal() {
-    this.confirmModal.open('Tem certeza que deseja excluir este cliente?');
+  excluir() {
+    this.confirmModal.open('Tem certeza que deseja excluir esta amenidade?');
   }
 
-  async onConfirmedInativation(result: boolean) {
-
+  async onConfirmedDelete(result: boolean) {
     if (result) {
       try {
-        console.log(`/cupons/${this.voucherId}`);
-        await this.api.delete(`/cupons/${this.voucherId}`);
-        this.toastService.success('Cupom inativado com sucesso');
-        this.router.navigate(['/vouchers/index']);
+        await this.api.delete(`/amenidades/${this.amenityId}`);
+        this.toastService.success('Amenidade excluída com sucesso.');
+        this.router.navigate(['/amenities/index']);
       } catch (error: any) {
         this.toastService.error(error);
       }
     }
   }
+
 }

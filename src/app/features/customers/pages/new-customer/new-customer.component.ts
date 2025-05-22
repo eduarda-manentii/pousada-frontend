@@ -84,7 +84,6 @@ export class NewCustomerComponent implements OnInit {
         endereco: { id: locationData.id }
       };
       if (this.customerId) {
-
         try {
           await this.api.put(`/clientes/${this.customerId}`, customerData);
           this.toastService.success("Cliente atualizado com sucesso!");

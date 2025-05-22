@@ -1,0 +1,31 @@
+<app-header></app-header>
+
+<div class="container my-5">
+  <h2 class="mb-4 text-secondary-custom">Detalhes da Amenidade {{ amenity?.id }}</h2>
+
+  <div *ngIf="amenity">
+    <p><strong>Nome:</strong> {{ amenity.nome }}</p>
+    <p><strong>Ícone:</strong> <i [class]="amenity.icone" class="ms-2"></i></p>
+
+    <div class="mt-4 d-flex gap-3">
+      <button class="btn btn-brown w-15" [routerLink]="['/amenities/new', amenity.id]">
+        Editar
+      </button>
+      <button class="btn btn-brown w-15" (click)="excluir()">
+        Deletar
+      </button>
+
+      <div class="ms-auto">
+        <button class="btn btn-outline-secondary" [routerLink]="['/amenities/index']">
+          Voltar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="text-muted">Amenidade não encontrada.</p>
+  </ng-template>
+</div>
+
+<app-confirm-modal (confirmed)="onConfirmedDelete($event)"></app-confirm-modal>

@@ -1,76 +1,55 @@
 <app-header/>
 
-<div class="container my-5 d-flex justify-content-center">
-  <div class="card shadow p-4 w-100" style="max-width: 700px;">
-    <h2 class="mb-4 text-secondary-custom text-center">
-      Detalhes do Cupom {{ voucher.id }}
-    </h2>
+<div class="container my-5">
+  <h2 class="mb-4 text-secondary-custom text-center">
+    Detalhes do Cupom {{ voucher.id }}
+  </h2>
 
-    <div *ngIf="voucher; else emptyState">
-      <div class="mb-3">
-        <label class="form-label fw-bold">Nome:</label>
-        <div class="form-control bg-light">{{ voucher.nome }}</div>
-      </div>
+  <div *ngIf="voucher; else emptyState">
+    <p><strong>Nome:</strong> {{ voucher.nome }}</p>
+    <p><strong>Código:</strong> {{ voucher.codigo }}</p>
+    <p><strong>Data Inicial:</strong> {{ voucher.dataDeInicio | date: 'dd/MM/yyyy' }}</p>
+    <p><strong>Data de Vencimento:</strong> {{ voucher.dataDeVencimento | date: 'dd/MM/yyyy' }}</p>
+    <p><strong>Desconto:</strong> {{ voucher.porcentagemDeDesconto }}</p>
 
-      <div class="mb-3">
-        <label class="form-label fw-bold">Código:</label>
-        <div class="form-control bg-light">{{ voucher.codigo }}</div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-bold">Data Inicial:</label>
-        <div class="form-control bg-light">{{ voucher.dataDeInicio | date: 'dd/MM/yyyy' }}</div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-bold">Data de Vencimento:</label>
-        <div class="form-control bg-light">{{ voucher.dataDeVencimento | date: 'dd/MM/yyyy' }}</div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-bold">Desconto:</label>
-        <div class="form-control bg-light">{{ voucher.porcentagemDeDesconto }} %</div>
-      </div>
-
-      <div class="ticket-preview mt-5">
-        <div class="ticket-bar">
-          <div class="barcode"></div>
-          <div class="validade">
-            VÁLIDO ATÉ<br />
-            {{ voucher.dataDeVencimento | date:'dd/MM/yyyy HH:mm' }}
-          </div>
-        </div>
-        <div class="ticket-body">
-          <p class="ticket-title">CUPOM DE DESCONTO</p>
-          <p class="ticket-discount">
-            {{ voucher.porcentagemDeDesconto || 0 }}%OFF
-          </p>
-          <p class="ticket-code">
-            Código: <strong>{{ voucher.codigo || '---' }}</strong>
-          </p>
+    <div class="ticket-preview mt-5">
+      <div class="ticket-bar">
+        <div class="barcode"></div>
+        <div class="validade">
+          VÁLIDO ATÉ<br />
+          {{ voucher.dataDeVencimento | date:'dd/MM/yyyy HH:mm' }}
         </div>
       </div>
-
-      <div class="mt-4 d-flex gap-3">
-        <button class="btn btn-brown w-25" [routerLink]="['/vouchers/new', voucher.id]">
-          Editar
-        </button>
-        <button class="btn btn-brown w-25" (click)="openModal()">
-          Deletar
-        </button>
-
-        <div class="ms-auto">
-          <button class="btn btn-outline-secondary" [routerLink]="['/vouchers/index']">
-            Voltar
-          </button>
-        </div>
+      <div class="ticket-body">
+        <p class="ticket-title">CUPOM DE DESCONTO</p>
+        <p class="ticket-discount">
+          {{ voucher.porcentagemDeDesconto || 0 }}%OFF
+        </p>
+        <p class="ticket-code">
+          Código: <strong>{{ voucher.codigo || '---' }}</strong>
+        </p>
       </div>
     </div>
 
-    <ng-template #emptyState>
-        <p class="text-muted text-center">Cliente não encontrado.</p>
-      </ng-template>
+    <div class="mt-4 d-flex gap-3">
+      <button class="btn btn-brown w-25" [routerLink]="['/vouchers/new', voucher.id]">
+        Editar
+      </button>
+      <button class="btn btn-brown w-25" (click)="openModal()">
+        Deletar
+      </button>
+
+      <div class="ms-auto">
+        <button class="btn btn-outline-secondary" [routerLink]="['/vouchers/index']">
+          Voltar
+        </button>
+      </div>
+    </div>
   </div>
+
+  <ng-template #emptyState>
+    <p class="text-muted text-center">Cupom não encontrado.</p>
+  </ng-template>
 </div>
 
 <app-confirm-modal (confirmed)="onConfirmedInativation($event)"></app-confirm-modal>
