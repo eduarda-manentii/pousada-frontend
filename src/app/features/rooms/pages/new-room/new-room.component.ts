@@ -23,14 +23,7 @@ import { RequiredMarkerDirective } from '../../../../shared/directives/required-
 export class NewRoomComponent implements OnInit {
   roomForm!: FormGroup;
   roomId?: number;
-
-  amenidadesDisponiveis = [
-    'Ar Condicionado',
-    'WiFi',
-    'TV',
-    'Cozinha',
-    'Toalhas'
-  ];
+  amenidadesDisponiveis: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -49,16 +42,20 @@ export class NewRoomComponent implements OnInit {
         this.roomForm.patchValue(room);
       });
     }
+
+    this.api.get('/amenidades').then((data: any) => {
+      this.amenidadesDisponiveis = data.content;
+    });
   }
 
   buildForm() {
     this.roomForm = this.fb.group({
       nome: ['', Validators.required],
       fotos: [[], Validators.required],
-      quantidadeCamasCasal: [0, [Validators.required, Validators.min(0)]],
-      quantidadeCamasSolteiro: [0, [Validators.required, Validators.min(0)]],
-      capacidadeMaxima: [1, [Validators.required, Validators.min(1)]],
-      maisInformacoes: [''],
+      qtdCamaCasal: [0, [Validators.required, Validators.min(0)]],
+      qtdCamaSolteiro: [0, [Validators.required, Validators.min(0)]],
+      capacidade: [1, [Validators.required, Validators.min(1)]],
+      observacao: [''],
       valorDiaria: [0, [Validators.required, Validators.min(0)]],
       amenidades: [[]]
     });
@@ -69,17 +66,20 @@ export class NewRoomComponent implements OnInit {
     this.roomForm.patchValue({ fotos: files });
   }
 
-  toggleAmenidade(amenidade: string) {
-    const selecionadas = this.roomForm.value.amenidades || [];
-    if (selecionadas.includes(amenidade)) {
-      this.roomForm.patchValue({
-        amenidades: selecionadas.filter((a: string) => a !== amenidade)
-      });
+  isAmenidadeSelecionada(amenidade: any): boolean {
+    return this.roomForm.value.amenidades?.some((a: any) => a.id === amenidade.id);
+  }
+
+  toggleAmenidade(amenidade: any) {
+    const selecionadas: any[] = this.roomForm.value.amenidades || [];
+
+    const index = selecionadas.findIndex((a) => a.id === amenidade.id);
+    if (index >= 0) {
+      selecionadas.splice(index, 1);
     } else {
-      this.roomForm.patchValue({
-        amenidades: [...selecionadas, amenidade]
-      });
+      selecionadas.push({ id: amenidade.id });
     }
+    this.roomForm.patchValue({ amenidades: selecionadas });
   }
 
   async onSubmit() {
@@ -87,13 +87,12 @@ export class NewRoomComponent implements OnInit {
       try {
         const data = this.roomForm.value;
         if (this.roomId) {
-          await this.api.put(`/quartos/${this.roomId}`, data);
+          await this.api.put('/quartos', data);
           this.toastService.success('Quarto atualizado com sucesso!');
         } else {
           await this.api.create('/quartos', data);
           this.toastService.success('Quarto cadastrado com sucesso!');
         }
-
         this.router.navigate(['/rooms/index']);
       } catch (error: any) {
         this.toastService.error('Erro ao salvar o quarto.');
