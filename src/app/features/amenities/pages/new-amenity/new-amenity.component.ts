@@ -38,17 +38,15 @@ export class NewAmenityComponent implements OnInit {
     this.amenityId = Number(this.route.snapshot.paramMap.get('id'));
     this.buildForm();
 
-   if (this.amenityId) {
-    this.api.getById('/amenidades/' + this.amenityId).then((amenity: any) => {
-      if (amenity.icone && amenity.icone.startsWith('fas ')) {
-        amenity.icone = amenity.icone.substring(4);
-      }
-      this.amenityForm.patchValue(amenity);
-    });
-}
-
+    if (this.amenityId) {
+      this.api.getById('/amenidades/' + this.amenityId).then((amenity: any) => {
+        if (amenity.icone && amenity.icone.startsWith('fas ')) {
+          amenity.icone = amenity.icone.substring(4);
+        }
+        this.amenityForm.patchValue(amenity);
+      });
+    }
   }
-
   
   buildForm() {
     this.amenityForm = this.fb.group({
