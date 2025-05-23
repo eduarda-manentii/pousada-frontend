@@ -3,14 +3,21 @@
     <a class="navbar-brand" [routerLink]="['/home']">
       <img src="/assets/svg/logo.avif" alt="Logo" height="50" />
     </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
   </div>
 
-  <div class="d-flex align-items-center flex-grow-1 justify-content-center gap-4">
+  <div class="collapse navbar-collapse flex-grow-1 justify-content-center gap-4" id="mainNavbar">
     <a class="nav-link text-primary fw-medium" [routerLink]="['/reservations/index']">
       <i class="fas fa-calendar-check me-1"></i> Reservas
     </a>
     <a class="nav-link text-primary fw-medium" [routerLink]="['/rooms/index']">
       <i class="fas fa-door-open me-1"></i> Quartos
+    </a>
+    <a class="nav-link text-primary fw-medium" [routerLink]="['/complements/index']">
+      <i class="fas fa-door-open me-1"></i> Complementos
     </a>
     <a class="nav-link text-primary fw-medium" [routerLink]="['/amenities/index']">
       <i class="fas fa-concierge-bell me-1"></i> Amenidades
