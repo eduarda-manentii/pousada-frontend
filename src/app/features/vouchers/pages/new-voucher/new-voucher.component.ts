@@ -35,12 +35,12 @@ export class NewVoucherComponent implements OnInit {
     private toastService: ToastrService,
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.voucherId = Number(this.route.snapshot.paramMap.get('id'));
     this.buildForms();
 
     if (this.voucherId) {
-      const voucher = await this.api.getById<Voucher>(`/cupons/${this.voucherId}`).then(
+      this.api.getById<Voucher>(`/cupons/${this.voucherId}`).then(
         response => {
           const dataPatch = {
             ...response,
@@ -101,11 +101,6 @@ export class NewVoucherComponent implements OnInit {
     const day = pad(date.getDate());
     return `${year}-${month}-${day}`;
   };
-
-  onStatusChange(event: Event): void {
-    const checked = (event.target as HTMLInputElement).checked;
-    this.voucherForm.get('status')?.setValue(checked ? 'ATIVO' : 'INATIVO');
-  }
 
   goBack() {
     this.router.navigate(["/vouchers/index"]);

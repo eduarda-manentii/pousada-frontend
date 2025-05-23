@@ -7,8 +7,8 @@
 
     <div *ngIf="complement; else emptyState">
       <p><strong>Nome:</strong> {{ complement.nome }}</p>
-      <p><strong>Descrição:</strong> {{ complement.descricao }}</p>
       <p><strong>Valor:</strong> {{ complement.valor }}</p>
+      <p><strong>Descrição:</strong> {{ complement.descricao }}</p>
 
       <div class="mt-4 d-flex gap-3">
         <button class="btn btn-brown w-25" [routerLink]="['/complements/new', complement.id]">

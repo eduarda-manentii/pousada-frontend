@@ -7,15 +7,17 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Complement } from '../../interfaces/Complement';
+import { RequiredMarkerDirective } from '../../../../shared/directives/required-marker.directive';
 
 @Component({
-  selector: 'app-new-voucher',
+  selector: 'app-new-complement',
   standalone: true,
   imports: [
     HeaderComponent, 
     ReactiveFormsModule,
     NgxMaskDirective,
-    CommonModule
+    CommonModule,
+    RequiredMarkerDirective
   ],
   templateUrl: './new-complement.component.html',
   styleUrl: './new-complement.component.scss',
@@ -33,37 +35,33 @@ export class NewComplementComponent implements OnInit {
     private toastService: ToastrService,
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.complementId = Number(this.route.snapshot.paramMap.get('id'));
     this.buildForms();
 
     if (this.complementId) {
-      const voucher = await this.api.getById<Complement>(`/complementos/${this.complementId}`);
-
-      this.complementForm.patchValue(voucher);
-    } else {
-      this.complementForm.get('status')?.disable();
+      this.api.getById<Complement>(`/complementos/${this.complementId}`).then(
+        response => {
+          this.complementForm.patchValue(response);
+        }
+      );
     }
   }
 
   buildForms() {
     this.complementForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(5)]],
-      valor: ['', [Validators.required, Validators.min(1)]],
-      status: ['ATIVO', [Validators.required]],
+      nome: ['', [Validators.required]],
+      valor: ['', [Validators.required]],
+      descricao: ['', [Validators.required]],
     });
   }
 
   async onSubmit() {
+
+    console.log("Chegou aqui");
     
     if (this.complementForm.valid) {
-      const complementdata = this.complementForm.getRawValue();
-
-      const valorBruto = this.complementForm.get('valor')?.value;
-      complementdata.valor = + valorBruto
-        .replace('R$ ', '')
-        .replace(/\./g, '')
-        .replace(',', '.');
+      const complementdata = this.complementForm.value;
 
       if (this.complementId) {
 
@@ -89,20 +87,7 @@ export class NewComplementComponent implements OnInit {
     }
   };
 
-  formatDateToDateInput = (date: Date): string => {
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
-    return `${year}-${month}-${day}`;
-  };
-
-  onStatusChange(event: Event): void {
-    const checked = (event.target as HTMLInputElement).checked;
-    this.complementForm.get('status')?.setValue(checked ? 'ATIVO' : 'INATIVO');
-  }
-
   goBack() {
-    this.router.navigate(["/complement/index"]);
+    this.router.navigate(["/complements/index"]);
   }
 }

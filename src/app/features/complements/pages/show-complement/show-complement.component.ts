@@ -9,7 +9,7 @@ import { ConfirmModalService } from '../../../../shared/services/confirm-modal.s
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
-  selector: 'app-show-voucher',
+  selector: 'app-show-complement',
   standalone: true,
   imports: [
     HeaderComponent, 

@@ -5,5 +5,4 @@ export interface Complement {
   nome: string,
   descricao: string,
   valor: number,
-  status: Status
 }
