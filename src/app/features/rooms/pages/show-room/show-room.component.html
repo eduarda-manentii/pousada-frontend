@@ -1,4 +1,54 @@
-<app-header>
-</app-header>
+<app-header></app-header>
 
-<p>show-room works!</p>
+<div class="container my-5">
+  <h2 class="mb-4 text-secondary-custom">Detalhes do Quarto {{ room?.id }}</h2>
+
+  <div *ngIf="room">
+    <p><strong>Nome:</strong> {{ room.nome }}</p>
+    <p><strong>Valor da diária:</strong> R$ {{ room.valorDiaria | number: '1.2-2' }}</p>
+    <p><strong>Capacidade máxima:</strong> {{ room.capacidade }} pessoa(s)</p>
+    <p><strong>Camas:</strong> {{ room.qtdCamaCasal || 0 }} Casal, {{ room.qtdCamaSolteiro || 0 }} Solteiro</p>
+    <p><strong>Observações:</strong> {{ room.observacao || '---' }}</p>
+
+    <div class="mb-3">
+      <strong>Amenidades:</strong>
+      <div class="d-flex gap-3 flex-wrap mt-2">
+        <i *ngFor="let amenidade of room.amenidades" [class]="amenidade.icone + ' fs-4'"></i>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <strong>Fotos:</strong>
+      <div class="d-flex gap-3 mt-2 flex-wrap">
+        <ng-container *ngIf="room.fotos?.length > 0; else noPhotos">
+          <img *ngFor="let foto of room.fotos" [src]="foto" class="img-thumbnail" style="width: 150px; height: 120px; object-fit: cover;" />
+        </ng-container>
+
+        <ng-template #noPhotos>
+          <img src="assets/images/sem-foto.png" alt="Sem foto" class="img-thumbnail" style="width: 150px; height: 120px; object-fit: contain;" />
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-3">
+      <button class="btn btn-brown w-15" [routerLink]="['/rooms/new', room.id]">
+        Editar
+      </button>
+      <button class="btn btn-brown w-15" (click)="excluir()">
+        Deletar
+      </button>
+
+      <div class="ms-auto">
+        <button class="btn btn-outline-secondary" [routerLink]="['/rooms/index']">
+          Voltar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="text-muted">Quarto não encontrado.</p>
+  </ng-template>
+</div>
+
+<app-confirm-modal (confirmed)="onConfirmedDelete($event)"></app-confirm-modal>

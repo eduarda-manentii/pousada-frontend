@@ -51,7 +51,7 @@ export class NewRoomComponent implements OnInit {
   buildForm() {
     this.roomForm = this.fb.group({
       nome: ['', Validators.required],
-      fotos: [[], Validators.required],
+      fotos: [[]],
       qtdCamaCasal: [0, [Validators.required, Validators.min(0)]],
       qtdCamaSolteiro: [0, [Validators.required, Validators.min(0)]],
       capacidade: [1, [Validators.required, Validators.min(1)]],
@@ -72,7 +72,6 @@ export class NewRoomComponent implements OnInit {
 
   toggleAmenidade(amenidade: any) {
     const selecionadas: any[] = this.roomForm.value.amenidades || [];
-
     const index = selecionadas.findIndex((a) => a.id === amenidade.id);
     if (index >= 0) {
       selecionadas.splice(index, 1);
@@ -87,6 +86,7 @@ export class NewRoomComponent implements OnInit {
       try {
         const data = this.roomForm.value;
         if (this.roomId) {
+          data.id = this.roomId; 
           await this.api.put('/quartos', data);
           this.toastService.success('Quarto atualizado com sucesso!');
         } else {
