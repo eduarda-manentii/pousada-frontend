@@ -23,7 +23,7 @@ import { ConfirmModalComponent } from '../../../../shared/components/confirm-mod
 export class ShowComplementComponent implements OnInit {
   @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
   complement!: Complement;
-  voucherId!: string;
+  complementId!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +39,7 @@ export class ShowComplementComponent implements OnInit {
     if (id) {
       const data = await this.api.getById<Complement>(`/complementos/${id}`);
       this.complement = data;
+      this.complementId = id;
     }
   }
 
@@ -50,7 +51,7 @@ export class ShowComplementComponent implements OnInit {
 
     if (result) {
       try {
-        await this.api.delete(`/complementos/${this.voucherId}`);
+        await this.api.delete(`/complementos/${this.complementId}`);
         this.toastService.success('Complemento inativado com sucesso');
         this.router.navigate(['/complements/index']);
       } catch (error: any) {

@@ -6,48 +6,33 @@
   <form [formGroup]="voucherForm" (ngSubmit)="onSubmit()">
     <div class="row g-3 mb-3">
       <div class="col-md-6">
-        <label for="codigo" class="form-label">Código</label>
+        <label for="codigo" [appRequiredMarker]="true" class="form-label">Código</label>
         <input id="codigo" class="form-control" formControlName="codigo" type="text">
       </div>
       <div class="col-md-6">
-        <label for="nome" class="form-label">Nome</label>
+        <label for="nome" [appRequiredMarker]="true" class="form-label">Nome</label>
         <input id="nome"v class="form-control" formControlName="nome" type="text">
       </div>
     </div>
     <div class="row g-3 mb-3">
       <div class="col-md-6">
-        <label for="dataInicio" class="form-label">Data de Início</label>
+        <label for="dataInicio" [appRequiredMarker]="true" class="form-label">Data de Início</label>
         <input id="dataInicio" class="form-control" formControlName="dataDeInicio" type="date">
       </div>
       <div class="col-md-6">
-        <label for="dataVencimento" class="form-label">Data de Vencimento</label>
+        <label for="dataVencimento" [appRequiredMarker]="true" class="form-label">Data de Vencimento</label>
         <input id="dataVencimento" class="form-control" formControlName="dataDeVencimento" type="date">
       </div>
     </div>
     <div class="row g-3 mb-3">
       <div class="col-md-6">
-        <label for="porcentagemDeDesconto" class="form-label">Porcentagem de desconto</label>
+        <label for="porcentagemDeDesconto" [appRequiredMarker]="true" class="form-label">Porcentagem de desconto</label>
         <input id="porcentagemDeDesconto" class="form-control" formControlName="porcentagemDeDesconto" type="number">
       </div>
       <div class="col-md-6">
-        <label for="quantidade" class="form-label">Quantidade</label>
+        <label for="quantidade" [appRequiredMarker]="true" class="form-label">Quantidade</label>
         <input id="quantidade" class="form-control" formControlName="quantidadeMaximaDeUso" type="number">
       </div>
-    </div>
-    <div class="form-check mb-5">
-      <input 
-        for="status" 
-        class="form-check-input" 
-        formControlName="status" 
-        type="checkbox" 
-        id="checkStatus" 
-        [disabled]="voucherId !== undefined"
-        [checked]="voucherForm.get('status')?.value === 'ATIVO'"
-        (change)="onStatusChange($event)"
-      >
-      <label id="status" class="form-check-label" for="checkStatus">
-        Ativo
-      </label>
     </div>
 
     <div class="d-flex gap-3">

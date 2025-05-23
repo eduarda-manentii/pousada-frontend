@@ -7,6 +7,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Voucher } from '../../interfaces/Voucher';
+import { RequiredMarkerDirective } from '../../../../shared/directives/required-marker.directive';
 
 @Component({
   selector: 'app-new-voucher',
@@ -15,7 +16,8 @@ import { Voucher } from '../../interfaces/Voucher';
     HeaderComponent, 
     ReactiveFormsModule,
     NgxMaskDirective,
-    CommonModule
+    CommonModule,
+    RequiredMarkerDirective
   ],
   templateUrl: './new-voucher.component.html',
   styleUrl: './new-voucher.component.scss',
@@ -38,36 +40,35 @@ export class NewVoucherComponent implements OnInit {
     this.buildForms();
 
     if (this.voucherId) {
-      const voucher = await this.api.getById<Voucher>(`/cupons/${this.voucherId}`);
+      const voucher = await this.api.getById<Voucher>(`/cupons/${this.voucherId}`).then(
+        response => {
+          const dataPatch = {
+            ...response,
+            dataDeInicio: this.formatDateToDateInput(new Date(response.dataDeInicio)),
+            dataDeVencimento: this.formatDateToDateInput(new Date(response.dataDeVencimento)),
+          };
 
-      const dataPatch = {
-        ...voucher,
-        dataDeInicio: this.formatDateToDateInput(new Date(voucher.dataDeInicio)),
-        dataDeVencimento: this.formatDateToDateInput(new Date(voucher.dataDeVencimento)),
-      };
-
-      this.voucherForm.patchValue(voucher);
-    } else {
-      this.voucherForm.get('status')?.disable();
+          this.voucherForm.patchValue(response);
+        } 
+      );
     }
   }
 
   buildForms() {
     this.voucherForm = this.fb.group({
       codigo: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
-      nome: ['', [Validators.required, Validators.minLength(5)]],
+      nome: ['', [Validators.required, Validators.minLength(1)]],
       dataDeInicio: ['', [Validators.required, Validators.minLength(5)]],
       dataDeVencimento: ['', [Validators.required]],
-      porcentagemDeDesconto: ['', [Validators.required]],
-      quantidadeMaximaDeUso: ['', [Validators.required]],
-      status: ['ATIVO', [Validators.required]],
+      porcentagemDeDesconto: [0, [Validators.required]],
+      quantidadeMaximaDeUso: [0, [Validators.required]],
     });
   }
 
   async onSubmit() {
     
     if (this.voucherForm.valid) {
-      const voucherdata = this.voucherForm.getRawValue();
+      const voucherdata = this.voucherForm.value;
 
       if (this.voucherId) {
 
