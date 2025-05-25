@@ -1,6 +1,9 @@
+import { FiltroConfig } from './../interfaces/filtro-config';
 import { Injectable } from '@angular/core';
 import axiosInstance from '../config/axios-config';
 import { ApiError } from '../../core/errors/api-error';
+import { AxiosHeaders } from 'axios';
+import { FiltroConfigValue } from '../interfaces/filtro-config';
 
 interface Page<T> {
   content: T[];
@@ -24,6 +27,19 @@ export class ApiService {
   async create(endpoint: string, object: any): Promise<any> {
     try {
       const response = await axiosInstance.post(endpoint, object);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async saveImage(endpoint: string, object: FormData): Promise<any> {
+    try {
+      const response = await axiosInstance.post(endpoint, object, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
       return response.data;
     } catch (error) {
       throw this.handleError(error);
@@ -71,17 +87,40 @@ export class ApiService {
     page: number,
     size: number,
     sort: string,
-    filtros: { [key: string]: any }
+    filtros: FiltroConfigValue[]
   ): Promise<Page<T>> {
 
     try {
       const searchParts: string[] = [];
 
-      for (const key in filtros) {
-        const value = filtros[key];
-        if (value != null && value !== '') {
-          searchParts.push(`${key}=='${value}*'`);
+      console.log("Filtros abomba:");
+      console.log(filtros);
+      for (const filtro of filtros) {
+        const { type, key, keys, value } = filtro;
+
+        if (type === 'range' && keys && keys.length === 2 && value) {
+          try {
+            const parsed = JSON.parse(value);
+            const { de, ate } = parsed;
+
+            if (de) searchParts.push(`${keys[0]}>=${de}`);
+
+            if (ate) searchParts.push(`${keys[1]}<=${ate}`)
+          } catch (e) {
+            console.warn('Erro ao processar filtro de range:', filtro);
+          }
+        } else if (key && value !== null && value !== '') {
+          if (type === 'text') {
+            searchParts.push(`${key}=='${value}*'`)
+          } else if (type === 'boolean') {
+            searchParts.push(`${key}==${value}`);
+          } else {
+            searchParts.push(`${key}==${value}`);
+          }
         }
+
+        console.log("Filtros aplicados:");
+        console.log(searchParts);
       }
 
       const params: any = {

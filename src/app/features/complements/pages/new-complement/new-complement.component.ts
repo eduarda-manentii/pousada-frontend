@@ -57,8 +57,6 @@ export class NewComplementComponent implements OnInit {
   }
 
   async onSubmit() {
-
-    console.log("Chegou aqui");
     
     if (this.complementForm.valid) {
       const complementdata = this.complementForm.value;

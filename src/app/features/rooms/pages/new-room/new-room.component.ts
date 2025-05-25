@@ -87,10 +87,19 @@ export class NewRoomComponent implements OnInit {
         const data = this.roomForm.value;
         if (this.roomId) {
           data.id = this.roomId; 
-          await this.api.put('/quartos', data);
+          await this.api.put('/quartos', data).then(
+            response => {
+              this.onSaveImage(response.id, data.fotos);
+            }
+          );
           this.toastService.success('Quarto atualizado com sucesso!');
         } else {
-          await this.api.create('/quartos', data);
+          await this.api.create('/quartos', data).then(
+            response => {
+              this.onSaveImage(response.id, data.fotos);
+            }
+          );
+          
           this.toastService.success('Quarto cadastrado com sucesso!');
         }
         this.router.navigate(['/rooms/index']);
@@ -99,6 +108,21 @@ export class NewRoomComponent implements OnInit {
       }
     } else {
       this.toastService.error('Preencha todos os campos obrigatórios.');
+    }
+  }
+
+  async onSaveImage(roomId: number, fotos: any) {
+
+    if (fotos && fotos.length > 0) {
+      const formData = new FormData();
+
+      for (let i = 0; i < fotos.length; i++) {
+        formData.append('imagens', fotos[i]);
+      }
+
+      formData.append('idQuarto', roomId.toString());
+
+      await this.api.saveImage(`/imagens/room`, formData);
     }
   }
 

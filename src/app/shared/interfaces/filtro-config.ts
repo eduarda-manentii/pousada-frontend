@@ -7,3 +7,10 @@ export interface FiltroConfig {
   keys?: string[];
   subtype?: 'date' | 'number';
 }
+
+export interface FiltroConfigValue {
+  value: string;
+  type: string;
+  key?: string;
+  keys?: string[];
+}
