@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { RequiredMarkerDirective } from '../../../../shared/directives/required-marker.directive';
+import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
 
 @Component({
   selector: 'app-new-room',
@@ -33,13 +34,19 @@ export class NewRoomComponent implements OnInit {
     private toastService: ToastrService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.roomId = Number(this.route.snapshot.paramMap.get('id'));
     this.buildForm();
 
     if (this.roomId) {
-      this.api.getById('/quartos/' + this.roomId).then((room: any) => {
+      this.api.getById('/quartos/' + this.roomId).then(async (room: any) => {
         this.roomForm.patchValue(room);
+
+        console.log("ID Quarto");
+        console.log(room.id);
+
+        //Aqui retorna as url salvas
+        const data = await this.api.getImages<ImagemQuarto>(`/imagens/${room.id}`);
       });
     }
 
@@ -51,7 +58,7 @@ export class NewRoomComponent implements OnInit {
   buildForm() {
     this.roomForm = this.fb.group({
       nome: ['', Validators.required],
-      fotos: [[]],
+      fotos: [undefined],
       qtdCamaCasal: [0, [Validators.required, Validators.min(0)]],
       qtdCamaSolteiro: [0, [Validators.required, Validators.min(0)]],
       capacidade: [1, [Validators.required, Validators.min(1)]],
@@ -94,6 +101,8 @@ export class NewRoomComponent implements OnInit {
           );
           this.toastService.success('Quarto atualizado com sucesso!');
         } else {
+          console.log('Data:')
+          console.log(data);
           await this.api.create('/quartos', data).then(
             response => {
               this.onSaveImage(response.id, data.fotos);
@@ -124,6 +133,10 @@ export class NewRoomComponent implements OnInit {
 
       await this.api.saveImage(`/imagens/room`, formData);
     }
+  }
+
+  async delete(urlImage: any) {
+    await this.api.deleteImage(`/imagens/room`, urlImage);
   }
 
   goBack() {

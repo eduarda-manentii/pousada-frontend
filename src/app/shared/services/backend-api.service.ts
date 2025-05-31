@@ -46,6 +46,28 @@ export class ApiService {
     }
   }
 
+  async deleteImage(endpoint: string, object: any): Promise<any> {
+    try {
+      const response = await axiosInstance.delete(endpoint, {
+        data: {
+          dto: object,
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async getImages<T>(endpoint: string): Promise<T[]> {
+    try {
+      const response = await axiosInstance.get<T[]>(endpoint);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   async get<T>(endpoint: string, params: any = {}): Promise<Page<T>> {
     try {
       const response = await axiosInstance.get<Page<T>>(endpoint, { params });

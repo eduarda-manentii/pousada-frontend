@@ -12,8 +12,8 @@
   <div class="container py-4" *ngIf="quartos().length > 0; else emptyState">
     <div class="row mb-4 border-bottom pb-4" *ngFor="let quarto of quartos()">
       <img 
-        *ngIf="quarto.fotos && quarto.fotos.length > 0; else placeholderImage" 
-        [src]="quarto.fotos[0]" 
+        *ngIf="quarto.urlImagens && quarto.urlImagens.length > 0; else placeholderImage" 
+        [src]="quarto.urlImagens[0].url" 
         class="img-fluid rounded" 
         alt="Foto do Quarto" 
       />
