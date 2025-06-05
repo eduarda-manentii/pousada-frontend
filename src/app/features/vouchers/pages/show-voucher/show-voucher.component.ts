@@ -60,4 +60,10 @@ export class ShowVoucherComponent implements OnInit {
       }
     }
   }
+
+  editVoucher(customerId: number) {
+    this.router.navigate(['/vouchers/edit', customerId]);
+  }
+
+
 }

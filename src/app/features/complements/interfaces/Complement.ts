@@ -1,7 +1,5 @@
-import { Status } from "../../../shared/interfaces/Status";
-
 export interface Complement {
-  id?: number,
+  id : number,
   nome: string,
   descricao: string,
   valor: number,

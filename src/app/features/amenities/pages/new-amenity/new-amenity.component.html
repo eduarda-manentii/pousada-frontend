@@ -1,7 +1,10 @@
 <app-header></app-header>
 
 <div class="container py-5" *ngIf="amenityForm">
-  <h2 class="mb-4 text-secondary-custom">Cadastro de Amenidade</h2>
+  <h2 class="mb-4 text-secondary-custom">
+    {{ amenityId ? 'Editar Amenidade' : 'Cadastro de Amenidade' }}
+  </h2>
+
 
   <form [formGroup]="amenityForm">
     <div class="row g-3 mb-4">

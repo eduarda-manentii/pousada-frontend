@@ -1,7 +1,9 @@
 <app-header></app-header>
 
 <div class="container py-5" *ngIf="customerForm && locationForm">
-  <h2 class="mb-4 text-secondary-custom">Cadastro de Cliente</h2>
+  <h2 class="mb-4 text-secondary-custom">
+    {{ customerId ? 'Editar Cliente' : 'Cadastro de Cliente' }}
+  </h2>
 
   <form [formGroup]="customerForm">
     <div class="row g-3 mb-3">
@@ -95,7 +97,7 @@
   </form>
 
   <div class="d-flex gap-3">
-    <button type="submit" class="btn btn-primary-custom" (click)="onSubmit()">Cadastrar</button>
+    <button type="submit" class="btn btn-primary-custom" (click)="onSubmit()">Salvar</button>
     <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
   </div>
 </div>

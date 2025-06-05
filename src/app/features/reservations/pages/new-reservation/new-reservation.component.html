@@ -1,5 +1,74 @@
-<app-header>
-</app-header>
+<app-header></app-header>
 
+<div class="container py-5" *ngIf="reservationForm">
+  <h2 class="mb-4 text-secondary-custom">Nova Reserva</h2>
 
-<p>new-reservation works!</p>
+  <form [formGroup]="reservationForm">
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <label class="form-label" [appRequiredMarker]="true">Quarto</label>
+        <select class="form-select" formControlName="quarto" (change)="onRoomChange()">
+          <option value="">Selecione um quarto</option>
+          <option *ngFor="let quarto of quartos" [value]="quarto.id">
+            {{ quarto.nome }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label" [appRequiredMarker]="true">Cliente</label>
+        <select class="form-select" formControlName="cliente">
+          <option value="">Selecione um cliente</option>
+          <option *ngFor="let cliente of clientes" [value]="cliente.id">
+            {{ cliente.nome }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label" [appRequiredMarker]="true">Status</label>
+        <select class="form-select" formControlName="statusDaReserva">
+          <option value="">Selecione</option>
+          <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label" [appRequiredMarker]="true">Data de Entrada</label>
+        <input type="date" class="form-control" formControlName="checkIn" (change)="calcularValorTotal()" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" [appRequiredMarker]="true">Data de Saída</label>
+        <input type="date" class="form-control" formControlName="checkOut" (change)="calcularValorTotal()" />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Complementos</label>
+      <div *ngFor="let comp of complementos" class="form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          [id]="'comp-' + comp.id"
+          [value]="comp.id"
+          (change)="onComplementoChange($event, comp)"
+        />
+        <label class="form-check-label" [for]="'comp-' + comp.id">
+          {{ comp.nome }} - R$ {{ comp.valor | number: '1.2-2' }}
+        </label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Observações</label>
+      <textarea class="form-control" formControlName="observacao" rows="3"></textarea>
+    </div>
+
+    <div class="d-flex gap-3">
+      <button type="button" class="btn btn-primary-custom" (click)="onSubmit()">Salvar</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
+    </div>
+  </form>
+</div>

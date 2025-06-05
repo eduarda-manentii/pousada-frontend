@@ -1,7 +1,7 @@
 import { Status } from "../../../shared/interfaces/Status";
 
 export interface Voucher {
-  id?: number,
+  id: number,
   codigo: string,
   nome: string,
   dataDeInicio: Date,
