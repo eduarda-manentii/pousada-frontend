@@ -1,0 +1,27 @@
+@use "../../../../../styles/variables" as *;
+
+.text-secondary-custom {
+  color: $secondary-color;
+}
+
+.btn-primary-custom {
+  background-color: $primary-color;
+  color: white;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #6e4329;
+  }
+
+  &:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+}
+
+.zindex-dropdown {
+  z-index: 1050;
+  max-width: 340px;
+}

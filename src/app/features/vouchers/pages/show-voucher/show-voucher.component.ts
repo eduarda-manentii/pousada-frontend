@@ -44,7 +44,7 @@ export class ShowVoucherComponent implements OnInit {
   }
 
   openModal() {
-    this.confirmModal.open('Tem certeza que deseja excluir este cliente?');
+    this.confirmModal.open('Tem certeza que deseja excluir este cupom?');
   }
 
   async onConfirmedInativation(result: boolean) {

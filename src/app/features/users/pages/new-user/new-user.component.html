@@ -1,4 +1,55 @@
-<app-header>
-</app-header>
+<app-header/>
 
-<p>new-user works!</p>
+<div class="container py-5">
+  <h2 class="mb-4 text-secondary-custom">Cadatro de Usuário</h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label for="nome" [appRequiredMarker]="true" class="form-label">Nome</label>
+        <input id="nome" class="form-control" formControlName="nome" type="text">
+      </div>
+      <div class="col-md-6">
+        <label for="email" [appRequiredMarker]="true" class="form-label">Email</label>
+        <input id="email"v class="form-control" formControlName="email" type="text">
+      </div>
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label for="senha" [appRequiredMarker]="true" class="form-label">Senha</label>
+        <input id="senha" class="form-control" formControlName="senha" type="password">
+      </div>
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-md-6 position-relative">
+        <label for="role" class="form-label" [appRequiredMarker]="true">Permissão</label>
+        <input
+          id="role"
+          type="text"
+          class="form-control"
+          formControlName="roles"
+          (input)="onRoleInput()"
+          [attr.autocomplete]="'off'"
+        >
+        <ul class="list-group position-absolute w-100 zindex-dropdown mt-1" *ngIf="filteredRoles.length">
+          <li
+            class="list-group-item list-group-item-action"
+            *ngFor="let role of filteredRoles"
+            (click)="selectRole(role)"
+          >
+            {{ role }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-1 d-flex align-items-end">
+        <button type="button" class="btn btn-outline-secondary" (click)="openRoleModal()">+</button>
+      </div>
+    </div>
+
+    <div class="d-flex gap-3">
+      <button type="submit" class="btn btn-primary-custom">Salvar</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
+    </div>
+  </form>
+</div>

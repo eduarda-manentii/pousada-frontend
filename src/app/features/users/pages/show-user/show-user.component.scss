@@ -1,0 +1,20 @@
+@use "../../../../../styles/variables" as *;
+
+.btn-brown {
+  background-color: $primary-color;
+  border-color: $primary-color;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
+  transition: background-color 0.3s, border-color 0.3s;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    border-color: darken($primary-color, 10%);
+  }
+}
+
+.text-primary-custom {
+  color: $secondary-color;
+}
