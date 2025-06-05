@@ -57,8 +57,8 @@ export class ShowAmenityComponent {
     }
   }
 
-  editCustomer(customerId: number) {
-    this.router.navigate(['/customers/edit', customerId]);
+  editAmenity(customerId: number) {
+    this.router.navigate(['/amenities/edit', customerId]);
   }
 
 }

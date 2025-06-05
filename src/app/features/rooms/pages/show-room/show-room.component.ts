@@ -6,6 +6,8 @@ import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
+import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
+import { Quarto } from '../../interfaces/Quarto';
 
 @Component({
   selector: 'app-show-room',
@@ -37,10 +39,19 @@ export class ShowRoomComponent {
 
     if (id) {
       this.roomId = id;
-      const data = await this.api.getById(`/quartos/${id}`);
-      this.room = data;
+
+      try {
+        const data = await this.api.getById<Quarto>(`/quartos/${id}`);
+        const imagens = await this.api.getImages<ImagemQuarto>(`/imagens/${id}`);
+
+        data.fotos = imagens.map(img => img.url);
+        this.room = data;
+      } catch (error) {
+        this.toastService.error('Erro ao carregar os dados do quarto.');
+      }
     }
   }
+
 
   excluir() {
     this.confirmModal.open('Tem certeza que deseja excluir este quarto?');
@@ -61,5 +72,4 @@ export class ShowRoomComponent {
   editRooms(customerId: number) {
     this.router.navigate(['/rooms/edit', customerId]);
   }
-
 }

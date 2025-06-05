@@ -21,11 +21,22 @@
       <strong>Fotos:</strong>
       <div class="d-flex gap-3 mt-2 flex-wrap">
         <ng-container *ngIf="room.fotos?.length > 0; else noPhotos">
-          <img *ngFor="let foto of room.fotos" [src]="foto" class="img-thumbnail" style="width: 150px; height: 120px; object-fit: cover;" />
+          <img 
+            *ngFor="let foto of room.fotos" 
+            [src]="foto" 
+            class="img-thumbnail" 
+            style="width: 150px; height: 120px; object-fit: cover;" 
+            alt="Foto do quarto"
+          />
         </ng-container>
 
         <ng-template #noPhotos>
-          <img src="assets/images/sem-foto.png" alt="Sem foto" class="img-thumbnail" style="width: 150px; height: 120px; object-fit: contain;" />
+          <img 
+            src="assets/images/sem-foto.png" 
+            alt="Sem foto" 
+            class="img-thumbnail" 
+            style="width: 150px; height: 120px; object-fit: contain;" 
+          />
         </ng-template>
       </div>
     </div>

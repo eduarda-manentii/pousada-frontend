@@ -1,8 +1,6 @@
-import { FiltroConfig } from './../interfaces/filtro-config';
 import { Injectable } from '@angular/core';
 import axiosInstance from '../config/axios-config';
 import { ApiError } from '../../core/errors/api-error';
-import { AxiosHeaders } from 'axios';
 import { FiltroConfigValue } from '../interfaces/filtro-config';
 
 interface Page<T> {
@@ -47,16 +45,10 @@ export class ApiService {
   }
 
   async deleteImage(endpoint: string, object: any): Promise<any> {
-    try {
-      const response = await axiosInstance.delete(endpoint, {
-        data: {
-          dto: object,
-        }
-      });
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
+    const response = await axiosInstance.delete(endpoint, {
+      data: object
+    });
+    return response.data;
   }
 
   async getImages<T>(endpoint: string): Promise<T[]> {

@@ -41,12 +41,11 @@ export class NewRoomComponent implements OnInit {
     if (this.roomId) {
       this.api.getById('/quartos/' + this.roomId).then(async (room: any) => {
         this.roomForm.patchValue(room);
-
-        console.log("ID Quarto");
-        console.log(room.id);
-
-        //Aqui retorna as url salvas
         const data = await this.api.getImages<ImagemQuarto>(`/imagens/${room.id}`);
+        const existingUrls = data.map(img => img.url);
+
+        const currentFiles = this.roomForm.value.fotos || [];
+        this.roomForm.patchValue({ fotos: [...currentFiles, ...existingUrls] });
       });
     }
 
@@ -69,8 +68,41 @@ export class NewRoomComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    const files = Array.from(event.target.files);
-    this.roomForm.patchValue({ fotos: files });
+    const files = Array.from(event.target.files) as File[];
+
+    const currentFiles = this.roomForm.value.fotos || [];
+    const updatedFiles = [...currentFiles, ...files];
+
+    this.roomForm.patchValue({ fotos: updatedFiles });
+  }
+
+  getImagePreview(file: File | ImagemQuarto | string): string {
+    if (typeof file === 'string') return file;
+    if ('url' in file) return file.url;
+    return URL.createObjectURL(file);
+  }
+
+  removeImage(index: number) {
+    const currentFiles = [...this.roomForm.value.fotos];
+    const fileToRemove = currentFiles[index];
+
+    if (typeof fileToRemove === 'string') {
+      currentFiles.splice(index, 1);
+      this.roomForm.patchValue({ fotos: currentFiles });
+    } else {
+      this.delete(fileToRemove.id);
+    }
+  }
+
+  async delete(idImagem: number) {
+    try {
+      await this.api.deleteImage('/imagens', { id: idImagem });
+      const updatedFiles = this.roomForm.value.fotos.filter((f: any) => f.id !== idImagem);
+      this.roomForm.patchValue({ fotos: updatedFiles });
+      this.toastService.success('Imagem removida com sucesso!');
+    } catch (error) {
+      this.toastService.error('Erro ao remover a imagem.');
+    }
   }
 
   isAmenidadeSelecionada(amenidade: any): boolean {
@@ -101,14 +133,11 @@ export class NewRoomComponent implements OnInit {
           );
           this.toastService.success('Quarto atualizado com sucesso!');
         } else {
-          console.log('Data:')
-          console.log(data);
           await this.api.create('/quartos', data).then(
             response => {
               this.onSaveImage(response.id, data.fotos);
             }
           );
-          
           this.toastService.success('Quarto cadastrado com sucesso!');
         }
         this.router.navigate(['/rooms/index']);
@@ -121,22 +150,19 @@ export class NewRoomComponent implements OnInit {
   }
 
   async onSaveImage(roomId: number, fotos: any) {
+    const files = fotos.filter((f: any) => f instanceof File);
 
-    if (fotos && fotos.length > 0) {
+    if (files.length > 0) {
       const formData = new FormData();
 
-      for (let i = 0; i < fotos.length; i++) {
-        formData.append('imagens', fotos[i]);
+      for (const file of files) {
+        formData.append('imagens', file);
       }
 
       formData.append('idQuarto', roomId.toString());
 
       await this.api.saveImage(`/imagens/room`, formData);
     }
-  }
-
-  async delete(urlImage: any) {
-    await this.api.deleteImage(`/imagens/room`, urlImage);
   }
 
   goBack() {

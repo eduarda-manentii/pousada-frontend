@@ -1,5 +1,4 @@
-<app-header>
-</app-header>
+<app-header></app-header>
 
 <div class="container my-5">
   <h2 class="text-primary-custom mb-3">Quartos</h2>
@@ -11,31 +10,34 @@
 
   <div class="container py-4" *ngIf="quartos().length > 0; else emptyState">
     <div class="row mb-4 border-bottom pb-4" *ngFor="let quarto of quartos()">
-      <img 
-        *ngIf="quarto.urlImagens && quarto.urlImagens.length > 0; else placeholderImage" 
-        [src]="quarto.urlImagens[0].url" 
-        class="img-fluid rounded" 
-        alt="Foto do Quarto" 
-      />
+      
+      <div class="col-md-3 d-flex align-items-center">
+        <ng-container *ngIf="quarto.urlImagens && quarto.urlImagens.length > 0; else placeholderImage">
+          <img 
+            [src]="quarto.urlImagens[0].url" 
+            class="img-fluid rounded w-100" 
+            [style.height.px]="190"
+            style="object-fit: cover;"
+            alt="Foto do Quarto" 
+          />
+        </ng-container>
 
-      <ng-template #placeholderImage>
-        <div 
-          [style.width.px]="300" 
-          [style.height.px]="190"
-        >
+        <ng-template #placeholderImage>
           <img 
             src="assets/images/sem-foto.png" 
             alt="Imagem não disponível" 
-            class="img-fluid h-auto w-auto"
+            class="img-fluid rounded w-100" 
+            [style.height.px]="190"
             style="object-fit: contain;"
           />
-        </div>
-      </ng-template>
+        </ng-template>
+      </div>
 
+      <!-- COLUNA: INFORMAÇÕES -->
       <div class="col-md-6">
-        <h5  class="fw-bold">
+        <h5 class="fw-bold">
           <a [routerLink]="['/rooms/show', quarto.id]">
-                {{ quarto.nome  | capitalize }}
+            {{ quarto.nome | capitalize }}
           </a>
         </h5>
         <p class="text-muted mb-1">
@@ -80,6 +82,4 @@
     [config]="filtroQuartos"
     (filtersApplied)="aplicarFiltros($event)">
   </app-filter-modal>
-  
 </div>
-

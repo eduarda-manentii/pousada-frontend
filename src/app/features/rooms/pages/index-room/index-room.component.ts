@@ -7,6 +7,7 @@ import { FilterModalComponent } from '../../../../shared/components/filter-modal
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
+import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
 
 @Component({
   selector: 'app-index-room',
@@ -26,17 +27,28 @@ export class IndexRoomComponent implements OnInit {
     { key: 'nome', label: 'Nome do Quarto', type: 'text' }
   ];
 
+  constructor(
+    private api: ApiService
+  ) {}
+
   private list = useList<any>('/quartos', (a, b) => a.nome.localeCompare(b.nome));
     
   quartos = this.list.items;
   currentPage = this.list.currentPage;
   totalPages = this.list.totalPages;
 
-  ngOnInit() {
-    this.list.loadPage(0);
-  }
+  async ngOnInit() {
+    await this.list.loadPage(0);
 
-  verDetalhes(id: number) {
+    for (const quarto of this.quartos()) {
+      try {
+        const data = await this.api.getImages<ImagemQuarto>(`/imagens/${quarto.id}`);
+        quarto.urlImagens = data.map(img => ({ url: img.url }));
+      } catch (e) {
+        console.error(`Erro ao carregar imagens do quarto ${quarto.id}`, e);
+        quarto.urlImagens = [];
+      }
+    }
   }
 
   aplicarFiltros(filtros: any) {
