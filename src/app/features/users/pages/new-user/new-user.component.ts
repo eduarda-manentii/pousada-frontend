@@ -8,22 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../interfaces/Users';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-new-user',
   standalone: true,
   imports: [
-    MatAutocompleteModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatButtonModule,
     ReactiveFormsModule,
     HeaderComponent, 
     ReactiveFormsModule,
