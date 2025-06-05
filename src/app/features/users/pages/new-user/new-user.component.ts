@@ -66,7 +66,7 @@ export class NewUserComponent implements OnInit {
       nome: ['', [Validators.required, Validators.minLength(1)]],
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required]],
-      roles: [, [Validators.required]]
+      roles: ['', [Validators.required]]
     });
   }
 
