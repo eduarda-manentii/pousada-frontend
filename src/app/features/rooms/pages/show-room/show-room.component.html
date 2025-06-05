@@ -31,7 +31,7 @@
     </div>
 
     <div class="mt-4 d-flex gap-3">
-      <button class="btn btn-brown w-15" [routerLink]="['/rooms/new', room.id]">
+      <button class="btn btn-brown w-15" (click)="editRooms(room.id)">
         Editar
       </button>
       <button class="btn btn-brown w-15" (click)="excluir()">

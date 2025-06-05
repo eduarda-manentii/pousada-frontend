@@ -57,4 +57,8 @@ export class ShowAmenityComponent {
     }
   }
 
+  editCustomer(customerId: number) {
+    this.router.navigate(['/customers/edit', customerId]);
+  }
+
 }

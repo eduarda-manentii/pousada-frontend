@@ -1,7 +1,9 @@
 <app-header/>
 
 <div class="container py-5">
-  <h2 class="mb-4 text-secondary-custom">Cadatro de Cupom</h2>
+  <h2 class="mb-4 text-secondary-custom">
+    {{ voucherId ? 'Editar Cupom' : 'Cadastro de Cupom' }}
+  </h2>
 
   <form [formGroup]="voucherForm" (ngSubmit)="onSubmit()">
     <div class="row g-3 mb-3">

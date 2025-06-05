@@ -64,4 +64,8 @@ export class ShowCustomerComponent {
     }
   }
 
+  editCustomer(customerId: number) {
+    this.router.navigate(['/customers/edit', customerId]);
+  }
+
 }

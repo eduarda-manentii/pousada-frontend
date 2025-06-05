@@ -1,34 +1,32 @@
-<app-header/>
+<app-header></app-header>
 
 <div class="container my-5">
-    <h2 class="mb-4 text-secondary-custom text-center">
-      Detalhes do Complemento {{ complement.id }}
-    </h2>
+  <h2 class="mb-4 text-secondary-custom">Detalhes do Complemento {{ complement.id }}</h2>
 
-    <div *ngIf="complement; else emptyState">
-      <p><strong>Nome:</strong> {{ complement.nome }}</p>
-      <p><strong>Valor:</strong> {{ complement.valor }}</p>
-      <p><strong>Descrição:</strong> {{ complement.descricao }}</p>
+  <div *ngIf="complement; else emptyState">
+    <p><strong>Nome:</strong> {{ complement.nome }}</p>
+    <p><strong>Valor:</strong> {{ complement.valor | currency: 'BRL':'symbol':'1.2-2' }}</p>
+    <p><strong>Descrição:</strong> {{ complement.descricao }}</p>
 
-      <div class="mt-4 d-flex gap-3">
-        <button class="btn btn-brown w-25" [routerLink]="['/complements/new', complement.id]">
-          Editar
+    <div class="mt-4 d-flex gap-3">
+      <button class="btn btn-brown w-15" (click)="editComplement(complement.id)">
+        Editar
+      </button>
+      <button class="btn btn-brown w-15" (click)="excluir()">
+        Deletar
+      </button>
+
+      <div class="ms-auto">
+        <button class="btn btn-outline-secondary" [routerLink]="['/complements/index']">
+          Voltar
         </button>
-        <button class="btn btn-brown w-25" (click)="openModal()">
-          Deletar
-        </button>
-
-        <div class="ms-auto">
-          <button class="btn btn-outline-secondary" [routerLink]="['/complements/index']">
-            Voltar
-          </button>
-        </div>
       </div>
     </div>
+  </div>
 
-    <ng-template #emptyState>
-      <p class="text-muted text-center">Complemento não encontrado.</p>
-    </ng-template>
+  <ng-template #emptyState>
+    <p class="text-muted">Complemento não encontrado.</p>
+  </ng-template>
 </div>
 
-<app-confirm-modal (confirmed)="onConfirmedInativation($event)"></app-confirm-modal>
+<app-confirm-modal (confirmed)="onConfirmedDelete($event)"></app-confirm-modal>

@@ -1,7 +1,9 @@
 <app-header/>
 
 <div class="container py-5">
-  <h2 class="mb-4 text-secondary-custom">Cadatro de Complemento</h2>
+  <h2 class="mb-4 text-secondary-custom">
+    {{ complementId ? 'Editar Complemento' : 'Cadastro de Complemento' }}
+  </h2>
 
   <form [formGroup]="complementForm" (ngSubmit)="onSubmit()">
     <div class="row g-3 mb-3">

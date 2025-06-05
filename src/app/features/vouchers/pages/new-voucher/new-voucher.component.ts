@@ -3,7 +3,6 @@ import { HeaderComponent } from '../../../../shared/components/header/header.com
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Voucher } from '../../interfaces/Voucher';
@@ -15,13 +14,11 @@ import { RequiredMarkerDirective } from '../../../../shared/directives/required-
   imports: [
     HeaderComponent, 
     ReactiveFormsModule,
-    NgxMaskDirective,
     CommonModule,
     RequiredMarkerDirective
   ],
   templateUrl: './new-voucher.component.html',
-  styleUrl: './new-voucher.component.scss',
-  providers: [provideNgxMask()]
+  styleUrl: './new-voucher.component.scss'
 })
 export class NewVoucherComponent implements OnInit {
   voucherForm!: FormGroup;

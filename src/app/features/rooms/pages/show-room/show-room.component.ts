@@ -57,4 +57,9 @@ export class ShowRoomComponent {
       }
     }
   }
+
+  editRooms(customerId: number) {
+    this.router.navigate(['/rooms/edit', customerId]);
+  }
+
 }

@@ -32,7 +32,7 @@
     </div>
 
     <div class="mt-4 d-flex gap-3">
-      <button class="btn btn-brown w-25" [routerLink]="['/vouchers/new', voucher.id]">
+      <button class="btn btn-brown w-25"  (click)="editVoucher(voucher.id)">
         Editar
       </button>
       <button class="btn btn-brown w-25" (click)="openModal()">
