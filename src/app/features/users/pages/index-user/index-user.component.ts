@@ -1,13 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
+import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
+import { useList } from '../../../../shared/composables/use-list';
 
 @Component({
   selector: 'app-index-user',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [
+    HeaderComponent, 
+    RouterLink, 
+    CommonModule,
+    FilterModalComponent
+  ],
   templateUrl: './index-user.component.html',
   styleUrl: './index-user.component.scss'
 })
-export class IndexUserComponent {
+export class IndexUserComponent implements OnInit{
+
+  userFilter: FiltroConfig[] = [
+    {key: 'nome', label: 'Nome', type: 'text'},
+    {key: 'email', label: 'Email', type: 'text'},
+  ];
+  
+  private list = useList<any>('/usuarios', (a, b) => a.id.localeCompare(b.id));
+
+  users = this.list.items;
+  currentPage = this.list.currentPage;
+  totalPages = this.list.totalPages;
+
+  ngOnInit() {
+    this.list.loadPage(0);
+  }
+
+  applyFilters(filters: any) {
+    this.list.applyFilters(filters);
+  }
+
+  nextPage() {
+    this.list.nextPage();
+  }
+
+  previousPage() {
+    this.list.previousPage();
+  }
 
 }

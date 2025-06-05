@@ -1,4 +1,33 @@
-<app-header>
-</app-header>
+<app-header/>
 
-<p>show-user works!</p>
+<div class="container my-5">
+  <h2 class="mb-4 text-secondary-custom text-center">
+    Detalhes do usuário {{ user.id }}
+  </h2>
+
+  <div *ngIf="user; else emptyState">
+    <p><strong>Nome:</strong> {{ user.nome }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <div class="mt-4 d-flex gap-3">
+      <button class="btn btn-brown w-25" [routerLink]="['/users/new', user.id]">
+        Editar
+      </button>
+      <button class="btn btn-brown w-25" (click)="openModal()">
+        Deletar
+      </button>
+
+      <div class="ms-auto">
+        <button class="btn btn-outline-secondary" [routerLink]="['/users/index']">
+          Voltar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="text-muted text-center">Usuário não encontrado.</p>
+  </ng-template>
+</div>
+
+<app-confirm-modal (confirmed)="onConfirmedInativation($event)"></app-confirm-modal>
