@@ -41,17 +41,22 @@ export class NewRoomComponent implements OnInit {
     if (this.roomId) {
       this.api.getById('/quartos/' + this.roomId).then(async (room: any) => {
         this.roomForm.patchValue(room);
+
         const data = await this.api.getImages<ImagemQuarto>(`/imagens/${room.id}`);
-        const existingImages = data;
+        console.log(data)
+        const existingImages = data.map((img: ImagemQuarto) => ({
+          id: img.id,
+          url: img.url,
+          fileId: img.fileId
+        }));
 
         const currentFiles = this.roomForm.value.fotos || [];
         this.roomForm.patchValue({ fotos: [...currentFiles, ...existingImages] });
       });
     }
-
     this.api.get('/amenidades').then((data: any) => {
       this.amenidadesDisponiveis = data.content;
-    });
+    });   
   }
 
   buildForm() {
@@ -84,7 +89,9 @@ export class NewRoomComponent implements OnInit {
 
   removeImage(index: number) {
     const currentFiles = [...this.roomForm.value.fotos];
+    console.log("currentFiles:", currentFiles)
     const fileToRemove = currentFiles[index];
+    console.log("fileToRemove:", fileToRemove)
 
     if (fileToRemove instanceof File || typeof fileToRemove === 'string') {
       currentFiles.splice(index, 1);
@@ -95,6 +102,8 @@ export class NewRoomComponent implements OnInit {
   }
 
   async delete(imagem: { id: number; fileId: string; url: string }, index: number) {
+    console.log(imagem)
+    console.log(index)
     try {
       await this.api.deleteImage('/imagens', {
         id: imagem.id,

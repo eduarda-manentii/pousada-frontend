@@ -47,9 +47,7 @@ export class ApiService {
   async deleteImage(endpoint: string, object: any): Promise<any> {
     try {
       const response = await axiosInstance.delete(endpoint, {
-        data: {
-          dto: object,
-        }
+        data: object,
       });
       return response.data;
     } catch (error) {
