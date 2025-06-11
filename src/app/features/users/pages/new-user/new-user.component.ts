@@ -8,7 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../interfaces/Users';
-import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-new-user',
