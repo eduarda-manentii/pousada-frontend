@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgxMaskDirective } from 'ngx-mask';
 import { CommonModule } from '@angular/common';
 import { RequiredMarkerDirective } from '../../../../shared/directives/required-marker.directive';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,8 +25,6 @@ export class NewUserComponent implements OnInit {
 
   userForm!: FormGroup;
   userId?: number | undefined;
-  roles: string[] = ['Administrador', 'Funcionário', 'Gerente'];
-  filteredRoles: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -55,28 +52,7 @@ export class NewUserComponent implements OnInit {
       nome: ['', [Validators.required, Validators.minLength(1)]],
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required]],
-      roles: [, [Validators.required]]
     });
-  }
-
-  onRoleInput() {
-    const value = this.userForm.get('roles')?.value?.toLowerCase() || '';
-
-    if (value) {
-      this.filteredRoles = this.roles.filter(role => 
-        role.toLowerCase().includes(value)
-      );
-    }
-  }
-
-  selectRole(role: string) {
-    this.userForm.get('roles')?.setValue(role);
-    this.filteredRoles = [];
-  }
-
-  openRoleModal() {
-    console.log('Abrir modal de criação de role...');
-    // Aqui você chamará a modal futuramente
   }
 
   async onSubmit() {
