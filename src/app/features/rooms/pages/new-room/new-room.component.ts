@@ -41,17 +41,22 @@ export class NewRoomComponent implements OnInit {
     if (this.roomId) {
       this.api.getById('/quartos/' + this.roomId).then(async (room: any) => {
         this.roomForm.patchValue(room);
+
         const data = await this.api.getImages<ImagemQuarto>(`/imagens/${room.id}`);
-        const existingUrls = data.map(img => img.url);
+        console.log(data)
+        const existingImages = data.map((img: ImagemQuarto) => ({
+          id: img.id,
+          url: img.url,
+          fileId: img.fileId
+        }));
 
         const currentFiles = this.roomForm.value.fotos || [];
-        this.roomForm.patchValue({ fotos: [...currentFiles, ...existingUrls] });
+        this.roomForm.patchValue({ fotos: [...currentFiles, ...existingImages] });
       });
     }
-
     this.api.get('/amenidades').then((data: any) => {
       this.amenidadesDisponiveis = data.content;
-    });
+    });   
   }
 
   buildForm() {
@@ -78,27 +83,38 @@ export class NewRoomComponent implements OnInit {
 
   getImagePreview(file: File | ImagemQuarto | string): string {
     if (typeof file === 'string') return file;
-    if ('url' in file) return file.url;
-    return URL.createObjectURL(file);
+    if (file instanceof File) return URL.createObjectURL(file);
+    return file.url;
   }
 
   removeImage(index: number) {
     const currentFiles = [...this.roomForm.value.fotos];
+    console.log("currentFiles:", currentFiles)
     const fileToRemove = currentFiles[index];
+    console.log("fileToRemove:", fileToRemove)
 
-    if (typeof fileToRemove === 'string') {
+    if (fileToRemove instanceof File || typeof fileToRemove === 'string') {
       currentFiles.splice(index, 1);
       this.roomForm.patchValue({ fotos: currentFiles });
-    } else {
-      this.delete(fileToRemove.id);
+    } else if (fileToRemove?.id && fileToRemove?.fileId && fileToRemove?.url) {
+      this.delete(fileToRemove, index);
     }
   }
 
-  async delete(idImagem: number) {
+  async delete(imagem: { id: number; fileId: string; url: string }, index: number) {
+    console.log(imagem)
+    console.log(index)
     try {
-      await this.api.deleteImage('/imagens', { id: idImagem });
-      const updatedFiles = this.roomForm.value.fotos.filter((f: any) => f.id !== idImagem);
-      this.roomForm.patchValue({ fotos: updatedFiles });
+      await this.api.deleteImage('/imagens', {
+        id: imagem.id,
+        fileId: imagem.fileId,
+        url: imagem.url
+      });
+
+      const currentFiles = [...this.roomForm.value.fotos];
+      currentFiles.splice(index, 1);
+      this.roomForm.patchValue({ fotos: currentFiles });
+
       this.toastService.success('Imagem removida com sucesso!');
     } catch (error) {
       this.toastService.error('Erro ao remover a imagem.');
