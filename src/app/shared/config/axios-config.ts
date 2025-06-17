@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { ApiError } from "../../core/errors/api-error";
 
 const axiosInstance = axios.create({
@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  (config) => {
+  async (config: InternalAxiosRequestConfig) => {
 
     const token = localStorage.getItem('auth_token');
     if (token) {
@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response: AxiosResponse) => response,
   (error) => {
 
     const response = error.response;
@@ -38,8 +38,8 @@ axiosInstance.interceptors.response.use(
     const [firstKey] = Object.keys(errors || {});
     const firstError = errors?.[firstKey];
 
-    const code = firstError?.codigo ?? 0;
-    const message = firstError?.mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
+    const code = firstError[0].codigo ?? 0;
+    const message = firstError[0].mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
     console.log(firstError?.mensagem);
 
     return Promise.reject(new ApiError(code, message));
