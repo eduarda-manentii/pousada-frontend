@@ -22,20 +22,18 @@ export class IndexReservationComponent implements OnInit {
 
   filtroReservas: FiltroConfig[] = [
     { key: 'quarto', label: 'Nome do Quarto', type: 'text' },
-    { key: 'cliente', label: 'Nome do Cliente', type: 'text' }
+    { key: 'cliente', label: 'Nome do Cliente', type: 'text' },
+    {keys: ['checkIn', 'checkOut'], label: 'Período', type: 'range', subtype: 'date'},
   ];
 
-  private list = useList<any>('/reservas', (a, b) => a.nome.localeCompare(b.nome));
-    
+  private list = useList<any>('/reservas', (a, b) => new Date(a.checkIn).getTime() - new Date(b.checkIn).getTime());
+
   reservas = this.list.items;
   currentPage = this.list.currentPage;
   totalPages = this.list.totalPages;
 
   ngOnInit() {
     this.list.loadPage(0);
-  }
-
-  verDetalhes(id: number) {
   }
 
   aplicarFiltros(filtros: any) {
