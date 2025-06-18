@@ -1,7 +1,9 @@
 <app-header></app-header>
 
 <div class="container py-5" *ngIf="reservationForm">
-  <h2 class="mb-4 text-secondary-custom">Cadastro de Reserva</h2>
+  <h2 class="mb-4 text-secondary-custom">
+    {{ reservationId ? 'Editar Reserva' : 'Cadastro de Reserva' }}
+  </h2>
 
   <form [formGroup]="reservationForm">
     <div class="row g-3 mb-3">
@@ -27,7 +29,7 @@
 
       <div class="col-md-4">
         <label class="form-label" [appRequiredMarker]="true">Status</label>
-        <select class="form-select" formControlName="statusDaReserva" [disabled]="!isEditing">
+        <select class="form-select" formControlName="statusDaReserva" [disabled]="!reservationId">
           <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
         </select>
       </div>
@@ -52,6 +54,7 @@
           class="form-check-input"
           [id]="'comp-' + comp.id"
           [value]="comp.id"
+          [checked]="isComplementoSelecionado(comp.id)"
           (change)="onComplementoChange($event, comp)"
         />
         <label class="form-check-label" [for]="'comp-' + comp.id">

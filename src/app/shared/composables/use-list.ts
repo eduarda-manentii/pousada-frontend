@@ -20,7 +20,6 @@ export function useList<T>(endpoint: string, sortFn: (a: T, b: T) => number = ()
 
   async function applyFilters(filtros: any) {
     const data = await api.getWithFilters<T>(endpoint, 0, pageSize, 'id,asc', filtros);
-    console.log(data)
     items.set(data.content.sort(sortFn));
     currentPage.set(data.number);
     totalPages.set(data.totalPages);

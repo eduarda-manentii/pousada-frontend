@@ -59,11 +59,7 @@ export class NewUserComponent implements OnInit {
   async onSubmit() {
     if (this.userForm.valid) {
       const userdata = this.userForm.value;
-
-      console.log(userdata);
-
       if (this.userId) {
-
         try {
           await this.api.put(`/usuarios/${this.userId}`, userdata);
           this.toastService.success("Usuário atualizado com sucesso!");
@@ -72,7 +68,6 @@ export class NewUserComponent implements OnInit {
           this.toastService.error(error);
         }
       } else {
-
         try {
           await this.api.create('/usuarios', userdata);
           this.toastService.success("Usuário salvo com sucesso!");

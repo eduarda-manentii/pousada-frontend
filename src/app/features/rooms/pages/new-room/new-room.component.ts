@@ -48,7 +48,6 @@ export class NewRoomComponent implements OnInit {
         this.roomForm.patchValue(room);
 
         const data = await this.api.getImages<ImagemQuarto>(`/imagens/${room.id}`);
-        console.log(data)
         const existingImages = data.map((img: ImagemQuarto) => ({
           id: img.id,
           url: img.url,
@@ -115,8 +114,6 @@ export class NewRoomComponent implements OnInit {
   }
 
   async delete(imagem: { id: number; fileId: string; url: string }, index: number) {
-    console.log(imagem)
-    console.log(index)
     try {
       await this.api.deleteImage('/imagens', {
         id: imagem.id,

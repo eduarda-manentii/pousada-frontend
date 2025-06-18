@@ -21,7 +21,7 @@ import { RequiredMarkerDirective } from '../../../../shared/directives/required-
     HeaderComponent,
     NgxMaskDirective,
     CommonModule,
-    RequiredMarkerDirective 
+    RequiredMarkerDirective
   ],
   templateUrl: './new-customer.component.html',
   styleUrl: './new-customer.component.scss',
@@ -78,34 +78,28 @@ export class NewCustomerComponent implements OnInit {
   async onSubmit() {
     if (this.customerForm.valid && this.locationForm.valid) {
       const locationData = this.locationForm.getRawValue();
-      const customerData = {
-        id: this.customerId,
-        ...this.customerForm.getRawValue(),
-        endereco: { id: locationData.id }
-      };
       if (this.customerId) {
         try {
-          await this.api.put(`/clientes/${this.customerId}`, customerData);
+          const customerData = {
+            id: this.customerId,
+            ...this.customerForm.getRawValue(),
+            endereco: { id: locationData.id }
+          };
+          await this.api.put(`/clientes`, customerData);
           this.toastService.success("Cliente atualizado com sucesso!");
           this.router.navigate(['/customers/index'])
         } catch (error: any) {
           this.toastService.error(error);
         }
       } else {
-
         try {
-          console.log(locationData);
           const location = await this.api.create('/enderecos', locationData);
           const locationId = location.id;
-
           const newCustomerData = {
             ...this.customerForm.getRawValue(),
             endereco: { id: locationId }
           };
-
-          console.log(newCustomerData);
           await this.api.create('/clientes', newCustomerData);
-
           this.toastService.success("Cliente salvo com sucesso!");
           this.router.navigate(['/customers/index']);
         } catch (error: any) {

@@ -12,8 +12,8 @@ import { ConfirmModalComponent } from '../../../../shared/components/confirm-mod
   selector: 'app-show-voucher',
   standalone: true,
   imports: [
-    HeaderComponent, 
-    CommonModule, 
+    HeaderComponent,
+    CommonModule,
     RouterLink,
     ConfirmModalComponent
   ],
@@ -48,10 +48,8 @@ export class ShowVoucherComponent implements OnInit {
   }
 
   async onConfirmedInativation(result: boolean) {
-
     if (result) {
       try {
-        console.log(`/cupons/${this.voucherId}`);
         await this.api.delete(`/cupons/${this.voucherId}`);
         this.toastService.success('Cupom inativado com sucesso');
         this.router.navigate(['/vouchers/index']);

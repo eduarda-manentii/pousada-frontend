@@ -38,7 +38,6 @@ export class ShowReservationComponent {
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log('ID recebido:', id);
     if (id) {
       this.reservationId = id;
       const data = await this.api.getById(`/reservas/${id}`);

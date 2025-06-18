@@ -28,7 +28,7 @@ export class NewReservationComponent implements OnInit {
   valorTotal: number = 0;
   selectedComplementos: any[] = [];
   selectedQuarto: any;
-  isEditing = false;
+  reservationId?: number;
 
   constructor(
     private fb: FormBuilder,
@@ -40,14 +40,14 @@ export class NewReservationComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.isEditing = !!id;
+    this.reservationId = Number(this.route.snapshot.paramMap.get('id'));
 
     this.reservationForm = this.fb.group({
       quarto: ['', Validators.required],
       cliente: ['', Validators.required],
       checkIn: ['', Validators.required],
       checkOut: ['', Validators.required],
-      statusDaReserva: [{ value: 'ABERTA', disabled: !this.isEditing }, Validators.required],
+      statusDaReserva: [{ value: 'ABERTA', disabled: !this.reservationId }, Validators.required],
       observacao: [''],
       complementos: [[]]
     });
@@ -56,13 +56,13 @@ export class NewReservationComponent implements OnInit {
     this.api.get('/clientes').then((res: any) => this.clientes = res.content);
     this.api.get('/complementos').then((res: any) => this.complementos = res.content);
 
-    if (this.isEditing) {
+    if (this.reservationId) {
       this.api.get(`/reservas/${id}`).then((res: any) => {
         this.reservationForm.patchValue({
           quarto: res.quarto.id,
           cliente: res.cliente.id,
-          checkIn: res.checkIn,
-          checkOut: res.checkOut,
+          checkIn: res.checkIn?.split('T')[0],
+          checkOut: res.checkOut?.split('T')[0],
           statusDaReserva: res.statusDaReserva,
           observacao: res.observacao,
           complementos: res.complementos.map((c: any) => c.id)
@@ -92,6 +92,10 @@ export class NewReservationComponent implements OnInit {
     this.calcularValorTotal();
   }
 
+  isComplementoSelecionado(id: number): boolean {
+    return this.selectedComplementos.some(c => c.id === id);
+  }
+
   calcularValorTotal() {
     const { checkIn, checkOut } = this.reservationForm.value;
     if (checkIn && checkOut && this.selectedQuarto) {
@@ -106,23 +110,46 @@ export class NewReservationComponent implements OnInit {
 
   async onSubmit() {
     if (this.reservationForm.valid) {
-      try {
-        const form = this.reservationForm.getRawValue();
-        const data = {
-          quartoId: Number(form.quarto) ,
-          clienteId: Number(form.cliente) ,
-          checkIn: new Date(form.checkIn).toISOString(),
-          checkOut: new Date(form.checkOut).toISOString(),
-          statusDaReserva: form.statusDaReserva,
-          observacao: form.observacao,
-          complementos: this.selectedComplementos.map(c => ({ id: c.id })),
-          valorDaReserva: this.valorTotal
-        };
-        await this.api.create('/reservas', data);
-        this.toast.success('Reserva salva com sucesso!');
-        this.router.navigate(['/reservations/index']);
-      } catch (err) {
-        this.toast.error('Erro ao salvar reserva.');
+      const reservationData = {
+        ...this.reservationForm.getRawValue()
+      };
+      if(this.reservationId) {
+        try {
+          const data = {
+            id: this.reservationId,
+            quartoId: Number(reservationData.quarto) ,
+            clienteId: Number(reservationData.cliente) ,
+            checkIn: new Date(reservationData.checkIn).toISOString(),
+            checkOut: new Date(reservationData.checkOut).toISOString(),
+            statusDaReserva: reservationData.statusDaReserva,
+            observacao: reservationData.observacao,
+            complementos: this.selectedComplementos.map(c => ({ id: c.id })),
+            valorDaReserva: this.valorTotal
+          };
+          await this.api.put(`/reservas`, data);
+          this.toast.success("Reserva atualizada com sucesso!");
+          this.router.navigate(['/reservations/index'])
+        } catch (error: any) {
+          this.toast.error(error);
+        }
+      } else {
+        try {
+          const data = {
+            quartoId: Number(reservationData.quarto) ,
+            clienteId: Number(reservationData.cliente) ,
+            checkIn: new Date(reservationData.checkIn).toISOString(),
+            checkOut: new Date(reservationData.checkOut).toISOString(),
+            statusDaReserva: reservationData.statusDaReserva,
+            observacao: reservationData.observacao,
+            complementos: this.selectedComplementos.map(c => ({ id: c.id })),
+            valorDaReserva: this.valorTotal
+          };
+          await this.api.create('/reservas', data);
+          this.toast.success('Reserva salva com sucesso!');
+          this.router.navigate(['/reservations/index']);
+        } catch (error: any) {
+          this.toast.error(error);
+        }
       }
     } else {
       this.toast.error('Preencha todos os campos obrigatórios.');
