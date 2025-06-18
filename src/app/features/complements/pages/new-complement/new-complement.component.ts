@@ -13,7 +13,7 @@ import { RequiredMarkerDirective } from '../../../../shared/directives/required-
   selector: 'app-new-complement',
   standalone: true,
   imports: [
-    HeaderComponent, 
+    HeaderComponent,
     ReactiveFormsModule,
     NgxMaskDirective,
     CommonModule,
@@ -57,21 +57,18 @@ export class NewComplementComponent implements OnInit {
   }
 
   async onSubmit() {
-    
     if (this.complementForm.valid) {
       const complementdata = this.complementForm.value;
-
       if (this.complementId) {
-
         try {
-          await this.api.put(`/complementos/${this.complementId}`, complementdata);
+          complementdata.id = this.complementId;
+          await this.api.put(`/complementos`, complementdata);
           this.toastService.success("Complemento atualizado com sucesso!");
           this.router.navigate(['/complements/index'])
         } catch (error: any) {
           this.toastService.error(error);
         }
       } else {
-
         try {
           await this.api.create('/complementos', complementdata);
           this.toastService.success("Complemento salvo com sucesso!");
