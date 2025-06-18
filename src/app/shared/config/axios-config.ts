@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
 import { ApiError } from "../../core/errors/api-error";
 
 const axiosInstance = axios.create({
@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  async (config: InternalAxiosRequestConfig) => {
+  (config) => {
 
     const token = localStorage.getItem('auth_token');
     if (token) {
@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (response: AxiosResponse) => response,
+  (response) => response,
   (error) => {
 
     const response = error.response;
@@ -35,14 +35,8 @@ axiosInstance.interceptors.response.use(
       //TODO Não autorizado, redirecionar para tela de login
     }
 
-    const [firstKey] = Object.keys(errors || {});
-    const firstError = errors?.[firstKey];
-
-    const code = firstError?.codigo ?? 0;
-    const message = firstError?.mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
-    console.log(firstError?.mensagem);
-
-    return Promise.reject(new ApiError(code, message));
+    const message = errors.mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
+    return Promise.reject(new ApiError(message))
   }
 );
 
