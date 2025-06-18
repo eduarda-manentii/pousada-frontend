@@ -11,23 +11,18 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-
     const token = localStorage.getItem('auth_token');
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
-    
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-
     const response = error.response;
     const errors = response?.data;
 
@@ -35,8 +30,8 @@ axiosInstance.interceptors.response.use(
       //TODO Não autorizado, redirecionar para tela de login
     }
 
-    const message = errors.mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
-    return Promise.reject(new ApiError(message))
+    const message = errors?.mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
+    return Promise.reject(new ApiError(message));
   }
 );
 

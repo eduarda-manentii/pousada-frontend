@@ -112,12 +112,9 @@ export class ApiService {
     sort: string,
     filtros: FiltroConfigValue[]
   ): Promise<Page<T>> {
-
     try {
       const searchParts: string[] = [];
 
-      console.log("Filtros abomba:");
-      console.log(filtros);
       for (const filtro of filtros) {
         const { type, key, keys, value } = filtro;
 
@@ -127,23 +124,15 @@ export class ApiService {
             const { de, ate } = parsed;
 
             if (de) searchParts.push(`${keys[0]}>=${de}`);
-
-            if (ate) searchParts.push(`${keys[1]}<=${ate}`)
-          } catch (e) {
-            console.warn('Erro ao processar filtro de range:', filtro);
-          }
+            if (ate) searchParts.push(`${keys[1]}<=${ate}`);
+          } catch {}
         } else if (key && value !== null && value !== '') {
           if (type === 'text') {
-            searchParts.push(`${key}=='${value}*'`)
-          } else if (type === 'boolean') {
-            searchParts.push(`${key}==${value}`);
+            searchParts.push(`${key}=='${value}*'`);
           } else {
             searchParts.push(`${key}==${value}`);
           }
         }
-
-        console.log("Filtros aplicados:");
-        console.log(searchParts);
       }
 
       const params: any = {
@@ -165,12 +154,12 @@ export class ApiService {
 
   async login(email: string, senha: string): Promise<LoginResponse> {
     try {
-      const response = await axiosInstance.post<LoginResponse>("auth/login", {
+      const response = await axiosInstance.post<LoginResponse>('auth/login', {
         email,
         senha
       });
-      sessionStorage.setItem("auth-token", response.data.token);
-      sessionStorage.setItem("username", response.data.nome);
+      localStorage.setItem('auth_token', response.data.token);
+      localStorage.setItem('username', response.data.nome);
       return response.data;
     } catch (error) {
       throw this.handleError(error);
@@ -179,17 +168,22 @@ export class ApiService {
 
   async signup(nome: string, email: string, senha: string): Promise<LoginResponse> {
     try {
-      const response = await axiosInstance.post<LoginResponse>("auth/register", {
+      const response = await axiosInstance.post<LoginResponse>('auth/register', {
         nome,
         email,
         senha
       });
-      sessionStorage.setItem("auth-token", response.data.token);
-      sessionStorage.setItem("username", response.data.nome);
+      localStorage.setItem('auth_token', response.data.token);
+      localStorage.setItem('username', response.data.nome);
       return response.data;
     } catch (error) {
       throw this.handleError(error);
     }
+  }
+
+  logout(): void {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('username');
   }
 
   handleError(error: any): any {
