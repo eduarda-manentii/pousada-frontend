@@ -3,8 +3,8 @@ import { DefaultLoginLayoutComponent } from '../../components/default-login-layo
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PrimaryInputComponent } from '../../../../shared/components/primary-input/primary-input.component';
 import { Router } from '@angular/router';
-import { LoginService } from '../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
+import { ApiService } from '../../../../shared/services/backend-api.service';
 
 @Component({
   selector: 'app-signup',
@@ -14,9 +14,6 @@ import { ToastrService } from 'ngx-toastr';
     DefaultLoginLayoutComponent,
     ReactiveFormsModule
   ],
-  providers: [
-    LoginService
-  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
@@ -25,27 +22,30 @@ export class SignupComponent {
 
   constructor(
     private router: Router,
-    private loginService: LoginService,
+    private apiService: ApiService,
     private toastService: ToastrService
   ) {
     this.singupForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      nome: new FormControl('', [Validators.required, Validators.minLength(4)]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      senha: new FormControl('', [Validators.required, Validators.minLength(6)]),
       passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(6)])
     })
   }
 
-  submit() {
-    this.loginService.signup(this.singupForm.value.name, this.singupForm.value.email, this.singupForm.value.password).subscribe({
-      next: () => {
-        this.toastService.success("Login feito com sucesso!");
-        this.router.navigate(['/home']);
-      },
-      error: () => {
-        this.toastService.error("Não foi possível efetuar o login.");
-      }
-    });
+  async submit() {
+    try {
+      await this.apiService.signup(
+        this.singupForm.value.nome,
+        this.singupForm.value.email,
+        this.singupForm.value.senha
+      );
+
+      this.toastService.success("Login feito com sucesso!");
+      this.router.navigate(['/home']);
+    } catch (error) {
+      this.toastService.error("Não foi possível efetuar o login.");
+    }
   }
 
   navigate() {

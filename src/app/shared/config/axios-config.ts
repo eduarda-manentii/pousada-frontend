@@ -35,14 +35,8 @@ axiosInstance.interceptors.response.use(
       //TODO Não autorizado, redirecionar para tela de login
     }
 
-    const [firstKey] = Object.keys(errors || {});
-    const firstError = errors?.[firstKey];
-
-    const code = firstError?.codigo ?? 0;
-    const message = firstError?.mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
-    console.log(firstError?.mensagem);
-
-    return Promise.reject(new ApiError(code, message));
+    const message = errors.mensagem ?? 'Um erro inesperado ocorreu, por favor tente mais tarde';
+    return Promise.reject(new ApiError(message))
   }
 );
 

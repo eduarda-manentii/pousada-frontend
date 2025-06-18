@@ -3,6 +3,11 @@ import axiosInstance from '../config/axios-config';
 import { ApiError } from '../../core/errors/api-error';
 import { FiltroConfigValue } from '../interfaces/filtro-config';
 
+export type LoginResponse = {
+  nome: string;
+  token: string;
+};
+
 interface Page<T> {
   content: T[];
   number: number;
@@ -158,11 +163,39 @@ export class ApiService {
     }
   }
 
-  handleError(error: any): string {
-    if (error instanceof ApiError) {
-      return error.mensagem;
+  async login(email: string, senha: string): Promise<LoginResponse> {
+    try {
+      const response = await axiosInstance.post<LoginResponse>("auth/login", {
+        email,
+        senha
+      });
+      sessionStorage.setItem("auth-token", response.data.token);
+      sessionStorage.setItem("username", response.data.nome);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
     }
+  }
 
+  async signup(nome: string, email: string, senha: string): Promise<LoginResponse> {
+    try {
+      const response = await axiosInstance.post<LoginResponse>("auth/register", {
+        nome,
+        email,
+        senha
+      });
+      sessionStorage.setItem("auth-token", response.data.token);
+      sessionStorage.setItem("username", response.data.nome);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  handleError(error: any): any {
+    if (error instanceof ApiError) {
+      return error;
+    }
     return 'Erro inesperado ao processar a requisição';
   }
 
