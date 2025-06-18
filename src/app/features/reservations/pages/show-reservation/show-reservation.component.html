@@ -1,4 +1,63 @@
-<app-header>
-</app-header>
+<app-header></app-header>
 
-<p>show-reservation works!</p>
+<div class="container my-5">
+  <h2 class="mb-4 text-secondary-custom">Detalhes da Reserva {{ reservation?.id }}</h2>
+
+  <div *ngIf="reservation; else emptyState">
+    <p><strong>Status:</strong> {{ reservation.statusDaReserva }}</p>
+    <p><strong>Check-in:</strong> {{ reservation.checkIn | date: 'dd/MM/yyyy' }}</p>
+    <p><strong>Check-out:</strong> {{ reservation.checkOut | date: 'dd/MM/yyyy' }}</p>
+    <p><strong>Valor:</strong> R$ {{ reservation.valorDaReserva | number: '1.2-2' }}</p>
+
+    <hr>
+
+    <h4 class="mt-3">Cliente</h4>
+    <p><strong>Nome:</strong> {{ reservation.cliente?.nome | capitalize }}</p>
+    <p><strong>Email:</strong> {{ reservation.cliente?.email }}</p>
+    <p><strong>Celular:</strong> {{ reservation.cliente?.celular | phoneFormat }}</p>
+
+    <hr>
+
+    <h4 class="mt-3">Quarto</h4>
+    <p><strong>Nome:</strong> {{ reservation.quarto?.nome }}</p>
+    <p><strong>Capacidade:</strong> {{ reservation.quarto?.capacidade }} pessoas</p>
+    <p><strong>Valor da diária:</strong> R$ {{ reservation.quarto?.valorDiaria | number: '1.2-2' }}</p>
+
+    <p><strong>Amenidades:</strong>
+      <span *ngFor="let amenidade of reservation.quarto?.amenidades; let last = last">
+        {{ amenidade.nome }}<span *ngIf="!last">, </span>
+      </span>
+    </p>
+
+    <p *ngIf="reservation.observacao"><strong>Observações da Reserva:</strong> {{ reservation.observacao }}</p>
+
+    <hr>
+
+    <h4 class="mt-3">Complementos</h4>
+    <ul *ngIf="reservation.complementos?.length > 0; else noComplements">
+      <li *ngFor="let comp of reservation.complementos">
+        {{ comp.nome }} – R$ {{ comp.valor | number: '1.2-2' }} ({{ comp.descricao }})
+      </li>
+    </ul>
+    <ng-template #noComplements>
+      <p class="text-muted">Nenhum complemento adicionado.</p>
+    </ng-template>
+
+    <div class="mt-4 d-flex gap-3">
+      <button class="btn btn-brown w-15" (click)="editReservation(reservation.id)">Editar</button>
+      <button class="btn btn-brown w-15" (click)="excluir()">Deletar</button>
+
+      <div class="ms-auto">
+        <button class="btn btn-outline-secondary" [routerLink]="['/reservations/index']">
+          Voltar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="text-muted">Reserva não encontrada.</p>
+  </ng-template>
+</div>
+
+<app-confirm-modal (confirmed)="onConfirmedDelete($event)"></app-confirm-modal>
