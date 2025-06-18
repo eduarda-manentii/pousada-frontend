@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { RequiredMarkerDirective } from '../../../../shared/directives/required-marker.directive';
 import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
+import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-new-room',
@@ -16,15 +17,19 @@ import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
     ReactiveFormsModule,
     HeaderComponent,
     CommonModule,
-    RequiredMarkerDirective
+    RequiredMarkerDirective,
+    ConfirmModalComponent
   ],
   templateUrl: './new-room.component.html',
   styleUrl: './new-room.component.scss'
 })
 export class NewRoomComponent implements OnInit {
+  @ViewChild('confirmModal') confirmModal!: ConfirmModalComponent;
+
   roomForm!: FormGroup;
   roomId?: number;
   amenidadesDisponiveis: any[] = [];
+  imageToDelete: { index: number; data: any } | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,7 +61,7 @@ export class NewRoomComponent implements OnInit {
     }
     this.api.get('/amenidades').then((data: any) => {
       this.amenidadesDisponiveis = data.content;
-    });   
+    });
   }
 
   buildForm() {
@@ -88,17 +93,25 @@ export class NewRoomComponent implements OnInit {
   }
 
   removeImage(index: number) {
-    const currentFiles = [...this.roomForm.value.fotos];
-    console.log("currentFiles:", currentFiles)
-    const fileToRemove = currentFiles[index];
-    console.log("fileToRemove:", fileToRemove)
+    const file = this.roomForm.value.fotos[index];
+    this.imageToDelete = { index, data: file };
+    this.confirmModal.open('Tem certeza que deseja remover esta imagem?');
+  }
 
-    if (fileToRemove instanceof File || typeof fileToRemove === 'string') {
+  onConfirmDelete(confirmed: boolean) {
+    if (!confirmed || !this.imageToDelete) return;
+
+    const { index, data } = this.imageToDelete;
+    const currentFiles = [...this.roomForm.value.fotos];
+
+    if (data instanceof File || typeof data === 'string') {
       currentFiles.splice(index, 1);
       this.roomForm.patchValue({ fotos: currentFiles });
-    } else if (fileToRemove?.id && fileToRemove?.fileId && fileToRemove?.url) {
-      this.delete(fileToRemove, index);
+    } else if (data?.id && data?.fileId && data?.url) {
+      this.delete(data, index);
     }
+
+    this.imageToDelete = null;
   }
 
   async delete(imagem: { id: number; fileId: string; url: string }, index: number) {
@@ -141,7 +154,7 @@ export class NewRoomComponent implements OnInit {
       try {
         const data = this.roomForm.value;
         if (this.roomId) {
-          data.id = this.roomId; 
+          data.id = this.roomId;
           await this.api.put('/quartos', data).then(
             response => {
               this.onSaveImage(response.id, data.fotos);
@@ -184,5 +197,5 @@ export class NewRoomComponent implements OnInit {
   goBack() {
     this.router.navigate(['/rooms/index']);
   }
-  
+
 }
