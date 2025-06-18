@@ -13,6 +13,7 @@
       <thead class="bg-primary-custom">
         <tr>
           <th>Nome</th>
+          <th>Ìcone</th>
         </tr>
       </thead>
       <tbody>
@@ -22,6 +23,7 @@
               {{ amenity.nome | capitalize }}
             </a>
           </td>
+          <td> <i [class]="amenity.icone" class="ms-2"> </i> </td>
         </tr>
       </tbody>
     </table>
