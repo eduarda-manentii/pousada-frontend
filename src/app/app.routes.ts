@@ -30,12 +30,13 @@ import { ShowComplementComponent } from './features/complements/pages/show-compl
 import { IndexComplementComponent } from './features/complements/pages/index-complement/index-complement.component';
 
 export const routes: Routes = [
+  { path: '',                        redirectTo: 'login', pathMatch: 'full' },
   { path : "login",                  component: LoginComponent },
   { path : "signup",                 component: SignupComponent },
   { path : "home",                   component: HomeComponent },
   { path : "reports",                component: ReportsComponent },
   { path : "customers/new",          component: NewCustomerComponent },
-  { path:  "customers/new/:id",       component: NewCustomerComponent },
+  { path:  "customers/new/:id",      component: NewCustomerComponent },
   { path : "customers/show/:id",     component: ShowCustomerComponent },
   { path : "customers/edit/:id",     component: NewCustomerComponent },
   { path : "customers/index",        component: IndexCustomerComponent },
