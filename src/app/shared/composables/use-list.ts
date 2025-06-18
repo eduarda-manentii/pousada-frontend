@@ -1,4 +1,3 @@
-// shared/hooks/use-list.ts (ou "shared/composables/use-list.ts")
 import { inject, signal } from '@angular/core';
 import { ApiService } from '../services/backend-api.service';
 

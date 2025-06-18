@@ -10,8 +10,8 @@ import { useList } from '../../../../shared/composables/use-list';
   selector: 'app-index-user',
   standalone: true,
   imports: [
-    HeaderComponent, 
-    RouterLink, 
+    HeaderComponent,
+    RouterLink,
     CommonModule,
     FilterModalComponent
   ],
@@ -24,8 +24,8 @@ export class IndexUserComponent implements OnInit{
     {key: 'nome', label: 'Nome', type: 'text'},
     {key: 'email', label: 'Email', type: 'text'},
   ];
-  
-  private list = useList<any>('/usuarios', (a, b) => a.id.localeCompare(b.id));
+
+  private list = useList<any>('/usuarios', (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
 
   users = this.list.items;
   currentPage = this.list.currentPage;

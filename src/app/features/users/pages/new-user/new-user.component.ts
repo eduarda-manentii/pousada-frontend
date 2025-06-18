@@ -61,7 +61,8 @@ export class NewUserComponent implements OnInit {
       const userdata = this.userForm.value;
       if (this.userId) {
         try {
-          await this.api.put(`/usuarios`, userdata);
+          userdata.id = this.userId;
+          await this.api.put(`/auth/register`, userdata);
           this.toastService.success("Usuário atualizado com sucesso!");
           this.router.navigate(['/users/index'])
         } catch (error: any) {
@@ -69,7 +70,7 @@ export class NewUserComponent implements OnInit {
         }
       } else {
         try {
-          await this.api.create('/usuarios', userdata);
+          await this.api.create('/auth/register', userdata);
           this.toastService.success("Usuário salvo com sucesso!");
           this.router.navigate(['/users/index'])
         } catch (error: any) {
