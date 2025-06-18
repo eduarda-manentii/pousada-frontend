@@ -1,7 +1,9 @@
 <app-header/>
 
 <div class="container py-5">
-  <h2 class="mb-4 text-secondary-custom">Cadatro de Usuário</h2>
+  <h2 class="mb-4 text-secondary-custom">
+    {{ userId ? 'Editar Usuário' : 'Cadastro de Usuário' }}
+  </h2>
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <div class="row g-3 mb-3">

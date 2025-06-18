@@ -12,8 +12,8 @@ import { ConfirmModalService } from '../../../../shared/services/confirm-modal.s
   selector: 'app-show-user',
   standalone: true,
   imports: [
-    HeaderComponent, 
-    CommonModule, 
+    HeaderComponent,
+    CommonModule,
     RouterLink,
     ConfirmModalComponent
   ],
@@ -48,7 +48,6 @@ export class ShowUserComponent {
   }
 
   async onConfirmedInativation(result: boolean) {
-
     if (result) {
       try {
         await this.api.delete(`/usuarios/${this.userId}`);
@@ -59,4 +58,9 @@ export class ShowUserComponent {
       }
     }
   }
+
+  editUser(userId: any) {
+    this.router.navigate(['/users/edit', userId]);
+  }
+
 }

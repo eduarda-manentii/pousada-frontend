@@ -20,10 +20,10 @@
         <tr *ngFor="let user of users()">
           <td>
             <a [routerLink]="['/users/show', user.id]">
-              {{ user.codigo }}
+              {{ user.nome }}
             </a>
           </td>
-          <td>{{ user.nome }}</td>
+          <td>{{ user.email }}</td>
         </tr>
       </tbody>
     </table>

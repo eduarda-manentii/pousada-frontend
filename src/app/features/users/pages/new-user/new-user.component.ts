@@ -13,7 +13,7 @@ import { User } from '../../interfaces/Users';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    HeaderComponent, 
+    HeaderComponent,
     ReactiveFormsModule,
     CommonModule,
     RequiredMarkerDirective
@@ -41,8 +41,9 @@ export class NewUserComponent implements OnInit {
     if (this.userId) {
       this.api.getById<User>(`/usuarios/${this.userId}`).then(
         response => {
-          this.userForm.patchValue(response);
-        } 
+          const { senha, ...rest } = response;
+          this.userForm.patchValue({ ...rest, senha: '' });
+        }
       );
     }
   }
