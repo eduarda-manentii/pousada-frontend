@@ -12,7 +12,7 @@ import { RequiredMarkerDirective } from '../../../../shared/directives/required-
   selector: 'app-new-voucher',
   standalone: true,
   imports: [
-    HeaderComponent, 
+    HeaderComponent,
     ReactiveFormsModule,
     CommonModule,
     RequiredMarkerDirective
@@ -44,9 +44,8 @@ export class NewVoucherComponent implements OnInit {
             dataDeInicio: this.formatDateToDateInput(new Date(response.dataDeInicio)),
             dataDeVencimento: this.formatDateToDateInput(new Date(response.dataDeVencimento)),
           };
-
-          this.voucherForm.patchValue(response);
-        } 
+          this.voucherForm.patchValue(dataPatch);
+        }
       );
     }
   }
@@ -63,21 +62,18 @@ export class NewVoucherComponent implements OnInit {
   }
 
   async onSubmit() {
-    
     if (this.voucherForm.valid) {
       const voucherdata = this.voucherForm.value;
-
       if (this.voucherId) {
-
         try {
-          await this.api.put(`/cupons/${this.voucherId}`, voucherdata);
+          voucherdata.id = this.voucherId;
+          await this.api.put(`/cupons`, voucherdata);
           this.toastService.success("Cupom atualizado com sucesso!");
           this.router.navigate(['/vouchers/index'])
         } catch (error: any) {
           this.toastService.error(error);
         }
       } else {
-
         try {
           await this.api.create('/cupons', voucherdata);
           this.toastService.success("Cupom salvo com sucesso!");

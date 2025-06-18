@@ -61,7 +61,7 @@ export class NewUserComponent implements OnInit {
       const userdata = this.userForm.value;
       if (this.userId) {
         try {
-          await this.api.put(`/usuarios/${this.userId}`, userdata);
+          await this.api.put(`/usuarios`, userdata);
           this.toastService.success("Usuário atualizado com sucesso!");
           this.router.navigate(['/users/index'])
         } catch (error: any) {
