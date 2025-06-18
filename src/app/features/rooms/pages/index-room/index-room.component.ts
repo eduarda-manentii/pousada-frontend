@@ -31,8 +31,8 @@ export class IndexRoomComponent implements OnInit {
     private api: ApiService
   ) {}
 
-  private list = useList<any>('/quartos', (a, b) => a.nome.localeCompare(b.nome));
-    
+  private list = useList<any>('/quartos', (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
+
   quartos = this.list.items;
   currentPage = this.list.currentPage;
   totalPages = this.list.totalPages;

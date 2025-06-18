@@ -6,13 +6,14 @@ import { ApiService } from '../../../../shared/services/backend-api.service';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { Complement } from '../../interfaces/Complement';
+import { useList } from '../../../../shared/composables/use-list';
 
 @Component({
   selector: 'app-index-complement',
   standalone: true,
   imports: [
-    HeaderComponent, 
-    RouterLink, 
+    HeaderComponent,
+    RouterLink,
     CommonModule,
     FilterModalComponent
   ],
@@ -20,11 +21,6 @@ import { Complement } from '../../interfaces/Complement';
   styleUrl: './index-complement.component.scss'
 })
 export class IndexComplementComponent implements OnInit {
-  complements: Complement[] = [];
-  currentPage = 0;
-  totalPages = 0;
-  pageSize = 15;
-
   complementFilter: FiltroConfig[] = [
     {key: 'nome', label: 'Nome', type: 'text'},
   ];
@@ -33,47 +29,26 @@ export class IndexComplementComponent implements OnInit {
     private api: ApiService,
   ) {}
 
+  private list = useList<any>('/complementos', (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
+
+  complementos = this.list.items;
+  currentPage = this.list.currentPage;
+  totalPages = this.list.totalPages;
+
   ngOnInit() {
-    this.loadPage(0);
+    this.list.loadPage(0);
   }
 
-  async loadPage(page: number) {
-    const endpoint = '/complementos';
-    const params = {
-      page: page.toString(),
-      size: this.pageSize.toString(),
-    };
-
-    const data = await this.api.get<Complement>(endpoint, params);
-    this.complements = data.content;
-    this.currentPage = data.number;
-    this.totalPages = data.totalPages;
+  applyFilters(filtros: any) {
+    this.list.applyFilters(filtros);
   }
 
   nextPage() {
-    if (this.currentPage + 1 < this.totalPages) {
-      this.loadPage(this.currentPage + 1)
-    }
+    this.list.nextPage();
   }
 
   previousPage() {
-    if (this.currentPage > 0) {
-      this.loadPage(this.currentPage - 1)
-    }
+    this.list.previousPage();
   }
 
-  async applyFilters(filters: any) {
-    const data = await this.api.getWithFilters<any>(
-      '/complementos',
-      0,
-      this.pageSize,
-      'id,asc',
-      filters
-    );
-    this.complements = data.content.sort((a: any, b: any) =>
-      a.nome.localeCompare(b.nome)
-    );
-    this.currentPage = data.number;
-    this.totalPages = data.totalPages;
-  }
 }
