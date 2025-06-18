@@ -1,7 +1,7 @@
 <app-header/>
 
 <div class="container my-5">
-  <h2 class="mb-4 text-secondary-custom text-center">
+  <h2 class="mb-4 text-secondary-custom">
     Detalhes do Cupom {{ voucher.id }}
   </h2>
 
@@ -10,7 +10,7 @@
     <p><strong>Código:</strong> {{ voucher.codigo }}</p>
     <p><strong>Data Inicial:</strong> {{ voucher.dataDeInicio | date: 'dd/MM/yyyy' }}</p>
     <p><strong>Data de Vencimento:</strong> {{ voucher.dataDeVencimento | date: 'dd/MM/yyyy' }}</p>
-    <p><strong>Desconto:</strong> {{ voucher.porcentagemDeDesconto }}</p>
+    <p><strong>Porcentagem de desconto:</strong> {{ voucher.porcentagemDeDesconto }}%</p>
 
     <div class="ticket-preview mt-5">
       <div class="ticket-bar">
@@ -23,7 +23,7 @@
       <div class="ticket-body">
         <p class="ticket-title">CUPOM DE DESCONTO</p>
         <p class="ticket-discount">
-          {{ voucher.porcentagemDeDesconto || 0 }}%OFF
+          {{ voucher.porcentagemDeDesconto || 0 }}% OFF
         </p>
         <p class="ticket-code">
           Código: <strong>{{ voucher.codigo || '---' }}</strong>
@@ -32,10 +32,10 @@
     </div>
 
     <div class="mt-4 d-flex gap-3">
-      <button class="btn btn-brown w-25"  (click)="editVoucher(voucher.id)">
+      <button class="btn btn-brown w-15"  (click)="editVoucher(voucher.id)">
         Editar
       </button>
-      <button class="btn btn-brown w-25" (click)="openModal()">
+      <button class="btn btn-brown w-15" (click)="openModal()">
         Deletar
       </button>
 
