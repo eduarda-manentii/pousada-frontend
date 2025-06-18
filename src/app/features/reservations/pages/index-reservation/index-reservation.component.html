@@ -12,7 +12,8 @@
     <table class="table table-striped table-hover align-middle">
       <thead class="bg-primary-custom">
         <tr>
-          <th>Data</th>
+          <th>Chekin</th>
+          <th>Chekout</th>
           <th>Cliente</th>
           <th>Quarto</th>
         </tr>
@@ -21,11 +22,14 @@
         <tr *ngFor="let reserva of reservas()">
           <td>
             <a [routerLink]="['/reservations/show', reserva.id]">
-              {{ reserva.data }}
+              {{ reserva.checkIn | date: 'dd/MM/yyyy' }}
             </a>
           </td>
-          <td>{{ reserva.cliente }}</td>
-          <td>{{ reserva.quarto }}</td>
+          <td>
+              {{ reserva.checkOut | date: 'dd/MM/yyyy' }}
+          </td>
+          <td>{{ reserva.cliente.nome }}</td>
+          <td>{{ reserva.quarto.nome }}</td>
         </tr>
       </tbody>
     </table>

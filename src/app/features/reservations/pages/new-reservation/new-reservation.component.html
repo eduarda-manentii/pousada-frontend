@@ -27,8 +27,7 @@
 
       <div class="col-md-4">
         <label class="form-label" [appRequiredMarker]="true">Status</label>
-        <select class="form-select" formControlName="statusDaReserva">
-          <option value="">Selecione</option>
+        <select class="form-select" formControlName="statusDaReserva" [disabled]="!isEditing">
           <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
         </select>
       </div>
