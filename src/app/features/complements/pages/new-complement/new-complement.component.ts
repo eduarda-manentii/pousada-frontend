@@ -50,8 +50,8 @@ export class NewComplementComponent implements OnInit {
 
   buildForms() {
     this.complementForm = this.fb.group({
-      nome: ['', [Validators.required]],
-      valor: ['', [Validators.required]],
+      nome: ['', [Validators.required, Validators.maxLength(100)]],
+      valor: [null, [Validators.required, Validators.min(0.01)]],
       descricao: ['', [Validators.required]],
     });
   }
@@ -61,6 +61,8 @@ export class NewComplementComponent implements OnInit {
       const complementdata = this.complementForm.value;
       if (this.complementId) {
         try {
+          console.log("Complemento a ser salvo");
+          console.log(complementdata);
           complementdata.id = this.complementId;
           await this.api.put(`/complementos`, complementdata);
           this.toastService.success("Complemento atualizado com sucesso!");
@@ -70,6 +72,8 @@ export class NewComplementComponent implements OnInit {
         }
       } else {
         try {
+          console.log("Complemento a ser salvo");
+          console.log(complementdata);
           await this.api.create('/complementos', complementdata);
           this.toastService.success("Complemento salvo com sucesso!");
           this.router.navigate(['/complements/index'])

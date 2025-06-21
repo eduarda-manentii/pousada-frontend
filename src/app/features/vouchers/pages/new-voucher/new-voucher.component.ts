@@ -91,7 +91,7 @@ export class NewVoucherComponent implements OnInit {
     const pad = (n: number) => n.toString().padStart(2, '0');
     const year = date.getFullYear();
     const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
+    const day = pad(date.getDate() + 1);
     return `${year}-${month}-${day}`;
   };
 
