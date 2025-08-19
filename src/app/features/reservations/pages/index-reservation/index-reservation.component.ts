@@ -30,6 +30,7 @@ export class IndexReservationComponent implements OnInit {
   filtroReservas: FiltroConfig[] = [
     { key: 'quarto', label: 'Quarto', type: 'select', options: [] },
     { key: 'cliente', label: 'Cliente', type: 'select', options: [] },
+    { key: 'statusDaReserva', label: 'Status', type: 'select', options: [] },
     { keys: ['checkIn', 'checkOut'], label: 'Período', type: 'range', subtype: 'date'},
   ];
 
@@ -58,10 +59,18 @@ export class IndexReservationComponent implements OnInit {
         label: c.nome,
         value: c.id
       }));
+      
+      const statusOptions = [
+        { label: 'Aberta', value: 'ABERTA' },
+        { label: 'Fechada', value: 'FECHADA' },
+        { label: 'Cancelada', value: 'CANCELADA' },
+        { label: 'Concluida', value: 'CONCLUIDA' }
+      ];
 
       this.filtroReservas = this.filtroReservas.map(f => {
         if (f.key === 'quarto') return { ...f, options: quartoOptions };
         if (f.key === 'cliente') return { ...f, options: clienteOptions };
+        if (f.key === 'statusDaReserva') return { ...f, options: statusOptions };
         return f;
       });
 
