@@ -113,6 +113,12 @@ export class ApiService {
         } else if (key && value !== null && value !== '') {
           if (type === 'text') {
             searchParts.push(`${key}=='${value}*'`);
+          } else if (type === 'select') {
+            if (key === 'cliente' || key === 'quarto') {
+              searchParts.push(`${key}.id==${value}`);
+            } else {
+              searchParts.push(`${key}==${value}`);
+            }
           } else {
             searchParts.push(`${key}==${value}`);
           }

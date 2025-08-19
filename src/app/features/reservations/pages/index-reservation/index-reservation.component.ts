@@ -7,7 +7,7 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../../customers/interfaces/cliente';
-import { Quarto } from '../../../rooms/interfaces/Quarto';
+import { Quarto } from '../../../rooms/interfaces/quarto';
 
 @Component({
   selector: 'app-index-reservation',
@@ -45,7 +45,29 @@ export class IndexReservationComponent implements OnInit {
   }
 
   async loadSelectOptions() {
+    try {
+      const quartosPage = await this.api.get<Quarto>('/quartos');
+      const clientesPage = await this.api.get<Cliente>('/clientes');
 
+      const quartoOptions = quartosPage.content.map(q => ({
+        label: q.nome,
+        value: q.id
+      }));
+
+      const clienteOptions = clientesPage.content.map(c => ({
+        label: c.nome,
+        value: c.id
+      }));
+
+      this.filtroReservas = this.filtroReservas.map(f => {
+        if (f.key === 'quarto') return { ...f, options: quartoOptions };
+        if (f.key === 'cliente') return { ...f, options: clienteOptions };
+        return f;
+      });
+
+    } catch (err) {
+      console.error('Erro ao carregar opções de filtros', err);
+    }
   }
 
   aplicarFiltros(filtros: any) {

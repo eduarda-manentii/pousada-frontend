@@ -6,8 +6,8 @@ import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
-import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
-import { Quarto } from '../../interfaces/Quarto';
+import { ImagemQuarto } from '../../interfaces/imagem-quarto';
+import { Quarto } from '../../interfaces/quarto';
 
 @Component({
   selector: 'app-show-room',

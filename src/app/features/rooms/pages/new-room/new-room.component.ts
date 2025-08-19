@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { RequiredMarkerDirective } from '../../../../shared/directives/required-marker.directive';
-import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
+import { ImagemQuarto } from '../../interfaces/imagem-quarto';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({

@@ -7,7 +7,7 @@ import { FilterModalComponent } from '../../../../shared/components/filter-modal
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
-import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
+import { ImagemQuarto } from '../../interfaces/imagem-quarto';
 
 @Component({
   selector: 'app-index-room',
