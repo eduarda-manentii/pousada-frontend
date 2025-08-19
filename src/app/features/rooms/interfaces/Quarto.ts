@@ -1,7 +1,4 @@
-export interface Amenidade {
-  icone: string;
-  nome?: string;
-}
+import { Amenidade } from "../../amenities/interfaces/amenity";
 
 export interface Quarto {
   id: number;

@@ -25,6 +25,8 @@ import { NewAmenityComponent } from './features/amenities/pages/new-amenity/new-
 import { NewComplementComponent } from './features/complements/pages/new-complement/new-complement.component';
 import { ShowComplementComponent } from './features/complements/pages/show-complement/show-complement.component';
 import { IndexComplementComponent } from './features/complements/pages/index-complement/index-complement.component';
+import { IndexReportComponent } from './features/reports/pages/index-report/index-report.component';
+import { ReservationsReportComponent } from './features/reports/pages/reservations-report/reservations-report.component';
 
 export const routes: Routes = [
   { path: '',                        redirectTo: 'login', pathMatch: 'full' },
@@ -67,4 +69,6 @@ export const routes: Routes = [
   { path : "complements/edit/:id",   component: NewComplementComponent, canActivate: [AuthGuard] },
   { path : "complements/show/:id",   component: ShowComplementComponent, canActivate: [AuthGuard] },
   { path : "complements/index",      component: IndexComplementComponent, canActivate: [AuthGuard] },
+  { path : "reports/index",          component: IndexReportComponent, canActivate: [AuthGuard] },
+  { path : "reports/reservations",   component: ReservationsReportComponent, canActivate: [AuthGuard] },
 ];

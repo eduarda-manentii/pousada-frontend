@@ -1,0 +1,34 @@
+@use "../../../../../styles/variables" as *;
+
+.text-primary-custom {
+  color: $secondary-color;
+}
+
+.bg-primary-custom {
+  background-color: $primary-color;
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  border-color: $primary-color;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: #6e4329;
+    border-color: #6e4329;
+  }
+}
+
+.btn-outline-brown {
+  background-color: $primary-color;
+  border-color: $primary-color;
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+.btn-outline-brown:hover {
+  background-color: $primary-color;
+  color: white;
+}

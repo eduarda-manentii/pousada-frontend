@@ -25,7 +25,7 @@ import { useList } from '../../../../shared/composables/use-list';
 })
 export class IndexCustomerComponent implements OnInit {
   filtroClientes: FiltroConfig[] = [
-    { key: 'nome', label: 'Nome do Cliente', type: 'text' }
+    { key: 'nome', label: 'Nome', type: 'text' }
   ];
 
   private list = useList<any>('/clientes', (a, b) => a.nome.localeCompare(b.nome));

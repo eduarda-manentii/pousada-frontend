@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
+import { ApiService } from '../../../../shared/services/backend-api.service';
+import { Cliente } from '../../../customers/interfaces/cliente';
+import { Quarto } from '../../../rooms/interfaces/Quarto';
 
 @Component({
   selector: 'app-index-reservation',
@@ -19,11 +22,15 @@ import { useList } from '../../../../shared/composables/use-list';
   styleUrl: './index-reservation.component.scss'
 })
 export class IndexReservationComponent implements OnInit {
+  
+  constructor(
+    private api: ApiService
+  ) {}
 
   filtroReservas: FiltroConfig[] = [
-    { key: 'quarto', label: 'Nome do Quarto', type: 'text' },
-    { key: 'cliente', label: 'Nome do Cliente', type: 'text' },
-    {keys: ['checkIn', 'checkOut'], label: 'Período', type: 'range', subtype: 'date'},
+    { key: 'quarto', label: 'Quarto', type: 'select', options: [] },
+    { key: 'cliente', label: 'Cliente', type: 'select', options: [] },
+    { keys: ['checkIn', 'checkOut'], label: 'Período', type: 'range', subtype: 'date'},
   ];
 
   private list = useList<any>('/reservas', (a, b) => new Date(a.checkIn).getTime() - new Date(b.checkIn).getTime());
@@ -34,6 +41,11 @@ export class IndexReservationComponent implements OnInit {
 
   ngOnInit() {
     this.list.loadPage(0);
+    this.loadSelectOptions();
+  }
+
+  async loadSelectOptions() {
+
   }
 
   aplicarFiltros(filtros: any) {

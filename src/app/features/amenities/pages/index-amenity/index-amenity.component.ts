@@ -22,7 +22,7 @@ import { useList } from '../../../../shared/composables/use-list';
 })
 export class IndexAmenityComponent {
   filtroAmenidades: FiltroConfig[] = [
-    { key: 'nome', label: 'Nome da Amenidade', type: 'text' }
+    { key: 'nome', label: 'Nome', type: 'text' }
   ];
 
   private list = useList<any>('/amenidades', (a, b) => a.nome.localeCompare(b.nome));

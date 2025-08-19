@@ -24,7 +24,7 @@ import { ImagemQuarto } from '../../interfaces/ImagemQuarto';
 })
 export class IndexRoomComponent implements OnInit {
   filtroQuartos: FiltroConfig[] = [
-    { key: 'nome', label: 'Nome do Quarto', type: 'text' }
+    { key: 'nome', label: 'Nome', type: 'text' }
   ];
 
   constructor(

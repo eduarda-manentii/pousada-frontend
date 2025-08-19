@@ -2,30 +2,14 @@ import { Injectable } from '@angular/core';
 import axiosInstance from '../config/axios-config';
 import { ApiError } from '../../core/errors/api-error';
 import { FiltroConfigValue } from '../interfaces/filtro-config';
-
-export type LoginResponse = {
-  nome: string;
-  token: string;
-};
-
-interface Page<T> {
-  content: T[];
-  number: number;
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  first: boolean;
-  last: boolean;
-  numberOfElements: number;
-  empty: boolean;
-}
+import { LoginResponse } from '../interfaces/login-response';
+import { Page } from '../interfaces/page';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
 
-  constructor() {}
+export class ApiService {
 
   async create(endpoint: string, object: any): Promise<any> {
     try {
