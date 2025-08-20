@@ -4,9 +4,9 @@
   <h2 class="text-primary-custom mb-3">Relatório de Reservas por período</h2>
   <button class="btn btn-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#filterModal">Filtrar</button>
 
-</div>
+  <app-filter-modal
+    [config]="filtroRelatorio"
+    (filtersApplied)="aplicarFiltros($event)">
+  </app-filter-modal>
 
-<app-filter-modal
-  [config]="filtroRelatorio"
-  (filtersApplied)="aplicarFiltros($event)">
-</app-filter-modal>
+</div>
