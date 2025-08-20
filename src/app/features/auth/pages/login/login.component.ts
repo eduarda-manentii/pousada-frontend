@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DefaultLoginLayoutComponent } from '../../components/default-login-layout/default-login-layout.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PrimaryInputComponent } from '../../../../shared/components/primary-input/primary-input.component';
@@ -18,7 +18,7 @@ import { ApiError } from '../../../../core/errors/api-error';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
   constructor(
@@ -30,6 +30,10 @@ export class LoginComponent {
       email: new FormControl('', [Validators.required, Validators.email]),
       senha: new FormControl('', [Validators.required, Validators.minLength(6)])
     })
+  }
+
+  ngOnInit(): void {
+    this.apiService.logout();
   }
 
   async submit() {
