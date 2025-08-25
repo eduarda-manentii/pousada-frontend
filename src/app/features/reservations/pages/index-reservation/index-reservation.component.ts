@@ -12,7 +12,7 @@ import { Quarto } from '../../../rooms/interfaces/quarto';
 @Component({
   selector: 'app-index-reservation',
   standalone: true,
-    imports: [
+  imports: [
     HeaderComponent,
     RouterLink,
     CommonModule,

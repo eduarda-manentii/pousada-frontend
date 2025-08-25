@@ -2,11 +2,26 @@
 
 <div class="container my-5">
   <h2 class="text-primary-custom mb-3">Relatório de Reservas por período</h2>
+
   <button class="btn btn-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#filterModal">Filtrar</button>
 
   <app-filter-modal
     [config]="filtroRelatorio"
     (filtersApplied)="aplicarFiltros($event)">
   </app-filter-modal>
+
+  <div *ngIf="showChart" class="mt-4 d-flex align-items-start gap-1">
+    <div echarts [options]="chartOptions" class="grafico flex-grow-5" style="min-width: 400px; height: 400px;"></div>
+    <div class="card p-3">
+      <h5 class="card-title">Resumo</h5>
+      <ul class="list-unstyled mb-0">
+        <strong>Quarto selecionado:</strong> {{ quartoSelecionadoNome }}
+        <li>Reservas Abertas: {{ resumoStatus['ABERTA'] || 0 }}</li>
+        <li>Reservas Fechadas: {{ resumoStatus['FECHADA'] || 0 }}</li>
+        <li>Reservas Canceladas: {{ resumoStatus['CANCELADA'] || 0 }}</li>
+        <li>Reservas Concluídas: {{ resumoStatus['CONCLUIDA'] || 0 }}</li>
+      </ul>
+    </div>
+  </div>
 
 </div>
