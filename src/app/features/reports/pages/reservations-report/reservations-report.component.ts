@@ -35,6 +35,7 @@ export class ReservationsReportComponent implements OnInit {
   showChart = false;
   chartOptions: any = {};
   quartoSelecionadoNome: string | null = null;
+  statusDaReservaSelecionado: string | null = null;
   resumoStatus: Record<string, number> = {};
 
   filtroRelatorio: FiltroConfig[] = [
@@ -75,24 +76,21 @@ export class ReservationsReportComponent implements OnInit {
         if (f.key === 'statusDaReserva') return { ...f, options: statusOptions };
         return f;
       });
-
     } catch (err) {
       console.error('Erro ao carregar opções de filtros', err);
     }
   }
 
-  aplicarFiltros(filtrosArray: FiltroConfigValue[]) {
-    const filtros: { [key: string]: any } = {};
-    filtrosArray.forEach(f => {
-      if (f.key) filtros[f.key] = f.value;
-    });
-
+  aplicarFiltros(filtros: any) {
     this.list.applyFilters(filtros);
 
-    if (filtros['quarto']) {
-      const quarto = this.filtroRelatorio.find(f => f.key === 'quarto')?.options?.find(o => o.value == filtros['quarto']);
-      this.quartoSelecionadoNome = quarto ? quarto.label : null;
-      this.gerarGraficoPorStatus(filtros['quarto']);
+    const filtroQuarto = filtros.find((f: any) => f.key === 'quarto')?.value;
+    const filtroStatus = filtros.find((f: any) => f.key === 'statusDaReserva')?.value;
+
+    if (filtroQuarto) {
+      this.gerarGraficoPorStatus(filtroQuarto);
+    } else if (filtroStatus) {
+      this.gerarGraficoPorStatusSemQuarto(filtroStatus);
     } else {
       this.showChart = false;
     }
@@ -122,6 +120,46 @@ export class ReservationsReportComponent implements OnInit {
         data: Object.entries(statusContagem).map(([status, count]) => ({ value: count, name: status })),
         emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
       }]
+    };
+    this.showChart = true;
+  }
+
+  gerarGraficoPorStatusSemQuarto(statusFiltro: string) {
+    const todasReservasArray = this.todasReservasOriginais;
+    if (!todasReservasArray || todasReservasArray.length === 0) {
+      this.showChart = false;
+      return;
+    }
+    const quartosMap: Record<string, number> = {};
+
+    todasReservasArray.forEach(r => {
+      const quartoNome = r.quarto?.nome || 'Sem Quarto';
+      if (statusFiltro && r.statusDaReserva !== statusFiltro) return;
+
+      quartosMap[quartoNome] = (quartosMap[quartoNome] || 0) + 1;
+    });
+
+    const nomesQuartos = Object.keys(quartosMap);
+    const contagens = Object.values(quartosMap);
+    this.chartOptions = {
+      title: { text: `Reservas ${statusFiltro}`, left: 'center' },
+      tooltip: {},
+      xAxis: {
+        type: 'category',
+        data: nomesQuartos,
+        name: 'Quartos'
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Quantidade'
+      },
+      series: [
+        {
+          data: contagens,
+          type: 'bar',
+          color: '#007bff'
+        }
+      ]
     };
     this.showChart = true;
   }
