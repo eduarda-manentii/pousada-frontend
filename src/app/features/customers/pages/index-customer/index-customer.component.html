@@ -43,7 +43,18 @@
     </button>
   </div>
 
-  <app-export-csv [data]="customerParaCSV()" filename="clientes.csv"></app-export-csv>
+  <div class="d-flex gap-3 mt-3">
+    <app-export-pdf
+      fileName="cliente.pdf"
+      [headers]="['Id', 'Nome', 'E-mail', 'Celular', 'Sexo', 'Data De Nascimento', 'Endereço']"
+      [data]="customerParaPDF()">
+    </app-export-pdf>
+
+    <app-export-csv
+      [data]="customerParaCSV()"
+      filename="clientes.csv">
+    </app-export-csv>
+  </div>
 
   <ng-template #emptyState>
     <p class="text-muted">Nenhum cliente cadastrado.</p>

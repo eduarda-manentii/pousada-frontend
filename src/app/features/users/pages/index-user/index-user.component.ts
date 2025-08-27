@@ -6,6 +6,7 @@ import { FilterModalComponent } from '../../../../shared/components/filter-modal
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
+import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
 
 @Component({
   selector: 'app-index-user',
@@ -15,7 +16,8 @@ import { ExportCsvComponent } from '../../../../shared/components/export-csv/exp
     RouterLink,
     CommonModule,
     FilterModalComponent,
-    ExportCsvComponent
+    ExportCsvComponent,
+    ExportPdfComponent
   ],
   templateUrl: './index-user.component.html',
   styleUrl: './index-user.component.scss'
@@ -54,6 +56,14 @@ export class IndexUserComponent implements OnInit{
       nome: u.nome,
       email: u.email
     }));
+  }
+
+  usuariosParaPDF() {
+    return this.users().map(u => [
+      u.id,
+      u.nome,
+      u.email
+    ]);
   }
 
 }

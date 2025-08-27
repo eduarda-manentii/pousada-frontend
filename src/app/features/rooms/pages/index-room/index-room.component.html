@@ -74,7 +74,18 @@
     </button>
   </div>
 
-  <app-export-csv [data]="quartosParaCSV()" filename="quartos.csv"></app-export-csv>
+  <div class="d-flex gap-3 mt-3">
+    <app-export-pdf
+      fileName="quarto.pdf"
+      [headers]="['Id', 'Nome', 'Capacidade', 'Qtd. Cama de Solteiro', 'Qtd. Cama de Casado', 'Valor diária']"
+      [data]="quartosParaPDF()">
+    </app-export-pdf>
+
+    <app-export-csv
+      [data]="quartosParaCSV()"
+      filename="quartos.csv">
+    </app-export-csv>
+  </div>
 
   <ng-template #emptyState>
     <p class="text-muted">Nenhum quarto cadastrado.</p>

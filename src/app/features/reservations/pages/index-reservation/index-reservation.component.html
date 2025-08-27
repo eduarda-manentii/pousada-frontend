@@ -49,7 +49,18 @@
     </button>
   </div>
 
-  <app-export-csv [data]="reservasParaCSV()" filename="reservas.csv"></app-export-csv>
+  <div class="d-flex gap-3 mt-3">
+    <app-export-pdf
+      fileName="reservas.pdf"
+      [headers]="['Checkin', 'Checkout', 'Cliente', 'Quarto', 'Status']"
+      [data]="reservasParaPDF()">
+    </app-export-pdf>
+
+    <app-export-csv
+      [data]="reservasParaCSV()"
+      filename="reservas.csv">
+    </app-export-csv>
+  </div>
 
   <ng-template #emptyState>
     <p class="text-muted">Nenhuma reserva cadastrada.</p>

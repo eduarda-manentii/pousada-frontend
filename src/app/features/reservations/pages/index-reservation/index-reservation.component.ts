@@ -10,6 +10,7 @@ import { Cliente } from '../../../customers/interfaces/cliente';
 import { Quarto } from '../../../rooms/interfaces/quarto';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 import { Reserva } from '../../interfaces/reservation';
+import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
 
 @Component({
   selector: 'app-index-reservation',
@@ -19,7 +20,8 @@ import { Reserva } from '../../interfaces/reservation';
     RouterLink,
     CommonModule,
     FilterModalComponent,
-    ExportCsvComponent
+    ExportCsvComponent,
+    ExportPdfComponent
   ],
   templateUrl: './index-reservation.component.html',
   styleUrl: './index-reservation.component.scss'
@@ -105,6 +107,16 @@ export class IndexReservationComponent implements OnInit {
       cliente: r.cliente?.nome ?? '',
       complementos: r.complementos?.map(c => c.nome).join(', ') ?? ''
     }));
+  }
+
+  reservasParaPDF() {
+    return this.reservas().map(r => [
+      new Date(r.checkIn).toLocaleDateString(),
+      new Date(r.checkOut).toLocaleDateString(),
+      r.cliente?.nome ?? '',
+      r.quarto?.nome ?? '',
+      r.statusDaReserva
+    ]);
   }
 
 }

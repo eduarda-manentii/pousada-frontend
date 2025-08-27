@@ -10,6 +10,7 @@ import { useList } from '../../../../shared/composables/use-list';
 import { ImagemQuarto } from '../../interfaces/imagem-quarto';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 import { Quarto } from '../../interfaces/quarto';
+import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
 
 @Component({
   selector: 'app-index-room',
@@ -20,7 +21,8 @@ import { Quarto } from '../../interfaces/quarto';
     CommonModule,
     FilterModalComponent,
     CapitalizePipe,
-    ExportCsvComponent
+    ExportCsvComponent,
+    ExportPdfComponent
   ],
   templateUrl: './index-room.component.html',
   styleUrl: './index-room.component.scss'
@@ -79,6 +81,17 @@ export class IndexRoomComponent implements OnInit {
       amenidades: q.amenidades?.map(a => a.nome).join(', ') ?? '',
       observacao: q.observacao ?? ''
     }));
+  }
+
+  quartosParaPDF() {
+    return this.quartos().map(q => [
+      q.id,
+      q.nome,
+      q.capacidade,
+      q.qtdCamaSolteiro,
+      q.qtdCamaCasal,
+      q.valorDiaria,
+    ]);
   }
 
 }

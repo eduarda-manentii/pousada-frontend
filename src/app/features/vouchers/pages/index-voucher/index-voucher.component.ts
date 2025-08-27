@@ -6,6 +6,7 @@ import { FilterModalComponent } from '../../../../shared/components/filter-modal
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
+import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
 
 @Component({
   selector: 'app-index-voucher',
@@ -15,7 +16,8 @@ import { ExportCsvComponent } from '../../../../shared/components/export-csv/exp
     RouterLink,
     CommonModule,
     FilterModalComponent,
-    ExportCsvComponent
+    ExportCsvComponent,
+    ExportPdfComponent
   ],
   templateUrl: './index-voucher.component.html',
   styleUrl: './index-voucher.component.scss'
@@ -26,26 +28,37 @@ export class IndexVoucherComponent implements OnInit {
     {keys: ['dataDeInicio', 'dataDeVencimento'], label: 'Período', type: 'range', subtype: 'date'},
   ];
 
-    private list = useList<any>('/cupons', (a, b) => a.nome.localeCompare(b.nome));
+  private list = useList<any>('/cupons', (a, b) => a.nome.localeCompare(b.nome));
 
-    vouchers = this.list.items;
-    currentPage = this.list.currentPage;
-    totalPages = this.list.totalPages;
+  vouchers = this.list.items;
+  currentPage = this.list.currentPage;
+  totalPages = this.list.totalPages;
 
-    ngOnInit() {
-      this.list.loadPage(0);
-    }
+  ngOnInit() {
+    this.list.loadPage(0);
+  }
 
-    aplicarFiltros(filtros: any) {
-      this.list.applyFilters(filtros);
-    }
+  aplicarFiltros(filtros: any) {
+    this.list.applyFilters(filtros);
+  }
 
-    nextPage() {
-      this.list.nextPage();
-    }
+  nextPage() {
+    this.list.nextPage();
+  }
 
-    previousPage() {
-      this.list.previousPage();
-    }
+  previousPage() {
+    this.list.previousPage();
+  }
+
+  cupomParaPDF() {
+    return this.vouchers().map(v => [
+      v.id,
+      v.nome,
+      v.dataDeInicio,
+      v.dataDeVencimento,
+      v.porcentagemDeDesconto,
+      v.quantidadeMaximaDeUso
+    ]);
+  }
 
 }

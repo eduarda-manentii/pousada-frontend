@@ -7,6 +7,7 @@ import { FilterModalComponent } from '../../../../shared/components/filter-modal
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
+import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
 
 @Component({
   selector: 'app-index-amenity',
@@ -17,7 +18,8 @@ import { ExportCsvComponent } from '../../../../shared/components/export-csv/exp
     CommonModule,
     CapitalizePipe,
     FilterModalComponent,
-    ExportCsvComponent
+    ExportCsvComponent,
+    ExportPdfComponent
   ],
   templateUrl: './index-amenity.component.html',
   styleUrl: './index-amenity.component.scss'
@@ -47,6 +49,13 @@ export class IndexAmenityComponent {
 
   previousPage() {
     this.list.previousPage();
+  }
+
+  amenidadesParaPDF() {
+    return this.amenities().map(a => [
+      a.nome,
+      a.icone
+    ]);
   }
 
 }

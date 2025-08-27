@@ -8,6 +8,7 @@ import { FilterModalComponent } from '../../../../shared/components/filter-modal
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
+import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
 
 @Component({
   selector: 'app-index-customer',
@@ -19,7 +20,8 @@ import { ExportCsvComponent } from '../../../../shared/components/export-csv/exp
     PhoneFormatPipe,
     CapitalizePipe,
     FilterModalComponent,
-    ExportCsvComponent
+    ExportCsvComponent,
+    ExportPdfComponent
   ],
   templateUrl: './index-customer.component.html',
   styleUrl: './index-customer.component.scss'
@@ -64,6 +66,20 @@ export class IndexCustomerComponent implements OnInit {
         ? `${c.endereco.rua}, ${c.endereco.numero} - ${c.endereco.cidade}/${c.endereco.estado}`
         : ''
     }));
+  }
+
+  customerParaPDF() {
+    return this.customers().map(c => [
+      c.id,
+      c.nome,
+      c.email,
+      c.celular,
+      c.sexo,
+      c.dataDeNascimento,
+      c.endereco
+        ? `${c.endereco.rua}, ${c.endereco.numero} - ${c.endereco.cidade}/${c.endereco.estado}`
+        : ''
+    ]);
   }
 
 }

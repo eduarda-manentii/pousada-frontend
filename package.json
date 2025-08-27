@@ -21,6 +21,8 @@
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "echarts": "^5.4.3",
+    "jspdf": "^3.0.2",
+    "jspdf-autotable": "^5.0.2",
     "libphonenumber-js": "^1.12.8",
     "ngx-echarts": "^17.0.1",
     "ngx-mask": "^19.0.6",

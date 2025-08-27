@@ -41,7 +41,18 @@
     </button>
   </div>
 
-  <app-export-csv [data]="usuariosParaCSV()" filename="usuarios.csv"></app-export-csv>
+  <div class="d-flex gap-3 mt-3">
+    <app-export-pdf
+      fileName="usuario.pdf"
+      [headers]="['Id', 'Nome', 'E-mail']"
+      [data]="usuariosParaPDF()">
+    </app-export-pdf>
+
+    <app-export-csv
+      [data]="usuariosParaCSV()"
+      filename="usuarios.csv">
+    </app-export-csv>
+  </div>
 
   <ng-template #emptyState>
     <p class="text-muted">Nenhum usuário cadastrado.</p>

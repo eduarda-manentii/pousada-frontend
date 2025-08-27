@@ -41,7 +41,18 @@
     </button>
   </div>
 
-  <app-export-csv [data]="complementos()" filename="complementos.csv"></app-export-csv>
+  <div class="d-flex gap-3 mt-3">
+    <app-export-pdf
+      fileName="complementos.pdf"
+      [headers]="['Nome', 'Valor']"
+      [data]="complementoParaPDF()">
+    </app-export-pdf>
+
+    <app-export-csv
+      [data]="complementos()"
+      filename="complementos.csv">
+    </app-export-csv>
+  </div>
 
   <ng-template #emptyState>
     <p class="text-muted">Nenhum complemento cadastrado.</p>

@@ -45,7 +45,18 @@
     </button>
   </div>
 
-  <app-export-csv [data]="vouchers()" filename="cupons.csv"></app-export-csv>
+  <div class="d-flex gap-3 mt-3">
+    <app-export-pdf
+      fileName="cupom.pdf"
+      [headers]="['Id', 'Nome', 'Data Inicial', 'Data de Venc.', 'Porcentagem desconto', 'Qtde Máx de uso']"
+      [data]="cupomParaPDF()">
+    </app-export-pdf>
+
+    <app-export-csv
+      [data]="vouchers()"
+      filename="cupons.csv">
+    </app-export-csv>
+  </div>
 
   <ng-template #emptyState>
     <p class="text-muted">Nenhum cupom cadastrado.</p>

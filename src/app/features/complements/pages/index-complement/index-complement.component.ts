@@ -7,6 +7,7 @@ import { FilterModalComponent } from '../../../../shared/components/filter-modal
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
+import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
 
 @Component({
   selector: 'app-index-complement',
@@ -16,7 +17,8 @@ import { ExportCsvComponent } from '../../../../shared/components/export-csv/exp
     RouterLink,
     CommonModule,
     FilterModalComponent,
-    ExportCsvComponent
+    ExportCsvComponent,
+    ExportPdfComponent
   ],
   templateUrl: './index-complement.component.html',
   styleUrl: './index-complement.component.scss'
@@ -50,6 +52,13 @@ export class IndexComplementComponent implements OnInit {
 
   previousPage() {
     this.list.previousPage();
+  }
+
+  complementoParaPDF() {
+    return this.complementos().map(c => [
+      c.nome,
+      c.valor
+    ]);
   }
 
 }
