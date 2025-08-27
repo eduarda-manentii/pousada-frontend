@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 import { ImagemQuarto } from '../../interfaces/imagem-quarto';
-import { Quarto } from '../../interfaces/Quarto';
+import { Quarto } from '../../interfaces/quarto';
 
 @Component({
   selector: 'app-show-room',
@@ -36,14 +36,11 @@ export class ShowRoomComponent {
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-
     if (id) {
       this.roomId = id;
-
       try {
         const data = await this.api.getById<Quarto>(`/quartos/${id}`);
         const imagens = await this.api.getImages<ImagemQuarto>(`/imagens/${id}`);
-
         data.fotos = imagens.map(img => img.url);
         this.room = data;
       } catch (error) {
@@ -51,7 +48,6 @@ export class ShowRoomComponent {
       }
     }
   }
-
 
   excluir() {
     this.confirmModal.open('Tem certeza que deseja excluir este quarto?');

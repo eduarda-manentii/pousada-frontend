@@ -6,6 +6,7 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
+import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 
 @Component({
   selector: 'app-index-amenity',
@@ -15,7 +16,8 @@ import { useList } from '../../../../shared/composables/use-list';
     RouterLink,
     CommonModule,
     CapitalizePipe,
-    FilterModalComponent
+    FilterModalComponent,
+    ExportCsvComponent
   ],
   templateUrl: './index-amenity.component.html',
   styleUrl: './index-amenity.component.scss'

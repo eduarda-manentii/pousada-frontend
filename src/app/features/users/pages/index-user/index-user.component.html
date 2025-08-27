@@ -41,6 +41,8 @@
     </button>
   </div>
 
+  <app-export-csv [data]="usuariosParaCSV()" filename="usuarios.csv"></app-export-csv>
+
   <ng-template #emptyState>
     <p class="text-muted">Nenhum usuário cadastrado.</p>
   </ng-template>

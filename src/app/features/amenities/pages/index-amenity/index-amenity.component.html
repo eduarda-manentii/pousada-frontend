@@ -41,6 +41,8 @@
     </button>
   </div>
 
+  <app-export-csv [data]="amenities()" filename="amenidades.csv"></app-export-csv>
+
   <ng-template #emptyState>
     <p class="text-muted">Nenhuma amenidade cadastrada.</p>
   </ng-template>

@@ -7,7 +7,9 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../../customers/interfaces/cliente';
-import { Quarto } from '../../../rooms/interfaces/Quarto';
+import { Quarto } from '../../../rooms/interfaces/quarto';
+import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
+import { Reserva } from '../../interfaces/reservation';
 
 @Component({
   selector: 'app-index-reservation',
@@ -16,7 +18,8 @@ import { Quarto } from '../../../rooms/interfaces/Quarto';
     HeaderComponent,
     RouterLink,
     CommonModule,
-    FilterModalComponent
+    FilterModalComponent,
+    ExportCsvComponent
   ],
   templateUrl: './index-reservation.component.html',
   styleUrl: './index-reservation.component.scss'
@@ -34,7 +37,7 @@ export class IndexReservationComponent implements OnInit {
     { keys: ['checkIn', 'checkOut'], label: 'Período', type: 'range', subtype: 'date'},
   ];
 
-  private list = useList<any>('/reservas', (a, b) => new Date(a.checkIn).getTime() - new Date(b.checkIn).getTime());
+  private list = useList<Reserva>('/reservas', (a, b) => new Date(a.checkIn).getTime() - new Date(b.checkIn).getTime());
 
   reservas = this.list.items;
   currentPage = this.list.currentPage;
@@ -89,6 +92,19 @@ export class IndexReservationComponent implements OnInit {
 
   previousPage() {
     this.list.previousPage();
+  }
+
+  reservasParaCSV() {
+    return this.reservas().map(r => ({
+      id: r.id,
+      quarto: r.quarto?.nome ?? '',
+      valorDaReserva: r.valorDaReserva,
+      statusDaReserva: r.statusDaReserva,
+      observacao: r.observacao ?? '',
+      checkIn: r.checkIn, checkOut: r.checkOut,
+      cliente: r.cliente?.nome ?? '',
+      complementos: r.complementos?.map(c => c.nome).join(', ') ?? ''
+    }));
   }
 
 }

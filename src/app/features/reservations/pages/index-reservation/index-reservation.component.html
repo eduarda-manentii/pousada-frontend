@@ -29,8 +29,8 @@
           <td>
               {{ reserva.checkOut | date: 'dd/MM/yyyy' }}
           </td>
-          <td>{{ reserva.cliente.nome }}</td>
-          <td>{{ reserva.quarto.nome }}</td>
+          <td>{{ reserva.cliente?.nome }}</td>
+          <td>{{ reserva.quarto?.nome }}</td>
           <td>{{ reserva.statusDaReserva }}</td>
         </tr>
       </tbody>
@@ -48,6 +48,8 @@
       Próxima →
     </button>
   </div>
+
+  <app-export-csv [data]="reservasParaCSV()" filename="reservas.csv"></app-export-csv>
 
   <ng-template #emptyState>
     <p class="text-muted">Nenhuma reserva cadastrada.</p>

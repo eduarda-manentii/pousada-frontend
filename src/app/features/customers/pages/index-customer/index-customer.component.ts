@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../../../shared/services/backend-api.service';
 import { PhoneFormatPipe } from '../../../../shared/pipes/phone-format.pipe';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize.pipe';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
+import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 
 @Component({
   selector: 'app-index-customer',
@@ -18,7 +18,8 @@ import { useList } from '../../../../shared/composables/use-list';
     CommonModule,
     PhoneFormatPipe,
     CapitalizePipe,
-    FilterModalComponent
+    FilterModalComponent,
+    ExportCsvComponent
   ],
   templateUrl: './index-customer.component.html',
   styleUrl: './index-customer.component.scss'
@@ -30,7 +31,7 @@ export class IndexCustomerComponent implements OnInit {
 
   private list = useList<any>('/clientes', (a, b) => a.nome.localeCompare(b.nome));
 
-  items = this.list.items;
+  customers = this.list.items;
   currentPage = this.list.currentPage;
   totalPages = this.list.totalPages;
 
@@ -48,6 +49,21 @@ export class IndexCustomerComponent implements OnInit {
 
   previousPage() {
     this.list.previousPage();
+  }
+
+  customerParaCSV() {
+    return this.customers().map(c => ({
+      id: c.id,
+      nome: c.nome,
+      cpf: c.cpf,
+      email: c.email,
+      celular: c.celular,
+      sexo: c.sexo,
+      dataDeNascimento: c.dataDeNascimento,
+      endereco: c.endereco
+        ? `${c.endereco.rua}, ${c.endereco.numero} - ${c.endereco.cidade}/${c.endereco.estado}`
+        : ''
+    }));
   }
 
 }

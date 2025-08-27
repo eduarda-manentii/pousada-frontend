@@ -41,6 +41,8 @@
     </button>
   </div>
 
+  <app-export-csv [data]="complementos()" filename="complementos.csv"></app-export-csv>
+
   <ng-template #emptyState>
     <p class="text-muted">Nenhum complemento cadastrado.</p>
   </ng-template>

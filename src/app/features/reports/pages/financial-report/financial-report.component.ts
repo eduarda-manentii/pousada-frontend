@@ -5,7 +5,7 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../../customers/interfaces/cliente';
-import { Quarto } from '../../../rooms/interfaces/Quarto';
+import { Quarto } from '../../../rooms/interfaces/quarto';
 import { NgxEchartsModule, NGX_ECHARTS_CONFIG } from 'ngx-echarts';
 import { CommonModule } from '@angular/common';
 import * as echarts from 'echarts';

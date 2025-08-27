@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../shared/services/backend-api.service';
-import { Complement } from '../../interfaces/Complement';
+import { Complement } from '../../interfaces/complement';
 import { RequiredMarkerDirective } from '../../../../shared/directives/required-marker.directive';
 
 @Component({

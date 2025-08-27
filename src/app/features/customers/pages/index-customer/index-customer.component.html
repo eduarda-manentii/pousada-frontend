@@ -8,7 +8,7 @@
     <button class="btn btn-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#filterModal">Filtrar</button>
   </div>
 
-  <div *ngIf="items().length > 0; else emptyState">
+  <div *ngIf="customers().length > 0; else emptyState">
     <table class="table table-striped table-hover align-middle">
       <thead class="bg-primary-custom">
         <tr>
@@ -18,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let customer of items()">
+        <tr *ngFor="let customer of customers()">
           <td>
             <a [routerLink]="['/customers/show', customer.id]">
               {{ customer.nome | capitalize }}
@@ -42,6 +42,8 @@
       Próxima →
     </button>
   </div>
+
+  <app-export-csv [data]="customerParaCSV()" filename="clientes.csv"></app-export-csv>
 
   <ng-template #emptyState>
     <p class="text-muted">Nenhum cliente cadastrado.</p>

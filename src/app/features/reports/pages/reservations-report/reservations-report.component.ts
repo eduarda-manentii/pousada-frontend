@@ -5,7 +5,7 @@ import { FiltroConfig, FiltroConfigValue } from '../../../../shared/interfaces/f
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../../customers/interfaces/cliente';
-import { Quarto } from '../../../rooms/interfaces/Quarto';
+import { Quarto } from '../../../rooms/interfaces/quarto';
 import { NgxEchartsModule, NGX_ECHARTS_CONFIG  } from 'ngx-echarts';
 import { CommonModule } from '@angular/common';
 import * as echarts from 'echarts';
@@ -46,7 +46,7 @@ export class ReservationsReportComponent implements OnInit {
   ];
 
   private list = useList<any>('/reservas', (a, b) => new Date(a.checkIn).getTime() - new Date(b.checkIn).getTime());
-  private todasReservasOriginais: any[] = [];
+  public todasReservasOriginais: any[] = [];
 
   ngOnInit(): void {
     this.list.loadPage(0).then(() => {

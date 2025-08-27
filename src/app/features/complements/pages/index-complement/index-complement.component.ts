@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
-import { Complement } from '../../interfaces/Complement';
 import { useList } from '../../../../shared/composables/use-list';
+import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 
 @Component({
   selector: 'app-index-complement',
@@ -15,7 +15,8 @@ import { useList } from '../../../../shared/composables/use-list';
     HeaderComponent,
     RouterLink,
     CommonModule,
-    FilterModalComponent
+    FilterModalComponent,
+    ExportCsvComponent
   ],
   templateUrl: './index-complement.component.html',
   styleUrl: './index-complement.component.scss'

@@ -10,4 +10,5 @@ export interface Quarto {
   observacao?: string;
   amenidades: Amenidade[];
   fotos?: string[];
+  urlImagens?: { url: string }[];
 }

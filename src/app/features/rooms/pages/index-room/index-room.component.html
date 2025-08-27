@@ -74,6 +74,8 @@
     </button>
   </div>
 
+  <app-export-csv [data]="quartosParaCSV()" filename="quartos.csv"></app-export-csv>
+
   <ng-template #emptyState>
     <p class="text-muted">Nenhum quarto cadastrado.</p>
   </ng-template>

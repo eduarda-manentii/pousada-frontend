@@ -1,4 +1,4 @@
-import { Status } from "../../../shared/interfaces/Status";
+import { Status } from "../../../shared/interfaces/status";
 
 export interface Voucher {
   id: number,

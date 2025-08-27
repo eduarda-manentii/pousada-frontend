@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
-import { Voucher } from '../../interfaces/Voucher';
+import { Voucher } from '../../interfaces/voucher';
 import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
 

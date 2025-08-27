@@ -6,7 +6,7 @@ import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
-import { Complement } from '../../interfaces/Complement';
+import { Complement } from '../../interfaces/complement';
 
 @Component({
   selector: 'app-show-complement',
@@ -62,5 +62,5 @@ export class ShowComplementComponent {
   editComplement(complementId: number) {
     this.router.navigate(['/complements/edit', complementId]);
   }
-  
+
 }

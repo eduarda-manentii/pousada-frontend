@@ -4,7 +4,7 @@ import { HeaderComponent } from '../../../../shared/components/header/header.com
 import { useList } from '../../../../shared/composables/use-list';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../../customers/interfaces/cliente';
-import { Quarto } from '../../../rooms/interfaces/Quarto';
+import { Quarto } from '../../../rooms/interfaces/quarto';
 import { CommonModule } from '@angular/common';
 
 @Component({

@@ -45,6 +45,8 @@
     </button>
   </div>
 
+  <app-export-csv [data]="vouchers()" filename="cupons.csv"></app-export-csv>
+
   <ng-template #emptyState>
     <p class="text-muted">Nenhum cupom cadastrado.</p>
   </ng-template>
@@ -54,5 +56,3 @@
     (filtersApplied)="aplicarFiltros($event)">
   </app-filter-modal>
 </div>
-
-

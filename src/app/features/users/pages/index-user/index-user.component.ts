@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
+import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 
 @Component({
   selector: 'app-index-user',
@@ -13,7 +14,8 @@ import { useList } from '../../../../shared/composables/use-list';
     HeaderComponent,
     RouterLink,
     CommonModule,
-    FilterModalComponent
+    FilterModalComponent,
+    ExportCsvComponent
   ],
   templateUrl: './index-user.component.html',
   styleUrl: './index-user.component.scss'
@@ -45,6 +47,13 @@ export class IndexUserComponent implements OnInit{
 
   previousPage() {
     this.list.previousPage();
+  }
+
+  usuariosParaCSV() {
+    return this.users().map(u => ({
+      nome: u.nome,
+      email: u.email
+    }));
   }
 
 }

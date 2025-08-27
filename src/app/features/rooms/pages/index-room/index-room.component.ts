@@ -8,6 +8,8 @@ import { ApiService } from '../../../../shared/services/backend-api.service';
 import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ImagemQuarto } from '../../interfaces/imagem-quarto';
+import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
+import { Quarto } from '../../interfaces/quarto';
 
 @Component({
   selector: 'app-index-room',
@@ -17,7 +19,8 @@ import { ImagemQuarto } from '../../interfaces/imagem-quarto';
     RouterLink,
     CommonModule,
     FilterModalComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    ExportCsvComponent
   ],
   templateUrl: './index-room.component.html',
   styleUrl: './index-room.component.scss'
@@ -31,7 +34,10 @@ export class IndexRoomComponent implements OnInit {
     private api: ApiService
   ) {}
 
-  private list = useList<any>('/quartos', (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
+  private list = useList<Quarto>(
+    '/quartos',
+    (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase())
+  );
 
   quartos = this.list.items;
   currentPage = this.list.currentPage;
@@ -39,7 +45,6 @@ export class IndexRoomComponent implements OnInit {
 
   async ngOnInit() {
     await this.list.loadPage(0);
-
     for (const quarto of this.quartos()) {
       try {
         const data = await this.api.getImages<ImagemQuarto>(`/imagens/${quarto.id}`);
@@ -61,6 +66,19 @@ export class IndexRoomComponent implements OnInit {
 
   previousPage() {
     this.list.previousPage();
+  }
+
+  quartosParaCSV() {
+    return this.quartos().map(q => ({
+      id: q.id,
+      nome: q.nome,
+      capacidade: q.capacidade,
+      qtdCamaSolteiro: q.qtdCamaSolteiro,
+      qtdCamaCasal: q.qtdCamaCasal,
+      valorDiaria: q.valorDiaria,
+      amenidades: q.amenidades?.map(a => a.nome).join(', ') ?? '',
+      observacao: q.observacao ?? ''
+    }));
   }
 
 }
