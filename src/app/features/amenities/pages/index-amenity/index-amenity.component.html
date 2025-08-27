@@ -44,12 +44,12 @@
   <div class="d-flex gap-3 mt-3">
     <app-export-pdf
       fileName="amenidades.pdf"
-      [headers]="['Nome', 'Ìcone']"
+      [headers]="['Nome']"
       [data]="amenidadesParaPDF()">
     </app-export-pdf>
 
     <app-export-csv
-      [data]="amenities()"
+      [data]="amenidadesParaCSV()"
       filename="amenidades.csv">
     </app-export-csv>
   </div>

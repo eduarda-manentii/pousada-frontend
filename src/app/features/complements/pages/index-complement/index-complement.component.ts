@@ -8,6 +8,7 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
+import { Complement } from '../../interfaces/complement';
 
 @Component({
   selector: 'app-index-complement',
@@ -32,7 +33,7 @@ export class IndexComplementComponent implements OnInit {
     private api: ApiService,
   ) {}
 
-  private list = useList<any>('/complementos', (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
+  private list = useList<Complement>('/complementos', (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
 
   complementos = this.list.items;
   currentPage = this.list.currentPage;

@@ -7,6 +7,7 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
+import { User } from '../../interfaces/users';
 
 @Component({
   selector: 'app-index-user',
@@ -29,7 +30,7 @@ export class IndexUserComponent implements OnInit{
     {key: 'email', label: 'Email', type: 'text'},
   ];
 
-  private list = useList<any>('/usuarios', (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
+  private list = useList<User>('/usuarios', (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()));
 
   users = this.list.items;
   currentPage = this.list.currentPage;

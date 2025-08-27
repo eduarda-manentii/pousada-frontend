@@ -9,6 +9,7 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
+import { Cliente } from '../../interfaces/cliente';
 
 @Component({
   selector: 'app-index-customer',
@@ -31,7 +32,7 @@ export class IndexCustomerComponent implements OnInit {
     { key: 'nome', label: 'Nome', type: 'text' }
   ];
 
-  private list = useList<any>('/clientes', (a, b) => a.nome.localeCompare(b.nome));
+  private list = useList<Cliente>('/clientes', (a, b) => a.nome.localeCompare(b.nome));
 
   customers = this.list.items;
   currentPage = this.list.currentPage;

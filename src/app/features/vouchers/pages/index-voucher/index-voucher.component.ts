@@ -7,6 +7,7 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
+import { Voucher } from '../../interfaces/voucher';
 
 @Component({
   selector: 'app-index-voucher',
@@ -28,7 +29,7 @@ export class IndexVoucherComponent implements OnInit {
     {keys: ['dataDeInicio', 'dataDeVencimento'], label: 'Período', type: 'range', subtype: 'date'},
   ];
 
-  private list = useList<any>('/cupons', (a, b) => a.nome.localeCompare(b.nome));
+  private list = useList<Voucher>('/cupons', (a, b) => a.nome.localeCompare(b.nome));
 
   vouchers = this.list.items;
   currentPage = this.list.currentPage;

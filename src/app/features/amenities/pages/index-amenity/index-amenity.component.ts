@@ -8,6 +8,7 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ExportCsvComponent } from '../../../../shared/components/export-csv/export-csv.component';
 import { ExportPdfComponent } from '../../../../shared/components/export-pdf/export-pdf.component';
+import { Amenidade } from '../../interfaces/amenity';
 
 @Component({
   selector: 'app-index-amenity',
@@ -29,7 +30,7 @@ export class IndexAmenityComponent {
     { key: 'nome', label: 'Nome', type: 'text' }
   ];
 
-  private list = useList<any>('/amenidades', (a, b) => a.nome.localeCompare(b.nome));
+  private list = useList<Amenidade>('/amenidades', (a, b) => a.nome.localeCompare(b.nome));
 
   amenities = this.list.items;
   currentPage = this.list.currentPage;
@@ -51,10 +52,17 @@ export class IndexAmenityComponent {
     this.list.previousPage();
   }
 
+  amenidadesParaCSV() {
+    return this.amenities().map(a => ({
+      id: a.id,
+      nome: a.nome
+    }));
+  }
+
   amenidadesParaPDF() {
     return this.amenities().map(a => [
-      a.nome,
-      a.icone
+      a.id,
+      a.nome
     ]);
   }
 
