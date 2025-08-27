@@ -86,6 +86,7 @@ export class ReservationsReportComponent implements OnInit {
 
     const filtroQuarto = filtros.find((f: any) => f.key === 'quarto')?.value;
     const filtroStatus = filtros.find((f: any) => f.key === 'statusDaReserva')?.value;
+    const filtroCliente = filtros.find((f: any) => f.key === 'cliente')?.value;
 
     const filtroPeriodo = filtros.find((f: any) => f.type === 'range' && f.keys?.includes('checkIn'));
     let dataInicio: Date | null = null;
@@ -112,6 +113,8 @@ export class ReservationsReportComponent implements OnInit {
       this.gerarGraficoPorStatus(filtroQuarto, reservasFiltradasPorPeriodo);
     } else if (filtroStatus) {
       this.gerarGraficoPorStatusSemQuarto(filtroStatus, reservasFiltradasPorPeriodo);
+    } else if (filtroCliente) {
+      this.gerarGraficoPorCliente(reservasFiltradasPorPeriodo.filter(r => r.cliente?.id === filtroCliente));
     } else {
       this.showChart = false;
     }
@@ -179,6 +182,37 @@ export class ReservationsReportComponent implements OnInit {
           color: '#007bff'
         }
       ]
+    };
+    this.showChart = true;
+  }
+
+  gerarGraficoPorCliente(reservas: any[]) {
+    if (!reservas || reservas.length === 0) {
+      this.showChart = false;
+      return;
+    }
+
+    const statusPossiveis = ['ABERTA', 'FECHADA', 'CANCELADA', 'CONCLUIDA'];
+    const statusContagem: Record<string, number> = {};
+    statusPossiveis.forEach(s => statusContagem[s] = 0);
+
+    reservas.forEach(r => {
+      statusContagem[r.statusDaReserva] = (statusContagem[r.statusDaReserva] || 0) + 1;
+    });
+    this.resumoStatus = { ...statusContagem };
+    this.quartoSelecionadoNome = null;
+
+    this.chartOptions = {
+      title: { text: 'Reservas do Cliente por Status', left: 'center' },
+      tooltip: { trigger: 'item' },
+      legend: { orient: 'vertical', left: 'left' },
+      series: [{
+        name: 'Reservas',
+        type: 'pie',
+        radius: '50%',
+        data: Object.entries(statusContagem).map(([status, count]) => ({ value: count, name: status })),
+        emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
+      }]
     };
     this.showChart = true;
   }
