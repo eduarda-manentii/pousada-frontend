@@ -85,36 +85,49 @@ export class ReservationsReportComponent implements OnInit {
     this.list.applyFilters(filtros);
 
     const filtroQuarto = filtros.find((f: any) => f.key === 'quarto')?.value;
-    const filtroStatus = filtros.find((f: any) => f.key === 'statusDaReserva')?.value;
     const filtroCliente = filtros.find((f: any) => f.key === 'cliente')?.value;
+    const filtroStatus = filtros.find((f: any) => f.key === 'statusDaReserva')?.value;
 
     const filtroPeriodo = filtros.find((f: any) => f.type === 'range' && f.keys?.includes('checkIn'));
-    let dataInicio: Date | null = null;
-    let dataFim: Date | null = null;
-
-    if (filtroPeriodo) {
-      const periodo = JSON.parse(filtroPeriodo.value);
-      dataInicio = periodo.de ? new Date(periodo.de) : null;
-      dataFim    = periodo.ate ? new Date(periodo.ate) : null;
-    }
-
-    if (!dataInicio || !dataFim) {
+    if (!filtroPeriodo || !filtroPeriodo.value) {
+      console.warn('Período obrigatório!');
       this.showChart = false;
       return;
     }
 
-    const reservasFiltradasPorPeriodo = this.todasReservasOriginais.filter(r => {
+    let dataInicio: Date, dataFim: Date;
+    try {
+      const periodo = typeof filtroPeriodo.value === 'string' ? JSON.parse(filtroPeriodo.value) : filtroPeriodo.value;
+      dataInicio = new Date(periodo.de);
+      dataFim = new Date(periodo.ate);
+    } catch (e) {
+      console.error('Erro ao ler período:', e);
+      this.showChart = false;
+      return;
+    }
+
+    let reservasFiltradas = this.todasReservasOriginais.filter(r => {
       const checkIn = new Date(r.checkIn);
       const checkOut = new Date(r.checkOut);
-      return checkIn <= dataFim! && checkOut >= dataInicio!;
+      return checkIn <= dataFim && checkOut >= dataInicio;
     });
 
     if (filtroQuarto) {
-      this.gerarGraficoPorStatus(filtroQuarto, reservasFiltradasPorPeriodo);
+      reservasFiltradas = reservasFiltradas.filter(r => r.quarto?.id === filtroQuarto);
+    }
+    if (filtroCliente) {
+      reservasFiltradas = reservasFiltradas.filter(r => r.cliente?.id === filtroCliente);
+    }
+    if (filtroStatus) {
+      reservasFiltradas = reservasFiltradas.filter(r => r.statusDaReserva === filtroStatus);
+    }
+
+    if (filtroCliente) {
+      this.gerarGraficoPorCliente(reservasFiltradas);
+    } else if (filtroQuarto) {
+      this.gerarGraficoPorStatus(filtroQuarto, reservasFiltradas);
     } else if (filtroStatus) {
-      this.gerarGraficoPorStatusSemQuarto(filtroStatus, reservasFiltradasPorPeriodo);
-    } else if (filtroCliente) {
-      this.gerarGraficoPorCliente(reservasFiltradasPorPeriodo.filter(r => r.cliente?.id === filtroCliente));
+      this.gerarGraficoPorStatusSemQuarto(filtroStatus, reservasFiltradas);
     } else {
       this.showChart = false;
     }
@@ -123,16 +136,13 @@ export class ReservationsReportComponent implements OnInit {
   gerarGraficoPorStatus(quartoId: number | string, reservas: any[]) {
     const id = typeof quartoId === 'string' ? parseInt(quartoId) : quartoId;
     const reservasDoQuarto = reservas.filter(r => r.quarto?.id === id);
-
     const statusPossiveis = ['ABERTA', 'FECHADA', 'CANCELADA', 'CONCLUIDA'];
     const statusContagem: Record<string, number> = {};
     statusPossiveis.forEach(s => statusContagem[s] = 0);
-
     reservasDoQuarto.forEach(r => {
       statusContagem[r.statusDaReserva] = (statusContagem[r.statusDaReserva] || 0) + 1;
     });
     this.resumoStatus = { ...statusContagem };
-
     this.chartOptions = {
       title: { text: 'Reservas por quarto selecionado', left: 'center' },
       tooltip: { trigger: 'item' },
@@ -160,7 +170,6 @@ export class ReservationsReportComponent implements OnInit {
 
       quartosMap[quartoNome] = (quartosMap[quartoNome] || 0) + 1;
     });
-
     const nomesQuartos = Object.keys(quartosMap);
     const contagens = Object.values(quartosMap);
     this.chartOptions = {
@@ -191,17 +200,14 @@ export class ReservationsReportComponent implements OnInit {
       this.showChart = false;
       return;
     }
-
     const statusPossiveis = ['ABERTA', 'FECHADA', 'CANCELADA', 'CONCLUIDA'];
     const statusContagem: Record<string, number> = {};
     statusPossiveis.forEach(s => statusContagem[s] = 0);
-
     reservas.forEach(r => {
       statusContagem[r.statusDaReserva] = (statusContagem[r.statusDaReserva] || 0) + 1;
     });
     this.resumoStatus = { ...statusContagem };
     this.quartoSelecionadoNome = null;
-
     this.chartOptions = {
       title: { text: 'Reservas do Cliente por Status', left: 'center' },
       tooltip: { trigger: 'item' },
