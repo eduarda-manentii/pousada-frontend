@@ -7,7 +7,7 @@ import { FiltroConfig } from '../../../../shared/interfaces/filtro-config';
 import { useList } from '../../../../shared/composables/use-list';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../../customers/interfaces/cliente';
-import { Quarto } from '../../../rooms/interfaces/quarto';
+import { Quarto } from '../../../rooms/interfaces/Quarto';
 
 @Component({
   selector: 'app-index-reservation',
@@ -22,7 +22,7 @@ import { Quarto } from '../../../rooms/interfaces/quarto';
   styleUrl: './index-reservation.component.scss'
 })
 export class IndexReservationComponent implements OnInit {
-  
+
   constructor(
     private api: ApiService
   ) {}
@@ -59,7 +59,7 @@ export class IndexReservationComponent implements OnInit {
         label: c.nome,
         value: c.id
       }));
-      
+
       const statusOptions = [
         { label: 'Aberta', value: 'ABERTA' },
         { label: 'Fechada', value: 'FECHADA' },

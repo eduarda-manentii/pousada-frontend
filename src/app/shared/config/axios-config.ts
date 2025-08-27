@@ -26,9 +26,6 @@ axiosInstance.interceptors.response.use(
     const response = error.response;
     const errors = response?.data;
 
-    console.log("Errorssssssssssssssssssssssssss");
-    console.log(errors);
-
     if (response?.status === 401) {
       //TODO Não autorizado, redirecionar para tela de login
     }

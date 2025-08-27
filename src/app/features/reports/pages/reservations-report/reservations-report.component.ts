@@ -5,7 +5,7 @@ import { FiltroConfig, FiltroConfigValue } from '../../../../shared/interfaces/f
 import { FilterModalComponent } from '../../../../shared/components/filter-modal/filter-modal.component';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { Cliente } from '../../../customers/interfaces/cliente';
-import { Quarto } from '../../../rooms/interfaces/quarto';
+import { Quarto } from '../../../rooms/interfaces/Quarto';
 import { NgxEchartsModule, NGX_ECHARTS_CONFIG  } from 'ngx-echarts';
 import { CommonModule } from '@angular/common';
 import * as echarts from 'echarts';
@@ -87,18 +87,39 @@ export class ReservationsReportComponent implements OnInit {
     const filtroQuarto = filtros.find((f: any) => f.key === 'quarto')?.value;
     const filtroStatus = filtros.find((f: any) => f.key === 'statusDaReserva')?.value;
 
+    const filtroPeriodo = filtros.find((f: any) => f.type === 'range' && f.keys?.includes('checkIn'));
+    let dataInicio: Date | null = null;
+    let dataFim: Date | null = null;
+
+    if (filtroPeriodo) {
+      const periodo = JSON.parse(filtroPeriodo.value);
+      dataInicio = periodo.de ? new Date(periodo.de) : null;
+      dataFim    = periodo.ate ? new Date(periodo.ate) : null;
+    }
+
+    if (!dataInicio || !dataFim) {
+      this.showChart = false;
+      return;
+    }
+
+    const reservasFiltradasPorPeriodo = this.todasReservasOriginais.filter(r => {
+      const checkIn = new Date(r.checkIn);
+      const checkOut = new Date(r.checkOut);
+      return checkIn <= dataFim! && checkOut >= dataInicio!;
+    });
+
     if (filtroQuarto) {
-      this.gerarGraficoPorStatus(filtroQuarto);
+      this.gerarGraficoPorStatus(filtroQuarto, reservasFiltradasPorPeriodo);
     } else if (filtroStatus) {
-      this.gerarGraficoPorStatusSemQuarto(filtroStatus);
+      this.gerarGraficoPorStatusSemQuarto(filtroStatus, reservasFiltradasPorPeriodo);
     } else {
       this.showChart = false;
     }
   }
 
-  gerarGraficoPorStatus(quartoId: number | string) {
+  gerarGraficoPorStatus(quartoId: number | string, reservas: any[]) {
     const id = typeof quartoId === 'string' ? parseInt(quartoId) : quartoId;
-    const reservasDoQuarto = this.todasReservasOriginais.filter(r => r.quarto?.id === id);
+    const reservasDoQuarto = reservas.filter(r => r.quarto?.id === id);
 
     const statusPossiveis = ['ABERTA', 'FECHADA', 'CANCELADA', 'CONCLUIDA'];
     const statusContagem: Record<string, number> = {};
@@ -124,15 +145,13 @@ export class ReservationsReportComponent implements OnInit {
     this.showChart = true;
   }
 
-  gerarGraficoPorStatusSemQuarto(statusFiltro: string) {
-    const todasReservasArray = this.todasReservasOriginais;
-    if (!todasReservasArray || todasReservasArray.length === 0) {
+  gerarGraficoPorStatusSemQuarto(statusFiltro: string, reservas: any[]) {
+    if (!reservas || reservas.length === 0) {
       this.showChart = false;
       return;
     }
     const quartosMap: Record<string, number> = {};
-
-    todasReservasArray.forEach(r => {
+    reservas.forEach(r => {
       const quartoNome = r.quarto?.nome || 'Sem Quarto';
       if (statusFiltro && r.statusDaReserva !== statusFiltro) return;
 

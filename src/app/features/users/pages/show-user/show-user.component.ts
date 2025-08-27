@@ -3,7 +3,7 @@ import { HeaderComponent } from '../../../../shared/components/header/header.com
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
-import { User } from '../../interfaces/users';
+import { User } from '../../interfaces/Users';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmModalService } from '../../../../shared/services/confirm-modal.service';

@@ -6,7 +6,7 @@ import { RequiredMarkerDirective } from '../../../../shared/directives/required-
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../../shared/services/backend-api.service';
 import { ToastrService } from 'ngx-toastr';
-import { User } from '../../interfaces/users';
+import { User } from '../../interfaces/Users';
 
 @Component({
   selector: 'app-new-user',
