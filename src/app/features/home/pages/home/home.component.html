@@ -1,5 +1,38 @@
 <app-header></app-header>
 
 <div class="container my-5">
-  <h2 class="text-secondary-custom mb-3">Bem-vindo, conheça nossa pousada!</h2>
+  <h2 class="text-secondary-custom mb-5">Bem-vindo, conheça nossa pousada!</h2>
+
+  <h4 class="text-primary-custom mb-3">Locações do Dia</h4>
+  <div *ngIf="locacoesDoDia.length > 0; else emptyState">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="bg-primary-custom">
+        <tr>
+          <th>Check-in</th>
+          <th>Check-out</th>
+          <th>Cliente</th>
+          <th>Quarto</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reserva of locacoesDoDia">
+           <td>
+            <a [routerLink]="['/reservations/show', reserva.id]">
+              {{ reserva.checkIn | date: 'dd/MM/yyyy' }}
+            </a>
+          </td>
+          <td>{{ reserva.checkOut | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ reserva.cliente.nome }}</td>
+          <td>{{ reserva.quarto.nome }}</td>
+          <td>{{ reserva.statusDaReserva }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="text-muted">Nenhuma locação programada para hoje.</p>
+  </ng-template>
+
 </div>
